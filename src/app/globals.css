@@ -124,3 +124,14 @@
 
   }
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: whitesmoke;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#e94c09);
+  z-index: 50px;
+  cursor: pointer;
+}
