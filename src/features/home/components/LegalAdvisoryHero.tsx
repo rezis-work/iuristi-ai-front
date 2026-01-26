@@ -37,7 +37,6 @@ export default function LegalAdvisoryHero() {
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Dis
                 parturient montes nascetur ridiculus mus.
               </p>
-
               <p className="text-sm md:text-base lg:text-lg leading-relaxed">
                 Facilisi etiam dignissim diam quis. Eget nunc scelerisque
                 viverra mauris in aliquam sem. Sit amet nisl suscipit.
