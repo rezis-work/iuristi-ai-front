@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "../providers/tanstack-provider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import Header from "../components/header/Header";
+// import Header from "@/src/components/shared/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +25,7 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
+  
 }>) {
   return (
     <html lang="en">
@@ -30,10 +33,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-        <NuqsAdapter>
-          {children}
+            <Header />
+          <NuqsAdapter>
+            {children}
           </NuqsAdapter>
-          </QueryProvider>
+        </QueryProvider>
       </body>
     </html>
   );
