@@ -1,15 +1,17 @@
+import HeroSection from "@/src/features/home/components/HeroSection";
+import TopServices from "@/src/features/home/components/TopServices";
+import LegalAdvisoryHero from "@/src/features/home/components/LegalAdvisoryHero";
 import Wrapper from "@/src/components/shared/wrapper";
-import HeroSection from "../HeroSection";
-import LegalAdvisoryHero from "../LegalAdvisoryHero";
 
 export function HomepageView() {
   return (
     <>
       <HeroSection />
-      <div className="py-16">
+      <TopServices />
+      <div className="py-10">
         <LegalAdvisoryHero />
       </div>
-      <Wrapper className="mx-auto">
+      <Wrapper className="mx-auto px-4">
         <div className="max-w-2xl mt-10">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore
           nesciunt cum eaque, quas culpa porro dolor eligendi praesentium
