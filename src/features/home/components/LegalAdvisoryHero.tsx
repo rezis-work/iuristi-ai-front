@@ -10,26 +10,25 @@ export default function LegalAdvisoryHero() {
           alt="Legal professionals collaborating"
           className="w-full h-full object-cover mb-14 lg:mb-0"
         />
-        <div className="px-5.5  md:px-12 lg:px-0 lg:absolute lg:top-14 lg:-right-150 max-w-2xl z-20">
+        <div className="px-4  md:px-12 lg:px-0 lg:absolute lg:top-14 lg:-right-95 lg:max-w-xl xl:-right-111 xl:max-w-2xl z-20">
           <div className="space-y-3">
             <div className="text-xs md:text-sm font-semibold flex items-center gap-5 tracking-widest uppercase text-neutral-400">
               <div className="w-14 h-0.5 bg-yellow-600" />
               WHAT WE DO
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-bold leading-tight text-white">
+            <h1 className="text-3xl md:text-4xl lg:text-4xl lg:max-w-md xl:text-5xl xl:max-w-lg font-bold leading-tight text-white">
               Legal advisory is our expertise
             </h1>
           </div>
         </div>
         <div className="absolute right-40 lg:right-0 z-30 hidden lg:block">
-          <SpinningText className="text-md" radius={7}>
+          <SpinningText className="text-md" radius={9}>
             learn more • earn more • grow more •
           </SpinningText>
         </div>
-        <div className="absolute inset-0 bg-black/30"></div>
       </div>
       <div className="lg:relative inset-0 lg:inset-auto lg:w-1/2 flex items-center">
-        <div className="w-full px-6 md:px-12 lg:px-16 xl:px-32 py-12">
+        <div className="w-full px-4 md:px-12 lg:px-16 xl:px-24 py-10 lg:py-50 xl:py-60">
           <div className="max-w-md space-y-6">
             <div className="space-y-5 text-neutral-400">
               <p className="text-sm md:text-base lg:text-lg leading-relaxed">
@@ -45,7 +44,7 @@ export default function LegalAdvisoryHero() {
             <div className="pt-6">
               <Button
                 size="lg"
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-10 py-6 text-sm md:text-base tracking-wider uppercase transition-all duration-300"
+                className="bg-orange-400 hover:bg-orange-500 rounded-xs text-white font-semibold px-10 py-7 text-sm md:text-base tracking-wider uppercase transition-all duration-300"
               >
                 THE PRACTICE
               </Button>

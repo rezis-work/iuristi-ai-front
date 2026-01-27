@@ -6,7 +6,9 @@ export function HomepageView() {
   return (
     <>
       <HeroSection />
-      <LegalAdvisoryHero />
+      <div className="py-16">
+        <LegalAdvisoryHero />
+      </div>
       <Wrapper className="mx-auto">
         <div className="max-w-2xl mt-10">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore
