@@ -25,6 +25,7 @@ export function DesktopRight({ user }: DesktopRightProps) {
               alt={user.name || "User"}
               className="object-cover"
             />
+            
             <AvatarFallback className="bg-zinc-700 text-zinc-200">
               {user.name
                 ? user.name
@@ -43,6 +44,7 @@ export function DesktopRight({ user }: DesktopRightProps) {
         )}
         {user?.name && <span className="text-sm font-medium">{user.name}</span>}
       </div>
+
       <button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-6 py-3 rounded transition-colors uppercase text-sm">
         Let&apos;s Talk  
       </button>
