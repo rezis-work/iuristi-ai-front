@@ -4,7 +4,7 @@ import LegalServicesGrid from "./LegalServicesGrid";
 export default function TopServices() {
   return (
     <section className="bg-black text-white py-20">
-      <Wrapper className="mx-auto w-full px-4 sm:px-6 lg:px-24">
+      <Wrapper className="mx-auto w-full px-4 sm:px-6 lg:px-28">
         <div className="mx-auto w-full">
           <div className="mb-1">
             <div className="flex items-center gap-3">
