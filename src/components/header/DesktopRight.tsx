@@ -44,7 +44,7 @@ export function DesktopRight({ user }: DesktopRightProps) {
         {user?.name && <span className="text-sm font-medium">{user.name}</span>}
       </div>
       <button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-6 py-3 rounded transition-colors uppercase text-sm">
-        Let&apos;s Talk
+        Let&apos;s Talk  
       </button>
     </div>
   );
