@@ -40,7 +40,7 @@ export default function Header() {
     <header className="bg-black text-white relative z-40">
       <Wrapper className="mx-auto pl-4 lg:px-4">
         <div className="flex items-center h-25">
-          <div className="flex items-center gap-40 flex-1">
+          <div className="flex items-center lg:gap-20 xl:gap-40 flex-1">
             <Logo />
             <DesktopNav
               hoveredLink={hoveredLink}
@@ -49,7 +49,9 @@ export default function Header() {
             />
           </div>
 
-          <DesktopRight />
+          <DesktopRight
+            user={{ name: "John Doe", image: "https://github.com/shadcn.png" }}
+          />
 
           <MobileActions
             isMenuOpen={isMobileMenuOpen}
