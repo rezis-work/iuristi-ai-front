@@ -1,5 +1,5 @@
-import { Button } from "@/src/components/ui/button";
 import { SpinningText } from "@/src/components/ui/spinning-text";
+import SheardButton from "@/src/components/SheardButton";
 
 export default function LegalAdvisoryHero() {
   return (
@@ -42,12 +42,9 @@ export default function LegalAdvisoryHero() {
               </p>
             </div>
             <div className="pt-6">
-              <Button
-                size="lg"
-                className="bg-orange-400 hover:bg-orange-500 rounded-xs text-white font-semibold px-10 py-7 text-sm md:text-base tracking-wider uppercase transition-all duration-300"
-              >
+              <SheardButton className="uppercase text-black">
                 THE PRACTICE
-              </Button>
+              </SheardButton>
             </div>
           </div>
         </div>

@@ -136,7 +136,7 @@ export default function Counter({
   padding = 10,
   gap = 8,
   color = "black",
-  fontWeight = 900,
+  fontWeight = 700,
   className = "",
   style = {},
 }: CounterProps) {
