@@ -9,7 +9,7 @@ function Wrapper({
 }) {
   return (
     <div
-      className={`[@media(max-width:1024px)]:max-w-[1024px] [@media(max-width:767px)]:max-w-[767px] max-w-[1540px] w-full ${className}  `}
+      className={`[@media(max-width:1024px)]:max-w-5xl [@media(max-width:767px)]:max-w-191.75 max-w-385 w-full ${className}  `}
     >
       {children}
     </div>

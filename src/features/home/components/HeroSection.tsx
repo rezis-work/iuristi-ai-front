@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import Wrapper from "@/src/components/shared/wrapper";
 import Counter from "@/src/features/home/components/Counter";
 import NewsPartners from "@/src/features/home/components/NewsPartners";
-import SheardButton from "@/src/components/SheardButton";
+import SheardButton from "@/src/components/shared/SheardButton";
 
 export default function HeroSection() {
   return (
@@ -44,7 +44,7 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
               >
-                <SheardButton className="uppercase text-black">
+                <SheardButton className="uppercase text-black px-4 py-5 sm:px-12 sm:py-7">
                   Find out more
                 </SheardButton>
               </motion.div>

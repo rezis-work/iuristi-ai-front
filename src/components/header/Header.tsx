@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Wrapper from "@/src/components/shared/wrapper";
 import { Logo } from "@/src/components/header/Logo";
 import { DesktopNav } from "@/src/components/header/DesktopNav";
-import { DesktopRight } from "@/src/components/header/DesktopRight";
 import { MobileOverlay } from "@/src/components/header/MobileOverlay";
 import { MobileActions } from "@/src/components/header/MobileActions";
 import { MobileSearchOverlay } from "@/src/components/header/MobileSearchOverlay";
 import { DesktopSearchOverlay } from "@/src/components/header/DesktopSearchOverlay";
+import { UserAvatar } from "@/src/components/header/UserAvatar";
 
 export default function Header() {
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
@@ -28,12 +28,6 @@ export default function Header() {
     }
   }, [isMobileMenuOpen, isMobileSearchOpen]);
 
-  const handlePhoneClick = () => {
-    if (typeof window !== "undefined") {
-      window.location.href = "tel:18004445657";
-    }
-  };
-
   const toggleDesktopSearch = () => setIsDesktopSearchOpen((prev) => !prev);
 
   return (
@@ -48,16 +42,14 @@ export default function Header() {
               onSearchClick={toggleDesktopSearch}
             />
           </div>
-
-          <DesktopRight
+          <UserAvatar
             user={{ name: "John Doe", image: "https://github.com/shadcn.png" }}
+            className="hidden lg:flex"
           />
-
           <MobileActions
             isMenuOpen={isMobileMenuOpen}
             onToggleMenu={() => setIsMobileMenuOpen((prev) => !prev)}
             onToggleSearch={() => setIsMobileSearchOpen((prev) => !prev)}
-            onPhoneClick={handlePhoneClick}
           />
         </div>
       </Wrapper>
