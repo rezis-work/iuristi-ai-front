@@ -1,5 +1,5 @@
 import Wrapper from "@/src/components/shared/wrapper";
-import LegalServicesGrid from "./LegalServicesGrid";
+import LegalServicesGrid from "@/src/features/home/components/LegalServicesGrid";
 
 export default function TopServices() {
   return (
@@ -16,9 +16,9 @@ export default function TopServices() {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold leading-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-5xl text-zinc-200 font-bold leading-tight">
                 Our job is to provide the best legal help
-                <span className="text-white">.</span>
+                <span className="text-zinc-200">.</span>
               </h2>
             </div>
             <div className="space-y-8 text-gray-400">

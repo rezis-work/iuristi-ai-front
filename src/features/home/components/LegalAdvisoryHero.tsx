@@ -3,7 +3,7 @@ import SheardButton from "@/src/components/shared/SheardButton";
 
 export default function LegalAdvisoryHero() {
   return (
-    <section className="relative flex flex-col lg:flex-row">
+    <section className="relative flex flex-col lg:flex-row mb-30">
       <div className="relative w-full lg:w-1/2 lg:min-h-[80vh]">
         <img
           src={"/images/bg1.jpg"}
@@ -42,7 +42,7 @@ export default function LegalAdvisoryHero() {
               </p>
             </div>
             <div className="pt-6">
-              <SheardButton className="uppercase text-black px-4 py-5 sm:px-12 sm:py-7">
+              <SheardButton className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7">
                 THE PRACTICE
               </SheardButton>
             </div>
