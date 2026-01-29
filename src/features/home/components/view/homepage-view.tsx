@@ -9,9 +9,7 @@ export function HomepageView() {
       <section className="space-y-5">
         <HeroSection />
         <TopServices />
-        {/* <div className="py-10"> */}
         <LegalAdvisoryHero />
-        {/* </div> */}
       </section>
     </React.Fragment>
   );
