@@ -1,0 +1,135 @@
+"use client";
+
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/src/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginSchema } from "../schemas/auth-schemas";
+import { Input } from "@/src/components/ui/input";
+import { Button } from "@/src/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/src/components/ui/card";
+import Link from "next/link";
+import Wrapper from "@/src/components/shared/wrapper";
+import { useLogin } from "../hook/auth";
+
+
+interface LoginFormProps {
+    onClose?: () => void;
+}
+
+export function LoginForm({ onClose }: LoginFormProps) {
+
+
+    const {mutate: Login} = useLogin({ disableAutoRedirect: true })
+    const form = useForm<LoginSchema>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        }
+    });
+
+    function onSubmit(data: LoginSchema) {
+        Login(data, {
+            onSuccess: () => {
+                form.reset();
+                // Close the dropdown after successful login
+                if (onClose) {
+                    setTimeout(() => {
+                        onClose();
+                    }, 100);
+                }
+            }
+        });
+    }
+
+    return (
+    <Wrapper className="mx-auto ">
+        <div className="w-full sm:max-w-xl mx-auto">
+            <Card className="bg-gray-900/95 backdrop-blur-sm shadow-2xl border-gray-800/50 py-20">
+                <CardHeader className="text-center pb-4">
+                    <CardTitle className="text-3xl font-bold text-white mb-2">
+                        Welcome Back
+                    </CardTitle>
+                    <CardDescription className="text-gray-400 text-base">
+                        Sign in to your account
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            {/* Email Field */}
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => {
+                                    return (
+                                        <FormItem className="space-y-2">
+                                            <FormLabel className="text-gray-200 text-[15px] font-medium">
+                                                Email Address
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="email"
+                                                    placeholder="Enter your email"
+                                                    disabled={form.formState.isSubmitting}
+                                                    className="h-[50px] rounded-lg border border-gray-700 bg-gray-800/50 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#FF9D4D]/50 focus:border-[#FF9D4D] focus:outline-none transition-all duration-200"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage className="text-sm text-red-400" />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+
+                            {/* Password Field */}
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => {
+                                    return (
+                                        <FormItem className="space-y-2">
+                                            <FormLabel className="text-gray-200 text-[15px] font-medium">
+                                                Password
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="password"
+                                                    placeholder="Enter your password"
+                                                    disabled={form.formState.isSubmitting}
+                                                    className="h-[50px] rounded-lg border border-gray-700 bg-gray-800/50 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#FF9D4D]/50 focus:border-[#FF9D4D] focus:outline-none transition-all duration-200"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage className="text-sm text-red-400" />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+
+                            {/* Submit Button */}
+                            <Button
+                                type="submit"
+                                disabled={form.formState.isSubmitting}
+                                className="w-full h-[52px] mt-8 bg-[#FF9D4D] text-white hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base rounded-lg shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+                            >
+                                {form.formState.isSubmitting ? "Signing in..." : "Login"}
+                            </Button>
+                        </form>
+                    </Form>
+                    <div className="text-center text-gray-400 text-sm mt-6">
+                        Don&apos;t have an account?{" "}
+                        <Link 
+                            href="/register" 
+                            className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
+                            onClick={onClose}
+                        >
+                            Sign up
+                        </Link>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+       </Wrapper>
+    );
+}
