@@ -8,7 +8,8 @@ import { MobileOverlay } from "@/src/components/header/MobileOverlay";
 import { MobileActions } from "@/src/components/header/MobileActions";
 import { MobileSearchOverlay } from "@/src/components/header/MobileSearchOverlay";
 import { DesktopSearchOverlay } from "@/src/components/header/DesktopSearchOverlay";
-import { UserAvatar } from "@/src/components/header/UserAvatar";
+import { LoginCard } from "@/src/features/auth/components/login-card";
+
 
 export default function Header() {
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
@@ -42,10 +43,7 @@ export default function Header() {
               onSearchClick={toggleDesktopSearch}
             />
           </div>
-          <UserAvatar
-            user={{ name: "John Doe", image: "https://github.com/shadcn.png" }}
-            className="hidden lg:flex"
-          />
+           <LoginCard />
           <MobileActions
             isMenuOpen={isMobileMenuOpen}
             onToggleMenu={() => setIsMobileMenuOpen((prev) => !prev)}

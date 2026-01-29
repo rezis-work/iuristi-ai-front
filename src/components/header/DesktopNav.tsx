@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { navLinks } from "@/src/constants/navlinks";
 import { DesktopNavItem } from "@/src/components/header/DesktopNavItem";
 import { DesktopNavSearch } from "@/src/components/header/DesktopNavSearch";
+import { NavLink } from "@/src/types/types";
 
 interface DesktopNavProps {
   hoveredLink: number | null;
@@ -23,7 +24,7 @@ export function DesktopNav({
       {navLinks.map((link, index) => (
         <DesktopNavItem
           key={link.href}
-          link={link as any}
+          link={link as NavLink}
           index={index}
           isHovered={hoveredLink === index}
           pathname={pathname}

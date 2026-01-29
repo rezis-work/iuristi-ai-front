@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu, X, Search } from "lucide-react";
-import { UserAvatar } from "@/src/components/header/UserAvatar";
+import { LoginCard } from "@/src/features/auth/components/login-card";
 
 interface MobileActionsProps {
   isMenuOpen: boolean;
@@ -31,9 +31,8 @@ export function MobileActions({
         {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
       <div className="pr-4">
-        <UserAvatar
-          user={{ name: "John Doe", image: "https://github.com/shadcn.png" }}
-          className="flex lg:hidden"
+        <LoginCard
+
         />
       </div>
     </div>

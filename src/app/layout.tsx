@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/src/app/globals.css";
 import { QueryProvider } from "@/src/providers/tanstack-provider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import Header from "@/src/components/header/Header";
 import Footer from "@/src/components/footer/Footer";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,9 @@ export default function RootLayout({
         <QueryProvider>
           <NuqsAdapter>
             <Header />
-            <main className="min-h-screen">{children}</main>
+            {children}
             <Footer />
+            <Toaster position="top-center" richColors duration={2500} />
           </NuqsAdapter>
         </QueryProvider>
       </body>
