@@ -2,8 +2,26 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Search } from "lucide-react";
+import Wrapper from "@/src/components/shared/wrapper";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/src/components/ui/form";
+import { Input } from "@/src/components/ui/input";
+import { useEffect } from "react";
+import { Logo } from "./Logo";
 
-interface MobileSearchOverlayProps {
+const formSchema = z.object({
+  search: z.string().min(1, "Please enter a search term"),
+});
+
+interface DesktopSearchOverlayProps {
   isOpen: boolean;
   onClose: () => void;
 }
@@ -11,72 +29,144 @@ interface MobileSearchOverlayProps {
 export function MobileSearchOverlay({
   isOpen,
   onClose,
-}: MobileSearchOverlayProps) {
+}: DesktopSearchOverlayProps) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      search: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("Search submitted:", values);
+    form.reset();
+  }
+
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+    }
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen]);
+
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
-        <motion.div
-          key="mobile-search"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-60 lg:hidden"
-        >
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-md"
-            onClick={onClose}
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.19, 1.0, 0.22, 1.0] }}
+            className="fixed inset-0 bg-linear-to-b from-black via-black/5 to-transparent z-40"
+            onClick={handleClose}
           />
           <motion.div
-            initial={{ y: -80, opacity: 0 }}
+            key="desktop-search"
+            initial={{ y: "-100%", opacity: 0 }}
             animate={{
               y: 0,
               opacity: 1,
               transition: {
-                duration: 0.25,
-                ease: [0.22, 0.61, 0.36, 1],
+                type: "spring",
+                damping: 30,
+                stiffness: 300,
+                mass: 0.8,
               },
             }}
             exit={{
-              y: -60,
+              y: "-100%",
               opacity: 0,
               transition: {
-                duration: 0.2,
-                ease: [0.4, 0.0, 0.2, 1],
+                duration: 0.3,
+                ease: [0.76, 0, 0.24, 1],
               },
             }}
-            className="relative z-10 px-4 pt-5 pb-4 bg-zinc-900 border-b border-zinc-800 shadow-lg"
+            className="absolute top-full left-0 w-full z-50 -mt-19.5"
           >
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-sm uppercase tracking-[0.18em] text-zinc-500">
-                Search
-              </p>
-              <button
-                onClick={onClose}
-                className="p-1.5 rounded-full bg-zinc-800/80 text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
-                aria-label="Close search"
-              >
-                <X className="w-4 h-4" />
-              </button>
+            <div className="backdrop-blur-xl bg-black border-b h-80 border-zinc-800/80 shadow-[0_20px_60px_rgba(0,0,0,0.65)]">
+              <Wrapper className="mx-auto px-4">
+                <div className="flex items-center justify-between bg-black">
+                  <Logo />
+                  <button
+                    onClick={handleClose}
+                    className="text-zinc-400 hover:text-white transition-colors"
+                    aria-label="Close search"
+                  >
+                    <X className="w-7 h-7" />
+                  </button>
+                </div>
+              </Wrapper>
+              <Wrapper className="mx-auto px-5">
+                <motion.div className="py-17">
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="flex-1"
+                    >
+                      <FormField
+                        control={form.control}
+                        name="search"
+                        render={({ field }) => (
+                          <FormItem className="relative">
+                            <motion.div
+                              initial={{ scaleX: 0 }}
+                              animate={{
+                                scaleX: 1,
+                                transition: {
+                                  delay: 0.3,
+                                  duration: 0.5,
+                                  ease: [0.19, 1.0, 0.22, 1.0],
+                                },
+                              }}
+                              className="absolute inset-0 rounded-2xl bg-linear-to-r from-zinc-50/5 via-zinc-50/0 to-zinc-50/5 pointer-events-none origin-left"
+                            />
+                            <FormControl>
+                              <div className="relative py-3">
+                                <Input
+                                  {...field}
+                                  autoFocus
+                                  type="text"
+                                  placeholder="Search across pages, services, and resources..."
+                                  className="relative w-full py-3 pl-0 pr-12 text-[17px] outline-none lg:text-[18px] text-white placeholder:text-zinc-500 transition-colors bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                                />
+                                <Search
+                                  onClick={() => form.handleSubmit(onSubmit)()}
+                                  className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                                />
+                                <motion.div
+                                  initial={{ scaleX: 0 }}
+                                  animate={{
+                                    scaleX: 1,
+                                    transition: {
+                                      delay: 0.4,
+                                      duration: 0.8,
+                                      ease: [0.19, 1.0, 0.22, 1.0],
+                                    },
+                                  }}
+                                  className="absolute bottom-0 left-0 w-full h-px bg-zinc-700 origin-left"
+                                />
+                              </div>
+                            </FormControl>
+                            <FormMessage className="absolute -bottom-6 left-0 text-xs text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                    </form>
+                  </Form>
+                </motion.div>
+              </Wrapper>
             </div>
-            <motion.div
-              initial={{ scale: 0.98, opacity: 0 }}
-              animate={{
-                scale: 1,
-                opacity: 1,
-                transition: { duration: 0.25 },
-              }}
-              className="relative"
-            >
-              <input
-                autoFocus
-                type="text"
-                placeholder="What are you looking for?"
-                className="w-full bg-zinc-900 border-b py-3 pl-11 pr-4 text-[16px] text-white placeholder:text-zinc-500 outline-none transition-colors"
-              />
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
-            </motion.div>
           </motion.div>
-        </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
