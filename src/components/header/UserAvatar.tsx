@@ -6,17 +6,19 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar";
+import SheardButton from "@/src/components/shared/SheardButton";
 
 interface DesktopRightProps {
   user?: {
     name?: string;
     image?: string;
   };
+  className?: string;
 }
 
-export function DesktopRight({ user }: DesktopRightProps) {
+export function UserAvatar({ user, className }: DesktopRightProps) {
   return (
-    <div className="hidden lg:flex items-center gap-6 ml-auto select-none">
+    <div className={`items-center gap-6 ml-auto select-none ${className}`}>
       <div className="flex items-center gap-2 text-zinc-200">
         {user ? (
           <Avatar className="w-9 h-9">
@@ -25,7 +27,6 @@ export function DesktopRight({ user }: DesktopRightProps) {
               alt={user.name || "User"}
               className="object-cover"
             />
-            
             <AvatarFallback className="bg-zinc-700 text-zinc-200">
               {user.name
                 ? user.name
@@ -42,12 +43,15 @@ export function DesktopRight({ user }: DesktopRightProps) {
             <User className="w-5 h-5" />
           </div>
         )}
-        {user?.name && <span className="text-sm font-medium">{user.name}</span>}
+        {user?.name && (
+          <span className="text-sm font-medium hidden lg:flex">
+            {user.name}
+          </span>
+        )}
       </div>
-
-      <button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-6 py-3 rounded transition-colors uppercase text-sm">
-        Let&apos;s Talk  
-      </button>
+      <SheardButton className="uppercase text-black hidden text-xs lg:flex px-7 py-5.5">
+        Let&apos;s Talk
+      </SheardButton>
     </div>
   );
 }

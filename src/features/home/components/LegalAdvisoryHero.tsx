@@ -1,5 +1,5 @@
 import { SpinningText } from "@/src/components/ui/spinning-text";
-import SheardButton from "@/src/components/SheardButton";
+import SheardButton from "@/src/components/shared/SheardButton";
 
 export default function LegalAdvisoryHero() {
   return (
@@ -42,7 +42,7 @@ export default function LegalAdvisoryHero() {
               </p>
             </div>
             <div className="pt-6">
-              <SheardButton className="uppercase text-black">
+              <SheardButton className="uppercase text-black px-4 py-5 sm:px-12 sm:py-7">
                 THE PRACTICE
               </SheardButton>
             </div>
