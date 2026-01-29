@@ -1,16 +1,19 @@
+import Image from "next/image";
 import { SpinningText } from "@/src/components/ui/spinning-text";
 import SheardButton from "@/src/components/shared/SheardButton";
 
 export default function LegalAdvisoryHero() {
   return (
-    <section className="relative flex flex-col lg:flex-row mb-30">
-      <div className="relative w-full lg:w-1/2 lg:min-h-[80vh]">
-        <img
-          src={"/images/bg1.jpg"}
+    <section className="relative flex flex-col md:flex-row mb-30">
+      <div className="relative w-full h-80 md:h-auto md:w-1/2 xl:w-[62%]">
+        <Image
+          src="/images/bg1.jpg"
           alt="Legal professionals collaborating"
-          className="w-full h-full object-cover mb-14 lg:mb-0"
+          fill
+          className="object-cover mb-14 w-full h-full"
+          priority
         />
-        <div className="px-4  md:px-12 lg:px-0 lg:absolute lg:top-14 lg:-right-95 lg:max-w-xl xl:-right-111 xl:max-w-2xl z-20">
+        <div className="px-4 md:px-12 xl:px-0 xl:absolute xl:top-14 xl:-right-111 xl:max-w-xl z-20">
           <div className="space-y-3">
             <div className="text-xs md:text-sm font-semibold flex items-center gap-5 tracking-widest uppercase text-neutral-400">
               <div className="w-14 h-0.5 bg-yellow-600" />
@@ -21,16 +24,32 @@ export default function LegalAdvisoryHero() {
             </h1>
           </div>
         </div>
-        <div className="absolute right-40 lg:right-0 z-30 hidden lg:block">
+        <div className="absolute right-25 md:right-0 z-30 hidden md:block bottom-0">
           <SpinningText className="text-md" radius={9}>
             learn more • earn more • grow more •
           </SpinningText>
         </div>
+        <div className="absolute right-24 md:right-0 z-30 md:hidden bottom-0">
+          <SpinningText className="text-xs" radius={8}>
+            learn more • earn more • grow more •
+          </SpinningText>
+        </div>
       </div>
-      <div className="lg:relative inset-0 lg:inset-auto lg:w-1/2 flex items-center">
-        <div className="w-full px-4 md:px-12 lg:px-16 xl:px-24 py-10 lg:py-50 xl:py-60">
-          <div className="max-w-md space-y-6">
+      <div className="lg:relative inset-0 lg:inset-auto md:w-[65%] lg:w-1/2 flex items-center">
+        <div className="w-full px-4 md:px-12 xl:px-28 pt-10 pb-30 xl:py-60">
+          <div className="max-w-3xl space-y-6">
             <div className="space-y-5 text-neutral-400">
+              <div className="lg:max-w-xl xl:max-w-2xl xl:hidden z-20">
+                <div className="space-y-3">
+                  <div className="text-xs md:text-sm font-semibold flex items-center gap-5 tracking-widest uppercase text-neutral-400">
+                    <div className="w-14 h-0.5 bg-yellow-600" />
+                    WHAT WE DO
+                  </div>
+                  <h1 className="text-3xl md:text-3xl lg:text-3xl sm:max-w-xl xl:text-5xl xl:max-w-lg font-bold leading-tight text-white">
+                    Legal advisory is our expertise
+                  </h1>
+                </div>
+              </div>
               <p className="text-sm md:text-base lg:text-lg leading-relaxed">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Dis
