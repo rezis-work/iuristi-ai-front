@@ -81,7 +81,7 @@ const LegalServicesGrid: React.FC = () => {
                     "radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%)",
                 }}
               />
-              <div className="relative py-8 px-4 lg:px-0 h-full min-h-75 flex flex-col justify-between">
+              <div className="relative py-8 px-4 lg:px-0 h-full min-h-70 flex flex-col justify-between">
                 <div className="mb-8">
                   <div
                     className={`text-white transition-opacity duration-300
@@ -91,7 +91,7 @@ const LegalServicesGrid: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-xl lg:text-2xl font-light tracking-wide leading-tight">
+                  <h3 className="text-xl lg:text-2xl font-bold w-50 tracking-wide leading-tight">
                     {service.title}
                   </h3>
                   <div className="flex items-center">

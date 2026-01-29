@@ -19,7 +19,7 @@ const NewsPartners = () => {
                   fill
                   priority
                   unoptimized
-                  className="object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-300 cursor-pointer"
+                  className="object-contain grayscale opacity-100 hover:opacity-80 hover:grayscale-80 transition-all duration-300 cursor-pointer"
                 />
               </div>
             </div>
@@ -36,7 +36,7 @@ const NewsPartners = () => {
                     fill
                     priority
                     unoptimized
-                    className="object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-300 cursor-pointer"
+                    className="object-contain grayscale opacity-100 hover:opacity-80 hover:grayscale-80 transition-all duration-300 cursor-pointer"
                   />
                 </div>
               </div>

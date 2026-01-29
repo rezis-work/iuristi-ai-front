@@ -17,6 +17,7 @@ export default function HeroSection() {
               backgroundImage: "url('/images/bg-2.jpg')",
             }}
           />
+          <div className="absolute inset-0 bg-black/15" />
         </div>
         <div className="relative z-10 flex min-h-screen items-center py-20 md:py-0">
           <Wrapper className="mx-auto w-full px-4 sm:px-6 lg:px-28">
@@ -44,7 +45,7 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
               >
-                <SheardButton className="uppercase text-black px-4 py-5 sm:px-12 sm:py-7">
+                <SheardButton className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7">
                   Find out more
                 </SheardButton>
               </motion.div>
