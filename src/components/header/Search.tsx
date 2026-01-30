@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Search } from "lucide-react";
+import { X, Search as Search2 } from "lucide-react";
 import Wrapper from "@/src/components/shared/wrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,15 +21,13 @@ const formSchema = z.object({
   search: z.string().min(1, "Please enter a search term"),
 });
 
-interface DesktopSearchOverlayProps {
+interface SearchProps {
   isOpen: boolean;
   onClose: () => void;
+  className?: string;
 }
 
-export function MobileSearchOverlay({
-  isOpen,
-  onClose,
-}: DesktopSearchOverlayProps) {
+export function Search({ isOpen, onClose, className }: SearchProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -92,7 +90,9 @@ export function MobileSearchOverlay({
             }}
             className="absolute top-full left-0 w-full z-50 -mt-19.5"
           >
-            <div className="backdrop-blur-xl bg-black border-b h-80 border-zinc-800/80 shadow-[0_20px_60px_rgba(0,0,0,0.65)]">
+            <div
+              className={`backdrop-blur-xl bg-black border-b h-80 lg:h-112 border-zinc-800/80 shadow-[0_20px_60px_rgba(0,0,0,0.65)]`}
+            >
               <Wrapper className="mx-auto px-4">
                 <div className="flex items-center justify-between bg-black">
                   <Logo />
@@ -105,8 +105,8 @@ export function MobileSearchOverlay({
                   </button>
                 </div>
               </Wrapper>
-              <Wrapper className="mx-auto px-5">
-                <motion.div className="py-17">
+              <Wrapper className="mx-auto px-4 lg:px-40">
+                <motion.div className={`py-17 lg:py-32`}>
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
@@ -138,7 +138,7 @@ export function MobileSearchOverlay({
                                   placeholder="Search across pages, services, and resources..."
                                   className="relative w-full py-3 pl-0 pr-12 text-[17px] outline-none lg:text-[18px] text-white placeholder:text-zinc-500 transition-colors bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                                 />
-                                <Search
+                                <Search2
                                   onClick={() => form.handleSubmit(onSubmit)()}
                                   className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-400 hover:text-white transition-colors cursor-pointer"
                                 />
