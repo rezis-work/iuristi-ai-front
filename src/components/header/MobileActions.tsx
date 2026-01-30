@@ -1,7 +1,6 @@
 "use client";
 
 import { Menu, X, Search } from "lucide-react";
-import { LoginCard } from "@/src/features/auth/components/login-card";
 
 interface MobileActionsProps {
   isMenuOpen: boolean;
@@ -28,13 +27,12 @@ export function MobileActions({
         className="text-zinc-400 hover:text-white transition-colors"
         aria-label="Toggle menu"
       >
-        {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        {isMenuOpen ? (
+          <X className="w-6 h-6" />
+        ) : (
+          <Menu className="w-6 h-6 mr-4" />
+        )}
       </button>
-      <div className="pr-4">
-        <LoginCard
-
-        />
-      </div>
     </div>
   );
 }
