@@ -11,6 +11,7 @@ export default function AuthLayout({
       <div className="hidden md:flex">
         <DottedMap markers={markers} />
       </div>
+      
       <div className="w-full lg:px-4 absolute z-20 mt-2 md:mt-5 select-none">
         {children}
       </div>
