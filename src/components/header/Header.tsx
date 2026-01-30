@@ -6,10 +6,8 @@ import { Logo } from "@/src/components/header/Logo";
 import { DesktopNav } from "@/src/components/header/DesktopNav";
 import { MobileOverlay } from "@/src/components/header/MobileOverlay";
 import { MobileActions } from "@/src/components/header/MobileActions";
-import { MobileSearchOverlay } from "@/src/components/header/MobileSearchOverlay";
-import { DesktopSearchOverlay } from "@/src/components/header/DesktopSearchOverlay";
 import { LoginCard } from "@/src/features/auth/components/login-card";
-
+import { Search } from "@/src/components/header/Search";
 
 export default function Header() {
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
@@ -43,7 +41,7 @@ export default function Header() {
               onSearchClick={toggleDesktopSearch}
             />
           </div>
-           <LoginCard />
+          <LoginCard />
           <MobileActions
             isMenuOpen={isMobileMenuOpen}
             onToggleMenu={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -58,16 +56,14 @@ export default function Header() {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      {/* Mobile modern search */}
-      <MobileSearchOverlay
-        isOpen={isMobileSearchOpen}
-        onClose={() => setIsMobileSearchOpen(false)}
-      />
-
-      {/* Desktop modern search */}
-      <DesktopSearchOverlay
-        isOpen={isDesktopSearchOpen}
-        onClose={() => setIsDesktopSearchOpen(false)}
+      {/*Desktop modern search ||  Mobile modern search */}
+      <Search
+        isOpen={isDesktopSearchOpen || isMobileSearchOpen}
+        onClose={() => {
+          setIsDesktopSearchOpen(false);
+          setIsMobileSearchOpen(false);
+        }}
+        className=""
       />
     </header>
   );
