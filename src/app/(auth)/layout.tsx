@@ -7,9 +7,12 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen flex justify-between relative w-full">
-      <DottedMap markers={markers} />
-      <div className="w-full lg:px-4 absolute z-20 mt-24 md:mt-5 select-none">
+    <div className="min-h-screen flex flex-col justify-between relative w-full">
+      <div className="hidden md:flex">
+        <DottedMap markers={markers} />
+      </div>
+      
+      <div className="w-full lg:px-4 absolute z-20 mt-2 md:mt-5 select-none">
         {children}
       </div>
     </div>
