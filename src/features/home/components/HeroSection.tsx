@@ -23,17 +23,17 @@ export default function HeroSection() {
           <Wrapper className="mx-auto w-full px-4 sm:px-6 lg:px-28">
             <div className=" max-w-lg lg:max-w-3xl">
               <motion.h1
-                className="mb-4 text-4xl font-bold leading-tight text-white sm:mb-6 sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl"
+                className="mb-4 text-4xl font-bold leading-tight text-zinc-200 sm:mb-6 sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl"
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
                 Protecting Your
                 <br />
-                <span className="text-white">Personal Rights</span>
+                <span>Personal Rights</span>
               </motion.h1>
               <motion.p
-                className="mb-6 text-base text-neutral-300 sm:mb-8 sm:text-lg md:text-xl lg:max-w-2xl"
+                className="mb-6 text-base text-zinc-200 sm:mb-8 sm:text-lg md:text-xl lg:max-w-2xl"
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -55,9 +55,9 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
               >
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-12 lg:gap-20 select-none max-w-lg">
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-12 lg:gap-20 text-zinc-200 select-none max-w-lg">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400 sm:text-sm">
+                    <p className="text-xs font-semibold uppercase tracking-wider sm:text-sm">
                       Years of experience
                     </p>
                     <div className="text-5xl font-black text-white sm:text-6xl lg:text-6xl">
@@ -65,11 +65,15 @@ export default function HeroSection() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400 sm:text-sm">
+                    <p className="text-xs font-semibold uppercase tracking-wider sm:text-sm">
                       Successful legal cases
                     </p>
                     <div className="text-5xl font-black text-white sm:text-6xl lg:text-6xl">
-                      <Counter targetValue={783} fontSize={56} color="white" />
+                      <Counter
+                        targetValue={783}
+                        fontSize={56}
+                        color="#e7e3e3"
+                      />
                     </div>
                   </div>
                 </div>
