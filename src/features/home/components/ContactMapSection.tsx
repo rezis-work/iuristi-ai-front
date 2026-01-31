@@ -1,7 +1,9 @@
 "use client";
 
+import React from "react";
 import { useState } from "react";
 import Map from "@/src/components/shared/Map";
+import Wrapper from "@/src/components/shared/wrapper";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -15,7 +17,7 @@ import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { Button } from "@/src/components/ui/button";
 
-export default function ContactsPage() {
+export default function ContactMapSection() {
   const [sent, setSent] = useState(false);
 
   type FormValues = {
@@ -40,17 +42,17 @@ export default function ContactsPage() {
   };
 
   return (
-    <main className="bg-black text-white">
+    <section className="bg-black text-white">
       <div className="flex flex-col lg:flex-row h-auto lg:h-screen w-full">
-        {/* Map Section - Left (60%) */}
+        {/* Map Section - Left (50%) */}
         <div
-          className="w-full lg:w-[60%] bg-zinc-900 shrink-0 h-96 lg:h-full"
+          className="w-full lg:w-[50%] bg-zinc-900 shrink-0 h-96 lg:h-full"
           style={{ position: "relative" }}
         >
           <Map lat={40.70582497139078} lng={-74.01437792445523} zoom={14} />
         </div>
 
-        {/* Contact Form Section - Right (40%) */}
+        {/* Contact Form Section - Right (50%) */}
         <div className="bg-black px-6 md:px-8 lg:px-12 py-12 md:py-16 lg:py-20 overflow-y-auto flex-1">
           <div className="max-w-lg mx-auto">
             {/* Header */}
@@ -157,6 +159,6 @@ export default function ContactsPage() {
           </div>
         </div>
       </div>
-    </main>
+    </section>
   );
 }
