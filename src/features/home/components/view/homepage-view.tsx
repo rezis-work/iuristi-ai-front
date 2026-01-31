@@ -6,6 +6,8 @@ import TestimonialsSection from "@/src/features/home/components/TestimonialsSect
 import { LoginForm } from "@/src/features/auth/components/login-form";
 import { ContingencyVictoryHero } from "@/src/features/home/components/ContingencyVictoryHero";
 import AwardsShowcase from "@/src/features/home/components/AwardsShowcase";
+import RecentBlogSection from "@/src/features/home/components/RecentBlogSection";
+import ContactMapSection from "@/src/features/home/components/ContactMapSection";
 
 export function HomepageView() {
   return (
@@ -17,6 +19,8 @@ export function HomepageView() {
         <TestimonialsSection />
         <ContingencyVictoryHero />
         <AwardsShowcase />
+        <RecentBlogSection />
+        <ContactMapSection />
       </section>
     </React.Fragment>
   );
