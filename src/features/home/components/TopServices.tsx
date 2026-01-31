@@ -9,14 +9,14 @@ export default function TopServices() {
           <div className="mb-1">
             <div className="flex items-center gap-3">
               <div className="h-0.5 w-12 bg-yellow-500"></div>
-              <span className="text-sm font-medium tracking-wider uppercase">
+              <span className="text-sm font-medium tracking-wider text-zinc-300 uppercase">
                 Top Services
               </span>
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl lg:text-5xl text-zinc-200 font-bold leading-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-5xl text-zinc-300 font-bold leading-tight">
                 Our job is to provide the best legal help
                 <span className="text-zinc-200">.</span>
               </h2>

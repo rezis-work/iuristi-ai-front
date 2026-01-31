@@ -19,7 +19,7 @@ export default function LegalAdvisoryHero() {
               <div className="w-14 h-0.5 bg-yellow-600" />
               WHAT WE DO
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-4xl lg:max-w-md xl:text-5xl xl:max-w-lg font-bold leading-tight text-white">
+            <h1 className="text-3xl md:text-4xl lg:text-4xl lg:max-w-md xl:text-5xl xl:max-w-lg font-bold leading-tight text-zinc-200">
               Legal advisory is our expertise
             </h1>
           </div>
@@ -45,7 +45,7 @@ export default function LegalAdvisoryHero() {
                     <div className="w-14 h-0.5 bg-yellow-600" />
                     WHAT WE DO
                   </div>
-                  <h1 className="text-3xl md:text-3xl lg:text-3xl sm:max-w-xl xl:text-5xl xl:max-w-lg font-bold leading-tight text-white">
+                  <h1 className="text-3xl md:text-3xl lg:text-3xl sm:max-w-xl xl:text-5xl xl:max-w-lg font-bold leading-tight text-zinc-200">
                     Legal advisory is our expertise
                   </h1>
                 </div>
