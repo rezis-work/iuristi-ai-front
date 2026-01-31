@@ -19,17 +19,23 @@ const testimonials: Testimonial[] = [
     id: "1",
     name: "Kylie Rogers",
     role: "Social worker",
-    image: "https://notarius.ancorathemes.com/wp-content/uploads/2022/09/ttmn7-copyright-120x120.jpg",
-    teamImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000&q=80",
-    quote: "Ignissimos ducimos qui blandiitis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blandiitis.",
+    image:
+      "https://notarius.ancorathemes.com/wp-content/uploads/2022/09/ttmn7-copyright-120x120.jpg",
+    teamImage:
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000&q=80",
+    quote:
+      "Ignissimos ducimos qui blandiitis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blandiitis.",
   },
   {
     id: "2",
     name: "Jason Bright",
     role: "General manager",
-    image: "https://notarius.ancorathemes.com/wp-content/uploads/2022/09/ttmn8-copyright-120x120.jpg",
-    teamImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000&q=80",
-    quote: "Ignissimos ducimos qui blandiitis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blandiitis.",
+    image:
+      "https://notarius.ancorathemes.com/wp-content/uploads/2022/09/ttmn8-copyright-120x120.jpg",
+    teamImage:
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000&q=80",
+    quote:
+      "Ignissimos ducimos qui blandiitis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blandiitis.",
   },
 ];
 
@@ -50,7 +56,9 @@ export default function TestimonialsSection() {
   const currentTestimonial = testimonials[activeIndex];
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setActiveIndex(
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
+    );
     setIsAutoPlay(false);
   };
 
@@ -78,7 +86,8 @@ export default function TestimonialsSection() {
             </div>
 
             <p className="text-base md:text-lg leading-relaxed text-neutral-400 mb-12">
-              Adipiscing elit, sed do euismod tempor incidunt ut labore et dolore magna aliqua.
+              Adipiscing elit, sed do euismod tempor incidunt ut labore et
+              dolore magna aliqua.
             </p>
 
             {/* Testimonial Quote Box */}
@@ -91,7 +100,7 @@ export default function TestimonialsSection() {
 
             {/* Client Info */}
             <div className="flex items-center gap-4 mb-12">
-              <div className="relative w-20 h-20 rounded-full overflow-hidden flex-shrink-0">
+              <div className="relative w-20 h-20 rounded-full overflow-hidden shrink-0">
                 <Image
                   src={currentTestimonial.image}
                   alt={currentTestimonial.name}
@@ -100,8 +109,12 @@ export default function TestimonialsSection() {
                 />
               </div>
               <div>
-                <h4 className="text-xl font-bold text-white">{currentTestimonial.name}</h4>
-                <p className="text-sm text-neutral-400">{currentTestimonial.role}</p>
+                <h4 className="text-xl font-bold text-white">
+                  {currentTestimonial.name}
+                </h4>
+                <p className="text-sm text-neutral-400">
+                  {currentTestimonial.role}
+                </p>
               </div>
             </div>
 
@@ -112,8 +125,18 @@ export default function TestimonialsSection() {
                 className="p-3 rounded-full border border-neutral-600 text-white hover:border-orange-500 hover:text-orange-500 transition-all duration-300"
                 aria-label="Previous testimonial"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
               </button>
               <button
@@ -121,8 +144,18 @@ export default function TestimonialsSection() {
                 className="p-3 rounded-full border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition-all duration-300"
                 aria-label="Next testimonial"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
               <div className="ml-auto flex gap-2">
@@ -134,7 +167,9 @@ export default function TestimonialsSection() {
                       setIsAutoPlay(false);
                     }}
                     className={`h-2 rounded-full transition-all duration-300 ${
-                      index === activeIndex ? "bg-orange-500 w-8" : "bg-neutral-600 w-2"
+                      index === activeIndex
+                        ? "bg-orange-500 w-8"
+                        : "bg-neutral-600 w-2"
                     }`}
                     aria-label={`Go to testimonial ${index + 1}`}
                   />
@@ -160,17 +195,27 @@ export default function TestimonialsSection() {
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-8">
                 We provide the best service for clients
               </h3>
-              
+
               <div className="grid grid-cols-2 gap-8">
                 <div>
-                  <div className="text-5xl md:text-6xl font-bold text-white mb-2">100</div>
-                  <p className="text-sm font-semibold text-white mb-2">Lawyers</p>
-                  <p className="text-xs text-neutral-400">Adipiscing, sed do eiusm.</p>
+                  <div className="text-5xl md:text-6xl font-bold text-white mb-2">
+                    100
+                  </div>
+                  <p className="text-sm font-semibold text-white mb-2">
+                    Lawyers
+                  </p>
+                  <p className="text-xs text-neutral-400">
+                    Adipiscing, sed do eiusm.
+                  </p>
                 </div>
                 <div>
-                  <div className="text-5xl md:text-6xl font-bold text-white mb-2">12</div>
+                  <div className="text-5xl md:text-6xl font-bold text-white mb-2">
+                    12
+                  </div>
                   <p className="text-sm font-semibold text-white mb-2">Years</p>
-                  <p className="text-xs text-neutral-400">Sed do euismod tempor.</p>
+                  <p className="text-xs text-neutral-400">
+                    Sed do euismod tempor.
+                  </p>
                 </div>
               </div>
             </div>
