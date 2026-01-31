@@ -9,7 +9,7 @@ import SheardButton from "@/src/components/shared/SheardButton";
 export default function HeroSection() {
   return (
     <>
-      <section className="relative min-h-screen w-full overflow-hidden">
+      <section className="relative min-h-screen w-full overflow-hidden select-none">
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"

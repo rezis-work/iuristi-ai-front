@@ -14,7 +14,7 @@ function NotFound() {
       />
       <div className="absolute inset-0 bg-black/20 z-10" />
       <div className="relative z-20 flex items-center text-center flex-col">
-        <h1 className="text-[110px] sm:text-[140px] lg:text-[300px] font-semibold text-white drop-shadow-lg">
+        <h1 className="text-[110px] sm:text-[140px] lg:text-[300px] font-semibold text-zinc-200 drop-shadow-lg">
           404
         </h1>
         <p className="text-xl sm:text-2xl lg:text-5xl -mt-6 lg:-mt-12 mb-4 font-semibold text-white drop-shadow-lg">
