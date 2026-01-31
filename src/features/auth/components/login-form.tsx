@@ -22,7 +22,7 @@ import {
 } from "@/src/components/ui/card";
 import Link from "next/link";
 import Wrapper from "@/src/components/shared/wrapper";
-import { useLogin } from "../hook/auth";
+import { useLogin } from "@/src/features/auth/hook/auth";
 
 interface LoginFormProps {
   onClose?: () => void;
@@ -55,7 +55,7 @@ export function LoginForm({ onClose }: LoginFormProps) {
   return (
     <Wrapper className="mx-auto">
       <div className="w-full md:max-w-xl mx-auto">
-        <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-gray-800/10 py-20">
+        <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-3xl font-bold text-white mb-2">
               Welcome Back
