@@ -1,11 +1,46 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send } from "lucide-react";
 import Map from "@/src/components/shared/Map";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/src/components/ui/form";
+import { Input } from "@/src/components/ui/input";
+import { Textarea } from "@/src/components/ui/textarea";
+import { Button } from "@/src/components/ui/button";
 
 export default function ContactsPage() {
   const [sent, setSent] = useState(false);
+  type FormValues = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    message: string;
+  };
+
+  const form = useForm<FormValues>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
+  });
+
+  const onSubmit = (data: FormValues) => {
+    console.log("Contact form submit:", data);
+    setSent(true);
+    setTimeout(() => setSent(false), 4000);
+    form.reset();
+  };
 
   return (
     <main className="bg-black text-white">
@@ -36,78 +71,90 @@ export default function ContactsPage() {
             </h2>
 
             {sent ? (
-              <div className="text-green-400 py-8">
-                Thanks — your message was sent.
-              </div>
+              <div className="text-green-400 py-8">Thanks — your message was sent.</div>
             ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSent(true);
-                  setTimeout(() => setSent(false), 4000);
-                }}
-                className="space-y-6"
-              >
-                {/* First Row: Name and Last Name */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Name"
-                      required
-                      className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors"
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Last Name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Last Name"
-                      required
-                      className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors"
-                    />
-                  </div>
-                </div>
 
-                {/* Second Row: Email and Phone */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative">
-                    <input
-                      type="email"
-                      placeholder="Email"
-                      required
-                      className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors"
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="Email" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="tel"
-                      placeholder="Phone"
-                      className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors"
-                    />
-                  </div>
-                </div>
 
-                {/* Third Row: Message (Full Width) */}
-                <div className="relative">
-                  <textarea
-                    placeholder="Message"
-                    required
-                    rows={4}
-                    className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors resize-none"
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone</FormLabel>
+                          <FormControl>
+                            <Input type="tel" placeholder="Phone" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Message</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Message" {...field} rows={4} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
 
-                {/* Submit Button */}
-                <div className="pt-4">
-                  <button
-                    type="submit"
-                    className="group flex items-center gap-3 bg-[#ff9D4D] hover:bg-[#ea9753] text-white font-semibold uppercase tracking-wider px-8 py-4 rounded-md transition-colors"
-                  >
-                    <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    <span>GET IN TOUCH</span>
-                  </button>
-                </div>
-              </form>
+                  <div className="pt-4">
+                    <Button type="submit" className="w-full bg-[#ff9D4D] hover:bg-[#ea9753] text-white font-semibold uppercase tracking-wider px-8 py-4 rounded-md transition-colors">
+                      GET IN TOUCH
+                    </Button>
+                  </div>
+                </form>
+              </Form>
             )}
           </div>
         </div>
