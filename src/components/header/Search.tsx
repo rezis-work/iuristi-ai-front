@@ -105,7 +105,7 @@ export function Search({ isOpen, onClose, className }: SearchProps) {
                   </button>
                 </div>
               </Wrapper>
-              <Wrapper className="mx-auto px-4 lg:px-40">
+              <Wrapper className="mx-auto px-4 sm:px-10 lg:px-40">
                 <motion.div className={`py-17 lg:py-32`}>
                   <Form {...form}>
                     <form
@@ -136,11 +136,11 @@ export function Search({ isOpen, onClose, className }: SearchProps) {
                                   autoFocus
                                   type="text"
                                   placeholder="Search across pages, services, and resources..."
-                                  className="relative w-full py-3 pl-0 pr-12 text-[17px] outline-none lg:text-[18px] text-white placeholder:text-zinc-500 transition-colors bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  className="relative w-full py-4 pl-4 pr-12 text-[12px] sm:text-[16px] line-clamp-1 outline-none lg:text-[18px] text-white placeholder:text-zinc-500 transition-colors bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                                 />
                                 <Search2
                                   onClick={() => form.handleSubmit(onSubmit)()}
-                                  className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                                  className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-400 hover:text-white transition-colors cursor-pointer"
                                 />
                                 <motion.div
                                   initial={{ scaleX: 0 }}
