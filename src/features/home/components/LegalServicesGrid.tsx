@@ -11,7 +11,6 @@ interface ServiceCard {
 }
 
 const LegalServicesGrid: React.FC = () => {
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [clickedCard, setClickedCard] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -69,18 +68,8 @@ const LegalServicesGrid: React.FC = () => {
               style={{
                 transitionDelay: `${service.delay}ms`,
               }}
-              onMouseEnter={() => setHoveredCard(service.id)}
-              onMouseLeave={() => setHoveredCard(null)}
               onClick={() => handleCardClick(service.id)}
             >
-              <div
-                className={`absolute inset-0 transition-opacity duration-500
-                  ${clickedCard === service.id ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
-                style={{
-                  background:
-                    "radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%)",
-                }}
-              />
               <div className="relative py-8 px-4 lg:px-0 h-full min-h-70 flex flex-col justify-between">
                 <div className="mb-8">
                   <div

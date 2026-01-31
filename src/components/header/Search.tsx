@@ -127,7 +127,7 @@ export function Search({ isOpen, onClose, className }: SearchProps) {
                                   ease: [0.19, 1.0, 0.22, 1.0],
                                 },
                               }}
-                              className="absolute inset-0 rounded-2xl bg-linear-to-r from-zinc-50/5 via-zinc-50/0 to-zinc-50/5 pointer-events-none origin-left"
+                              className="absolute inset-0 pointer-events-none origin-left"
                             />
                             <FormControl>
                               <div className="relative py-3">

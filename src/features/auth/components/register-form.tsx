@@ -22,7 +22,7 @@ import {
 } from "@/src/components/ui/card";
 import Link from "next/link";
 import Wrapper from "@/src/components/shared/wrapper";
-import { useRegister } from "../hook/auth";
+import { useRegister } from "@/src/features/auth/hook/auth";
 
 export function RegisterForm() {
   const { mutate: Register } = useRegister();
