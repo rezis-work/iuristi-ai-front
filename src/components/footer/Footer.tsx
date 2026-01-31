@@ -6,7 +6,7 @@ import { SocialIcons } from "@/src/components/header/SocialIcons";
 
 function Footer() {
   return (
-    <footer className="bg-black text-zinc-300 fixed bottom-0 left-0 right-0 z-40">
+    <footer className="bg-black text-zinc-300">
       <div className="border-b border-zinc-800">
         <Wrapper className="mx-auto px-6 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

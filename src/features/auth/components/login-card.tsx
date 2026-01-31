@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { User2 } from "lucide-react";
+import { UserPlus } from "lucide-react";
 
 interface DesktopRightProps {
   className?: string;
@@ -33,20 +33,19 @@ export function LoginCard({ className }: DesktopRightProps) {
     };
   }, [isOpen]);
 
-  const toggleRouter = () => {
-    router.push("/login");
+  const handleRegister = () => {
+    router.push("/register");
   };
 
   return (
-    <div className={`items-center gap-6 ml-auto select-none ${className}`}>
-      <div className="relative" ref={dropdownRef}>
-        <div
-          className="w-9 h-9 rounded-full bg-[#ff9D4D] hover:scale-105 transition-all duration-200 ease-in text-zinc-600 flex items-center justify-center cursor-pointer"
-          onClick={toggleRouter}
-        >
-          <User2 className="w-5 h-5" />
-        </div>
-      </div>
+    <div className={`hidden lg:flex items-center gap-6 ml-auto select-none ${className}`}>
+      <button
+        onClick={handleRegister}
+        className="p-2 rounded-lg border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200"
+        aria-label="Register"
+      >
+        <UserPlus className="w-5 h-5" />
+      </button>
     </div>
   );
 }

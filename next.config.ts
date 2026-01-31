@@ -17,7 +17,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "notarius.ancorathemes.com",
-      
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
     ],
   },
