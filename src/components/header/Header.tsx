@@ -32,7 +32,7 @@ export default function Header() {
   return (
     <header className="bg-black text-white relative z-40">
       <Wrapper className="mx-auto pl-4 lg:px-4">
-        <div className="flex items-center h-25">
+        <div className="flex items-center h-30">
           <div className="flex items-center lg:gap-20 xl:gap-40 flex-1">
             <Logo />
             <DesktopNav

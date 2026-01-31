@@ -4,7 +4,7 @@ import { partners } from "@/src/constants/partners";
 
 const NewsPartners = () => {
   return (
-    <div className="w-full bg-black -mt-5">
+    <div className="w-full bg-black -mt-15">
       <div>
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:hidden">
           {partners.map((partner, index) => (
