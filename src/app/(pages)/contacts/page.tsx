@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Map from "@/src/components/shared/Map";
 import { useForm } from "react-hook-form";
 import {
@@ -47,7 +47,7 @@ export default function ContactsPage() {
       <div className="flex flex-col lg:flex-row h-auto lg:h-screen w-full">
         {/* Map Section - Left (60%) */}
         <div
-          className="w-full lg:w-[60%] bg-zinc-900 flex-shrink-0 h-96 lg:h-full"
+          className="w-full lg:w-[60%] bg-zinc-900 shrink-0 h-96 lg:h-full"
           style={{ position: "relative" }}
         >
           <Map lat={40.70582497139078} lng={-74.01437792445523} zoom={14} />
@@ -71,10 +71,15 @@ export default function ContactsPage() {
             </h2>
 
             {sent ? (
-              <div className="text-green-400 py-8">Thanks — your message was sent.</div>
+              <div className="text-green-400 py-8">
+                Thanks — your message was sent.
+              </div>
             ) : (
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-6"
+                >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
@@ -112,7 +117,11 @@ export default function ContactsPage() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="Email" {...field} />
+                            <Input
+                              type="email"
+                              placeholder="Email"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -149,7 +158,10 @@ export default function ContactsPage() {
                   />
 
                   <div className="pt-4">
-                    <Button type="submit" className="w-full bg-[#ff9D4D] hover:bg-[#ea9753] text-white font-semibold uppercase tracking-wider px-8 py-4 rounded-md transition-colors">
+                    <Button
+                      type="submit"
+                      className="w-full bg-[#ff9D4D] hover:bg-[#ea9753] text-white font-semibold uppercase tracking-wider px-8 py-4 rounded-md transition-colors"
+                    >
                       GET IN TOUCH
                     </Button>
                   </div>
