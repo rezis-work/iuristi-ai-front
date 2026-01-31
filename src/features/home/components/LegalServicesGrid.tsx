@@ -80,7 +80,7 @@ const LegalServicesGrid: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-xl lg:text-2xl font-bold w-50 tracking-wide leading-tight">
+                  <h3 className="text-xl lg:text-2xl font-bold w-50 tracking-wide text-zinc-200 leading-tight">
                     {service.title}
                   </h3>
                   <div className="flex items-center">
