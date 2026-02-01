@@ -49,7 +49,7 @@ const awards: Award[] = [
 
 export default function AwardsShowcase() {
   return (
-    <Wrapper className="mx-auto w-full bg-black text-white py-12 px-6 lg:px-24">
+    <Wrapper className="mx-auto w-full bg-black text-white py-12 px-6 lg:px-28">
       <SectionHeader
         label="About Us"
         title="Our awards from the legal community"
@@ -58,7 +58,7 @@ export default function AwardsShowcase() {
           "Adipiscing elit, sed do euismod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
         ]}
       />
-      <div className="max-w-7xl mx-auto select-none">
+      <div className="select-none">
         {/* Desktop Header - Hidden on mobile */}
         <div className="hidden md:grid grid-cols-12 gap-4 pb-6 border-b border-gray-800">
           <div className="col-span-1 text-gray-400 text-sm font-medium">#</div>

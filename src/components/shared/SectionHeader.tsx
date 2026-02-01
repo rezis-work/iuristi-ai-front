@@ -23,7 +23,7 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <section className={cn("bg-black text-white pb-10", className)}>
-      <div className="mx-auto max-w-7xl w-full">
+      <div className="w-full">
         <div className="mb-3">
           <div className="flex items-center gap-3">
             <div className="h-0.5 w-12 bg-yellow-500" />
