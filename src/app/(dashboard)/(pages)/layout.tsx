@@ -1,17 +1,16 @@
-import React from "react";
+import SharedImage from "@/src/components/shared/SharedImage";
 
-function layout({
+function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <div>
-      აქ უნდა გაკეთდეს სურათი ყველა გვერდმა რომ გაიზიაროს გვერდებზე გადასვლის
-      დროს (pages) ისთვის
-      {children}
+      <SharedImage />
+      <div>{children}</div>
     </div>
   );
 }
 
-export default layout;
+export default Layout;
