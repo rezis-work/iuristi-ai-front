@@ -1,227 +1,198 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Wrapper from "@/src/components/shared/wrapper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
 import Image from "next/image";
-import { Quote } from "lucide-react";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import { MoveLeft, MoveRight } from "lucide-react";
+import Wrapper from "@/src/components/shared/wrapper";
+import { NumberTicker } from "@/src/components/magic-ui/number-ticker";
 
 interface Testimonial {
-  id: string;
+  id: number;
   name: string;
-  role: string;
   image: string;
   quote: string;
-  teamImage: string;
 }
 
 const testimonials: Testimonial[] = [
   {
-    id: "1",
-    name: "Kylie Rogers",
-    role: "Social worker",
-    image:
-      "https://notarius.ancorathemes.com/wp-content/uploads/2022/09/ttmn7-copyright-120x120.jpg",
-    teamImage:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000&q=80",
+    id: 1,
+    name: "Jason Bright",
+    image: "/images/404.webp",
     quote:
-      "Ignissimos ducimos qui blandiitis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blandiitis.",
+      "Ignissimos ducimos qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blanditiis.",
   },
   {
-    id: "2",
-    name: "Jason Bright",
-    role: "General manager",
-    image:
-      "https://notarius.ancorathemes.com/wp-content/uploads/2022/09/ttmn8-copyright-120x120.jpg",
-    teamImage:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000&q=80",
+    id: 2,
+    name: "Sarah Johnson",
+    image: "/images/bg-2.jpg",
     quote:
-      "Ignissimos ducimos qui blandiitis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blandiitis.",
+      "Exceptional service and outstanding results. The team went above and beyond to ensure our success. Highly recommended for anyone looking for professional excellence.",
   },
 ];
 
-export default function TestimonialsSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
-
-  useEffect(() => {
-    if (!isAutoPlay) return;
-
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [isAutoPlay]);
-
-  const currentTestimonial = testimonials[activeIndex];
-
-  const handlePrev = () => {
-    setActiveIndex(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
-    );
-    setIsAutoPlay(false);
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    setIsAutoPlay(false);
-  };
-
+function TestimonialsSection() {
   return (
-    <section className="bg-black text-white py-20">
-      <Wrapper className="mx-auto w-full px-4 sm:px-6 lg:px-28">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          {/* Left: Testimonial Content */}
-          <div className="flex flex-col">
-            <div className="mb-12">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-0.5 w-12 bg-orange-500"></div>
-                <span className="text-sm font-medium tracking-wider uppercase text-neutral-400">
-                  Testimonials
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white">
-                Hear what our clients have to say
-              </h2>
-            </div>
-
-            <p className="text-base md:text-lg leading-relaxed text-neutral-400 mb-12">
-              Adipiscing elit, sed do euismod tempor incidunt ut labore et
-              dolore magna aliqua.
-            </p>
-
-            {/* Testimonial Quote Box */}
-            <div className="mb-12 bg-neutral-900 rounded-lg p-8 border border-neutral-800 flex-1">
-              <Quote className="w-12 h-12 text-orange-500 mb-4" />
-              <p className="text-base md:text-lg leading-relaxed text-neutral-300">
-                {currentTestimonial.quote}
-              </p>
-            </div>
-
-            {/* Client Info */}
-            <div className="flex items-center gap-4 mb-12">
-              <div className="relative w-20 h-20 rounded-full overflow-hidden shrink-0">
-                <Image
-                  src={currentTestimonial.image}
-                  alt={currentTestimonial.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <h4 className="text-xl font-bold text-white">
-                  {currentTestimonial.name}
-                </h4>
-                <p className="text-sm text-neutral-400">
-                  {currentTestimonial.role}
+    <section className="bg-black text-white">
+      <Wrapper className="mx-auto px-4 md:px-6 lg:px-28">
+        <div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-start">
+            <div className="space-y-12">
+              <div className="space-y-4">
+                <div className="text-gray-400 uppercase tracking-wider text-sm flex items-center gap-4">
+                  <div className="h-px w-10 bg-yellow-500" />
+                  TESTIMONIALS
+                </div>
+                <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+                  Hear what our clients
+                  <br />
+                  have to say
+                </h2>
+                <p className="text-gray-400 text-base lg:text-lg max-w-xl">
+                  Adipiscing elit, sed do euismod tempor incidunt ut labore et
+                  dolore magna aliqua.
                 </p>
               </div>
-            </div>
+              <div className="bg-gray-950 px-6 lg:px-10 pt-24 overflow-hidden relative">
+                <div className="mb-8 flex items-center justify-center gap-20 top-32 z-40 absolute left-1/2 -translate-x-1/2">
+                  <button className="swiper-button-prev-custom w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-gray-300 transition-colors">
+                    <MoveLeft size={20} />
+                  </button>
 
-            {/* Navigation Controls */}
-            <div className="flex items-center gap-4">
-              <button
-                onClick={handlePrev}
-                className="p-3 rounded-full border border-neutral-600 text-white hover:border-orange-500 hover:text-orange-500 transition-all duration-300"
-                aria-label="Previous testimonial"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  <div className="w-16 h-16" />
+
+                  <button className="swiper-button-next-custom w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-gray-300 transition-colors">
+                    <MoveRight size={20} />
+                  </button>
+                </div>
+
+                <Swiper
+                  modules={[Navigation, Autoplay]}
+                  spaceBetween={30}
+                  slidesPerView={1}
+                  navigation={{
+                    prevEl: ".swiper-button-prev-custom",
+                    nextEl: ".swiper-button-next-custom",
+                  }}
+                  loop={true}
+                  className="testimonials-swiper select-none"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-              <button
-                onClick={handleNext}
-                className="p-3 rounded-full border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition-all duration-300"
-                aria-label="Next testimonial"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
-              <div className="ml-auto flex gap-2">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setActiveIndex(index);
-                      setIsAutoPlay(false);
-                    }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === activeIndex
-                        ? "bg-orange-500 w-8"
-                        : "bg-neutral-600 w-2"
-                    }`}
-                    aria-label={`Go to testimonial ${index + 1}`}
-                  />
-                ))}
+                  {testimonials.map((testimonial) => (
+                    <SwiperSlide
+                      key={testimonial.id}
+                      className="flex items-center bg-gray-950"
+                    >
+                      <div className="space-y-8 w-full cursor-pointer">
+                        <div className="flex items-center justify-center">
+                          <div className="w-28 h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-gray-800">
+                            <Image
+                              src={testimonial.image}
+                              alt={testimonial.name}
+                              width={128}
+                              height={128}
+                              priority
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-6 flex flex-col justify-center pb-20 pt-4">
+                          <p className="text-lg lg:text-xl text-white leading-relaxed text-center">
+                            {testimonial.quote}
+                          </p>
+                          <div className="flex items-center justify-center gap-2 text-orange-500">
+                            <svg
+                              className="w-10 h-10"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                            </svg>
+                          </div>
+
+                          <p className="text-xl font-semibold text-center">
+                            {testimonial.name}
+                          </p>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </div>
-          </div>
-
-          {/* Right: Team Image and Stats */}
-          <div className="flex flex-col gap-8">
-            {/* Large Team Image */}
-            <div className="relative h-80 md:h-96 lg:h-96 rounded-lg overflow-hidden">
-              <Image
-                src={currentTestimonial.teamImage}
-                alt="Team"
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            {/* Stats Section */}
-            <div className="bg-neutral-900 rounded-lg p-8 border border-neutral-800">
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-8">
-                We provide the best service for clients
-              </h3>
-
-              <div className="grid grid-cols-2 gap-8">
-                <div>
-                  <div className="text-5xl md:text-6xl font-bold text-white mb-2">
-                    100
+            <div className="space-y-8">
+              <div className="w-full h-72 lg:h-155 overflow-hidden">
+                <Image
+                  src="/images/404.webp"
+                  alt="Our team"
+                  width={800}
+                  height={600}
+                  priority
+                  className="w-full h-full object-cover select-none"
+                />
+              </div>
+              <div className="border border-zinc-800 p-10 lg:p-16 space-y-4">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold pb-4">
+                  We provide the <br /> best service for clients
+                </h3>
+                <div className="flex flex-wrap gap-10 lg:gap-20">
+                  <div className="min-w-0 max-w-xs space-y-1">
+                    <h4 className="font-semibold text-xl">Lawyers</h4>
+                    <div>
+                      <NumberTicker
+                        value={100}
+                        className="text-5xl font-medium tracking-tighter whitespace-pre-wrap -ml-1 text-white dark:text-white"
+                      />
+                    </div>
+                    <p className="text-md text-gray-300 wrap-break-word max-w-51">
+                      Lorem ipsum dolor sit, amet consectetur adipi
+                    </p>
                   </div>
-                  <p className="text-sm font-semibold text-white mb-2">
-                    Lawyers
-                  </p>
-                  <p className="text-xs text-neutral-400">
-                    Adipiscing, sed do eiusm.
-                  </p>
-                </div>
-                <div>
-                  <div className="text-5xl md:text-6xl font-bold text-white mb-2">
-                    12
+                  <div className="min-w-0 max-w-xs space-y-1">
+                    <h4 className="font-semibold text-xl">years</h4>
+                    <div>
+                      <NumberTicker
+                        value={12}
+                        className="text-5xl font-medium tracking-tighter whitespace-pre-wrap -ml-1 text-white dark:text-white"
+                      />
+                    </div>
+                    <p className="text-md text-gray-300 wrap-break-word max-w-51">
+                      Lorem, ipsum dolor sit amet consectetur
+                    </p>
                   </div>
-                  <p className="text-sm font-semibold text-white mb-2">Years</p>
-                  <p className="text-xs text-neutral-400">
-                    Sed do euismod tempor.
-                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <style jsx global>{`
+          .testimonials-swiper {
+            min-height: 260px;
+          }
+
+          .testimonials-swiper .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .swiper-button-prev-custom,
+          .swiper-button-next-custom {
+            cursor: pointer;
+            user-select: none;
+          }
+
+          .swiper-button-prev-custom.swiper-button-disabled,
+          .swiper-button-next-custom.swiper-button-disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+          }
+        `}</style>
       </Wrapper>
     </section>
   );
 }
+
+export default TestimonialsSection;
