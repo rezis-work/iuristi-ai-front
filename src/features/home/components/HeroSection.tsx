@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import Wrapper from "@/src/components/shared/wrapper";
 import Counter from "@/src/features/home/components/Counter";
@@ -7,6 +8,7 @@ import NewsPartners from "@/src/features/home/components/NewsPartners";
 import SheardButton from "@/src/components/shared/SheardButton";
 
 export default function HeroSection() {
+  const router = useRouter();
   return (
     <>
       <section className="relative min-h-screen w-full overflow-hidden select-none">
@@ -45,7 +47,10 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
               >
-                <SheardButton className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7">
+                <SheardButton
+                  onClick={() => router.push("/about-us")}
+                  className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7"
+                >
                   Find out more
                 </SheardButton>
               </motion.div>
