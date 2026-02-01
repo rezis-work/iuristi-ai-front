@@ -19,7 +19,9 @@ export default function AboutUsPage() {
               We are dedicated to protecting your legal rights
             </h1>
             <p className="text-base md:text-lg leading-relaxed text-neutral-300 mb-8">
-              With over 20 years of experience in the legal industry, we've helped thousands of clients navigate complex legal matters with expertise and compassion.
+              With over 20 years of experience in the legal industry, we've
+              helped thousands of clients navigate complex legal matters with
+              expertise and compassion.
             </p>
           </div>
         </Wrapper>
@@ -34,10 +36,14 @@ export default function AboutUsPage() {
                 Our Mission
               </h2>
               <p className="text-base md:text-lg leading-relaxed text-neutral-300 mb-4">
-                To provide exceptional legal services that empower our clients and protect their rights. We believe in transparent communication, strategic thinking, and delivering results that exceed expectations.
+                To provide exceptional legal services that empower our clients
+                and protect their rights. We believe in transparent
+                communication, strategic thinking, and delivering results that
+                exceed expectations.
               </p>
               <p className="text-base md:text-lg leading-relaxed text-neutral-300">
-                Our commitment is to be your trusted legal partner through every challenge.
+                Our commitment is to be your trusted legal partner through every
+                challenge.
               </p>
             </div>
 
@@ -46,7 +52,9 @@ export default function AboutUsPage() {
                 Our Vision
               </h2>
               <p className="text-base md:text-lg leading-relaxed text-neutral-300 mb-4">
-                To be recognized as the leading law firm that combines legal excellence with innovative solutions. We strive to set new standards in legal practice and client satisfaction.
+                To be recognized as the leading law firm that combines legal
+                excellence with innovative solutions. We strive to set new
+                standards in legal practice and client satisfaction.
               </p>
               <p className="text-base md:text-lg leading-relaxed text-neutral-300">
                 We envision a future where justice is accessible to all.
@@ -69,26 +77,32 @@ export default function AboutUsPage() {
             {[
               {
                 title: "Integrity",
-                description: "We conduct ourselves with the highest ethical standards.",
+                description:
+                  "We conduct ourselves with the highest ethical standards.",
               },
               {
                 title: "Excellence",
-                description: "We pursue perfection in every case and client interaction.",
+                description:
+                  "We pursue perfection in every case and client interaction.",
               },
               {
                 title: "Compassion",
-                description: "We understand the human side of legal challenges.",
+                description:
+                  "We understand the human side of legal challenges.",
               },
               {
                 title: "Innovation",
-                description: "We embrace new approaches to solve complex problems.",
+                description:
+                  "We embrace new approaches to solve complex problems.",
               },
             ].map((value) => (
               <div
                 key={value.title}
                 className="p-8 border border-neutral-800 rounded-lg hover:border-yellow-500/50 transition-all duration-300 hover:bg-neutral-900/50"
               >
-                <h3 className="text-xl font-bold text-white mb-3">{value.title}</h3>
+                <h3 className="text-xl font-bold text-white mb-3">
+                  {value.title}
+                </h3>
                 <p className="text-neutral-400">{value.description}</p>
               </div>
             ))}

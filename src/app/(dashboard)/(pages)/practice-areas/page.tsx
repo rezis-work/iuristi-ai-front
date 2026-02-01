@@ -62,7 +62,8 @@ export default function PracticeAreasPage() {
               Comprehensive legal services across multiple practice areas
             </h1>
             <p className="text-base md:text-lg leading-relaxed text-neutral-300">
-              Our experienced attorneys specialize in a wide range of legal matters to serve our diverse clientele.
+              Our experienced attorneys specialize in a wide range of legal
+              matters to serve our diverse clientele.
             </p>
           </div>
         </Wrapper>
@@ -99,7 +100,8 @@ export default function PracticeAreasPage() {
             Need legal assistance?
           </h2>
           <p className="text-base md:text-lg text-neutral-300 mb-8 max-w-2xl mx-auto">
-            Contact us to discuss your legal matter with one of our experienced attorneys.
+            Contact us to discuss your legal matter with one of our experienced
+            attorneys.
           </p>
           <a href="/contacts">
             <SheardButton className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7">

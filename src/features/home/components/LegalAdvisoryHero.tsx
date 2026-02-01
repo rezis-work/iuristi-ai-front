@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { SpinningText } from "@/src/components/ui/spinning-text";
 import SheardButton from "@/src/components/shared/SheardButton";
+import { useRouter } from "next/navigation";
 
 export default function LegalAdvisoryHero() {
+  const router = useRouter();
   return (
     <section className="relative flex flex-col md:flex-row mb-30">
       <div className="relative w-full h-80 md:h-auto md:w-1/2 xl:w-[62%]">
@@ -61,7 +65,10 @@ export default function LegalAdvisoryHero() {
               </p>
             </div>
             <div className="pt-6">
-              <SheardButton className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7">
+              <SheardButton
+                onClick={() => router.push("/practice-areas")}
+                className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7"
+              >
                 THE PRACTICE
               </SheardButton>
             </div>
