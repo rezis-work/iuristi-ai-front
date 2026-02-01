@@ -41,7 +41,7 @@ export function LoginCard({ className }: DesktopRightProps) {
     <div className={`hidden lg:flex items-center gap-6 ml-auto select-none ${className}`}>
       <button
         onClick={handleRegister}
-        className="p-2 rounded-lg border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200"
+        className="p-2 rounded-lg border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200 cursor-pointer"
         aria-label="Register"
       >
         <UserPlus className="w-5 h-5" />

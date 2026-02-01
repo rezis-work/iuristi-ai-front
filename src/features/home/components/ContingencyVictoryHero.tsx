@@ -26,7 +26,7 @@ export function ContingencyVictoryHero() {
           initial={{ scale: 0.7, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 180, damping: 18 }}
-          className="mb-10 flex h-19 w-19 items-center justify-center rounded-full border-2 border-white/70 bg-black backdrop-blur hover:bg-white/20 transition-colors duration-200"
+          className="mb-10 flex h-19 w-19 items-center justify-center rounded-full border-2 border-white/70 bg-black backdrop-blur hover:bg-white/20 transition-colors duration-200 cursor-pointer"
         >
           <span className="ml-0.5 inline-block translate-x-px border-l-11 border-l-white border-y-[7px] border-y-transparent" />
         </motion.button>
