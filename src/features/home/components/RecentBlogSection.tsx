@@ -1,114 +1,123 @@
 "use client";
 
-import React from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import { Card, CardContent } from "@/src/components/ui/card";
 import Wrapper from "@/src/components/shared/wrapper";
 import SheardButton from "@/src/components/shared/SheardButton";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 interface BlogPost {
   id: string;
-  title: string;
-  date: string;
   category: string;
+  date: string;
+  title: string;
   image: string;
-  slug: string;
+  link: string;
 }
 
 const blogPosts: BlogPost[] = [
   {
     id: "1",
-    title: "The best ways to protect your family and business in 2023",
-    date: "March 13, 2023",
     category: "LAW OFFICE",
-    image: "/images/videoImage/videoImage.jpg",
-    slug: "protect-family-business",
+    date: "March 13, 2023",
+    title: "The best ways to protect your family and business in 2023",
+    image: "/images/404.webp",
+    link: "/blog/protect-family-business",
   },
   {
     id: "2",
-    title: "4 officers charged in a pursuit crash that paralyzed a teen",
-    date: "March 13, 2023",
     category: "LAW OFFICE",
-    image: "/images/videoImage/videoImage.jpg",
-    slug: "officers-crash-lawsuit",
+    date: "March 13, 2023",
+    title: "4 officers charged in a pursuit crash that paralyzed a teen",
+    image: "/images/bg-2.jpg",
+    link: "/blog/officers-charged-pursuit",
   },
   {
     id: "3",
-    title: "Ten myths about lawyers and criminal defence attorneys",
-    date: "March 13, 2023",
     category: "LAW OFFICE",
-    image: "/images/videoImage/videoImage.jpg",
-    slug: "myths-criminal-lawyers",
+    date: "March 13, 2023",
+    title: "Ten myths about lawyers and criminal defence attorneys",
+    image: "/images/bg1.jpg",
+    link: "/blog/myths-lawyers-attorneys",
   },
 ];
 
-export default function RecentBlogSection() {
+function RecentBlogSection() {
+  const router = useRouter();
   return (
-    <section className="bg-black text-white py-20">
+    <section className="bg-black text-white pb-2 md:pb-6 lg:pb-12">
       <Wrapper className="mx-auto w-full px-4 sm:px-6 lg:px-28">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12">
-          <div className="lg:max-w-sm">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-0.5 w-12 bg-yellow-500"></div>
-              <span className="text-sm font-medium tracking-wider uppercase text-neutral-400">
-                Recent News
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white mb-6">
-              From our blog
-            </h2>
-            <p className="text-base md:text-lg leading-relaxed text-neutral-300 mb-8">
-              Adipiscing elit, sed do euismod tempor incidunt ut labore et dolore magna aliqua.
-            </p>
-            <Link href="/blog">
-              <SheardButton className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7">
-                More News
-              </SheardButton>
-            </Link>
+        <div className="mb-12 lg:mb-16">
+          <div className="flex items-center gap-3 mb-4 pl-0.5">
+            <div className="h-px w-12 bg-orange-500" />
+            <span className="text-xs font-semibold tracking-[0.2em] text-gray-300 uppercase">
+              Recent News
+            </span>
           </div>
-
-          <div className="w-full lg:flex-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {blogPosts.map((post) => (
-                <Link
-                  key={post.id}
-                  href={`/blog/${post.slug}`}
-                  className="group"
-                >
-                  <article className="h-full flex flex-col bg-black hover:opacity-90 transition-opacity duration-300">
-                    {/* Image Section */}
-                    <div className="relative w-full h-64 overflow-hidden bg-gradient-to-br from-yellow-600 to-orange-700">
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="flex-1 py-6 px-0">
-                      <div className="flex items-center justify-between mb-3 gap-2">
-                        <span className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
+          <h2 className="text-4xl md:text-3xl lg:text-5xl font-bold">
+            From our blog
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8 mb-14">
+          {blogPosts.map((post) => (
+            <Link key={post.id} href={post.link} className="group block">
+              <div className="border-t-2 border-transparent transition-all duration-300 group-hover:border-[#ff9D4D]">
+                <Card className="bg-zinc-900 border-0 rounded-none overflow-hidden h-full">
+                  <CardContent className="p-0 space-y-5">
+                    <div className="space-y-4 px-8">
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <span className="font-semibold text-white uppercase text-xs tracking-wide">
                           {post.category}
                         </span>
-                        <span className="text-xs text-neutral-400 whitespace-nowrap">
-                          {post.date}
-                        </span>
+                        <span className="text-gray-600">•</span>
+                        <span>{post.date}</span>
                       </div>
-                      <h3 className="text-lg font-bold text-white group-hover:text-yellow-500 transition-colors duration-300 mb-4 line-clamp-3">
+                      <h3 className="text-md line-clamp-3 md:text-md md:line-clamp-3 lg:text-2xl lg:line-clamp-2 font-bold leading-tight text-white">
                         {post.title}
                       </h3>
-                      <div className="flex justify-start">
-                        <ArrowRight className="w-6 h-6 text-yellow-500 group-hover:translate-x-1 transition-transform duration-300" />
+                    </div>
+                    <div className="relative aspect-4/3 overflow-hidden rounded-none">
+                      <Image
+                        src={post.image}
+                        alt={post.title}
+                        fill
+                        priority
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <div className="px-7">
+                      <div className="flex items-center">
+                        <span className="text-md font-light whitespace-nowrap text-white overflow-hidden transition-all duration-500 ease-out max-w-0 group-hover:max-w-28">
+                          Read more
+                        </span>
+                        <div className="transform transition-transform duration-500 group-hover:translate-x-2">
+                          <ArrowRight
+                            className="w-5 h-5 text-white mt-1"
+                            strokeWidth={2}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </article>
-                </Link>
-              ))}
-            </div>
-          </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="flex items-center justify-center">
+          <SheardButton
+            onClick={() => router.push("/about-us")}
+            className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7"
+          >
+            more news
+          </SheardButton>
         </div>
       </Wrapper>
     </section>
   );
 }
+
+export default RecentBlogSection;
