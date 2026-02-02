@@ -40,7 +40,7 @@ export default function LegalAdvisoryHero() {
         </div>
       </div>
       <div className="lg:relative inset-0 lg:inset-auto md:w-[65%] lg:w-1/2 flex items-center">
-        <div className="w-full px-4 md:px-12 xl:px-28 pt-10 pb-30 xl:py-60">
+        <div className="w-full px-4 md:px-12 xl:px-28 pt-10 sm:px-4 xl:py-60">
           <div className="max-w-3xl space-y-6">
             <div className="space-y-5 text-neutral-400">
               <div className="lg:max-w-xl xl:max-w-2xl xl:hidden z-20">
