@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { MoveLeft, MoveRight } from "lucide-react";
+import { MoveLeft, MoveRight, Quote } from "lucide-react";
 import Wrapper from "@/src/components/shared/wrapper";
 import { NumberTicker } from "@/src/components/magic-ui/number-ticker";
 
@@ -14,6 +14,7 @@ interface Testimonial {
   id: number;
   name: string;
   image: string;
+  title: string;
   quote: string;
 }
 
@@ -22,6 +23,7 @@ const testimonials: Testimonial[] = [
     id: 1,
     name: "Jason Bright",
     image: "/images/404.webp",
+    title: "General anager",
     quote:
       "Ignissimos ducimos qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blanditiis.",
   },
@@ -29,6 +31,7 @@ const testimonials: Testimonial[] = [
     id: 2,
     name: "Sarah Johnson",
     image: "/images/bg-2.jpg",
+    title: "Social worker",
     quote:
       "Exceptional service and outstanding results. The team went above and beyond to ensure our success. Highly recommended for anyone looking for professional excellence.",
   },
@@ -39,7 +42,7 @@ function TestimonialsSection() {
     <section className="bg-black text-white">
       <Wrapper className="mx-auto px-4 md:px-6 lg:px-28">
         <div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-8 items-start">
             <div className="space-y-12">
               <div className="space-y-4">
                 <div className="text-gray-400 uppercase tracking-wider text-sm flex items-center gap-4">
@@ -56,13 +59,13 @@ function TestimonialsSection() {
                   dolore magna aliqua.
                 </p>
               </div>
-              <div className="bg-gray-950 px-6 lg:px-10 pt-24 overflow-hidden relative">
-                <div className="mb-8 flex items-center justify-center gap-20 top-32 z-40 absolute left-1/2 -translate-x-1/2">
+              <div className="bg-zinc-900 px-6 lg:px-10 pt-10 lg:pt-24 overflow-hidden relative">
+                <div className="mb-8 flex items-center justify-center gap-20 top-17 lg:top-32 z-40 absolute left-1/2 -translate-x-1/2">
                   <button className="swiper-button-prev-custom w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-gray-300 transition-colors">
                     <MoveLeft size={20} />
                   </button>
 
-                  <div className="w-16 h-16" />
+                  <div className="w-1 h-16 lg:w-16" />
 
                   <button className="swiper-button-next-custom w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-gray-300 transition-colors">
                     <MoveRight size={20} />
@@ -83,7 +86,7 @@ function TestimonialsSection() {
                   {testimonials.map((testimonial) => (
                     <SwiperSlide
                       key={testimonial.id}
-                      className="flex items-center bg-gray-950"
+                      className="flex items-center bg-zinc-900"
                     >
                       <div className="space-y-8 w-full cursor-pointer">
                         <div className="flex items-center justify-center">
@@ -98,13 +101,13 @@ function TestimonialsSection() {
                             />
                           </div>
                         </div>
-                        <div className="space-y-6 flex flex-col justify-center pb-20 pt-4">
-                          <p className="text-lg lg:text-xl text-white leading-relaxed text-center">
+                        <div className=" flex flex-col justify-center pb-10 lg:pb-20 lg:pt-4">
+                          <p className="text-lg lg:text-xl text-white leading-relaxed text-center pb-5">
                             {testimonial.quote}
                           </p>
-                          <div className="flex items-center justify-center gap-2 text-orange-500">
+                          <div className="flex items-center justify-center gap-2 text-[#ff9D4D] pb-3">
                             <svg
-                              className="w-10 h-10"
+                              className="w-7 h-7"
                               fill="currentColor"
                               viewBox="0 0 24 24"
                             >
@@ -115,6 +118,9 @@ function TestimonialsSection() {
                           <p className="text-xl font-semibold text-center">
                             {testimonial.name}
                           </p>
+                          <p className="text-center pb-0 lg:pb-7 text-zinc-400">
+                            {testimonial.title}
+                          </p>
                         </div>
                       </div>
                     </SwiperSlide>
@@ -123,9 +129,9 @@ function TestimonialsSection() {
               </div>
             </div>
             <div className="space-y-8">
-              <div className="w-full h-72 lg:h-155 overflow-hidden">
+              <div className="w-full h-130 md:h-100 lg:h-155 overflow-hidden">
                 <Image
-                  src="/images/404.webp"
+                  src="/assets/home/imageRight.jpg"
                   alt="Our team"
                   width={800}
                   height={600}
@@ -137,28 +143,28 @@ function TestimonialsSection() {
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold pb-4">
                   We provide the <br /> best service for clients
                 </h3>
-                <div className="flex flex-wrap gap-10 lg:gap-20">
+                <div className="flex flex-wrap justify-between gap-10 lg:gap-20">
                   <div className="min-w-0 max-w-xs space-y-1">
-                    <h4 className="font-semibold text-xl">Lawyers</h4>
+                    <h4 className="font-semibold lg:text-xl">Lawyers</h4>
                     <div>
                       <NumberTicker
                         value={100}
-                        className="text-5xl font-medium tracking-tighter whitespace-pre-wrap -ml-1 text-white dark:text-white"
+                        className="text-3xl lg:text-5xl font-medium tracking-tighter whitespace-pre-wrap lg:-ml-1 text-white dark:text-white"
                       />
                     </div>
-                    <p className="text-md text-gray-300 wrap-break-word max-w-51">
+                    <p className="text-sm g:text-md text-gray-300 lg:wrap-break-word max-w-32 lg:max-w-51">
                       Lorem ipsum dolor sit, amet consectetur adipi
                     </p>
                   </div>
                   <div className="min-w-0 max-w-xs space-y-1">
-                    <h4 className="font-semibold text-xl">years</h4>
+                    <h4 className="font-semibold lg:text-xl">years</h4>
                     <div>
                       <NumberTicker
                         value={12}
-                        className="text-5xl font-medium tracking-tighter whitespace-pre-wrap -ml-1 text-white dark:text-white"
+                        className="text-3xl lg:text-5xl font-medium tracking-tighter whitespace-pre-wrap lg:-ml-1 text-white dark:text-white"
                       />
                     </div>
-                    <p className="text-md text-gray-300 wrap-break-word max-w-51">
+                    <p className="text-sm lg:text-md text-gray-300 lg:wrap-break-word max-w-32 lg:max-w-51">
                       Lorem, ipsum dolor sit amet consectetur
                     </p>
                   </div>

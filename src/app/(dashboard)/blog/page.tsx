@@ -5,28 +5,32 @@ const blogPosts = [
   {
     id: "1",
     title: "Understanding Your Legal Rights",
-    excerpt: "Learn about the fundamentals of personal legal rights and how we can help protect them.",
+    excerpt:
+      "Learn about the fundamentals of personal legal rights and how we can help protect them.",
     date: "January 15, 2026",
     category: "Legal",
   },
   {
     id: "2",
     title: "Divorce: What You Need to Know",
-    excerpt: "A comprehensive guide to divorce proceedings and how to navigate them successfully.",
+    excerpt:
+      "A comprehensive guide to divorce proceedings and how to navigate them successfully.",
     date: "January 10, 2026",
     category: "Family Law",
   },
   {
     id: "3",
     title: "Business Contract Essentials",
-    excerpt: "Everything you need to know about creating and maintaining business contracts.",
+    excerpt:
+      "Everything you need to know about creating and maintaining business contracts.",
     date: "January 5, 2026",
     category: "Business",
   },
   {
     id: "4",
     title: "Estate Planning 101",
-    excerpt: "A beginner's guide to estate planning and protecting your family's future.",
+    excerpt:
+      "A beginner's guide to estate planning and protecting your family's future.",
     date: "December 28, 2025",
     category: "Estate Planning",
   },
@@ -63,7 +67,8 @@ export default function BlogPage() {
               Latest insights and updates
             </h1>
             <p className="text-base md:text-lg leading-relaxed text-neutral-300">
-              Stay informed with our latest articles on legal matters, case results, and industry news.
+              Stay informed with our latest articles on legal matters, case
+              results, and industry news.
             </p>
           </div>
         </Wrapper>
@@ -78,7 +83,7 @@ export default function BlogPage() {
                 key={post.id}
                 className="group bg-neutral-900/50 border border-neutral-800 rounded-lg overflow-hidden hover:border-yellow-500/50 transition-all duration-300 hover:bg-neutral-900 cursor-pointer"
               >
-                <div className="relative h-48 bg-gradient-to-br from-yellow-600 to-orange-700 flex items-center justify-center overflow-hidden">
+                <div className="relative h-48 bg-linear-to-br from-yellow-600 to-orange-700 flex items-center justify-center overflow-hidden">
                   <span className="text-white text-sm font-semibold opacity-60">
                     Featured Article
                   </span>
@@ -88,7 +93,9 @@ export default function BlogPage() {
                     <span className="text-xs font-semibold uppercase tracking-wider text-yellow-500">
                       {post.category}
                     </span>
-                    <span className="text-xs text-neutral-400">{post.date}</span>
+                    <span className="text-xs text-neutral-400">
+                      {post.date}
+                    </span>
                   </div>
                   <h3 className="text-lg font-bold text-white group-hover:text-yellow-500 transition-colors duration-300 mb-3">
                     {post.title}
