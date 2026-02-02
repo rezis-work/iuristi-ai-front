@@ -17,7 +17,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="bg-black text-zinc-300">
+    <footer className="bg-black text-zinc-300 mt-20">
       <div className="border-b border-zinc-800">
         <Wrapper className="max-w-7xl mx-auto px-6 pt-10 lg:px-28">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start justify-between mb-20">
