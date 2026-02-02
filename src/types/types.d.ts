@@ -14,3 +14,11 @@ export interface NavLink {
   label: string;
   dropdown?: DropdownItem[];
 }
+
+export interface Award {
+  id: string;
+  title: string;
+  type: string;
+  client: string;
+  year: string;
+}
