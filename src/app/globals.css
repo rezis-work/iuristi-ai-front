@@ -123,6 +123,21 @@ body {
   color: var(--main-text-color);
 }
 
+/* WebKit ბრაუზერებისთვის (Chrome, Safari, Edge) */
+input.keep-bg:-webkit-autofill,
+input.keep-bg:-webkit-autofill:hover,
+input.keep-bg:-webkit-autofill:focus,
+textarea.keep-bg:-webkit-autofill,
+textarea.keep-bg:-webkit-autofill:hover,
+textarea.keep-bg:-webkit-autofill:focus,
+select.keep-bg:-webkit-autofill,
+select.keep-bg:-webkit-autofill:hover,
+select.keep-bg:-webkit-autofill:focus {
+  -webkit-text-fill-color: #e5e5e5;
+  -webkit-box-shadow: 0 0 0px 1000px #18181b inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }

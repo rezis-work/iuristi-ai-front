@@ -75,7 +75,6 @@ export function ContingencyVictoryHero() {
           We work on contingency: you don&apos;t owe anything until we win!
         </motion.h1>
       </div>
-
       <AnimatePresence>
         {isVideoOpen && (
           <motion.div
