@@ -1,9 +1,10 @@
 "use client";
 
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Search as Search2 } from "lucide-react";
 import Wrapper from "@/src/components/shared/wrapper";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -14,8 +15,7 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import { useEffect } from "react";
-import { Logo } from "./Logo";
+import { Logo } from "@/src/components/header/Logo";
 
 const formSchema = z.object({
   search: z.string().min(1, "Please enter a search term"),
@@ -88,7 +88,7 @@ export function Search({ isOpen, onClose, className }: SearchProps) {
                 ease: [0.76, 0, 0.24, 1],
               },
             }}
-            className="absolute top-full left-0 w-full z-50 -mt-19.5"
+            className="absolute top-full left-0 w-full z-50 -mt-23"
           >
             <div
               className={`backdrop-blur-xl bg-black border-b h-80 lg:h-112 border-zinc-800/80 shadow-[0_20px_60px_rgba(0,0,0,0.65)]`}
@@ -98,7 +98,7 @@ export function Search({ isOpen, onClose, className }: SearchProps) {
                   <Logo />
                   <button
                     onClick={handleClose}
-                    className="text-zinc-400 hover:text-white transition-colors"
+                    className="text-zinc-400 hover:text-white transition-colors cursor-pointer"
                     aria-label="Close search"
                   >
                     <X className="w-7 h-7" />
@@ -136,7 +136,10 @@ export function Search({ isOpen, onClose, className }: SearchProps) {
                                   autoFocus
                                   type="text"
                                   placeholder="Search across pages, services, and resources..."
-                                  className="relative w-full py-4 pl-4 pr-12 text-[12px] sm:text-[16px] line-clamp-1 outline-none lg:text-[18px] text-white placeholder:text-zinc-500 transition-colors bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  className="h-10 w-full bg-black border-none rounded-none pl-4 pr-12 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
+                                  style={{
+                                    boxShadow: "inset 0 0 0 1000px #000000",
+                                  }}
                                 />
                                 <Search2
                                   onClick={() => form.handleSubmit(onSubmit)()}

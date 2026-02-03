@@ -7,7 +7,7 @@ import { LoginForm } from "@/src/features/auth/components/login-form";
 import { ContingencyVictoryHero } from "@/src/features/home/components/ContingencyVictoryHero";
 import AwardsShowcase from "@/src/features/home/components/AwardsShowcase";
 import RecentBlogSection from "@/src/features/home/components/RecentBlogSection";
-import ContactMapSection from "@/src/features/home/components/ContactMapSection";
+import ContactMapSection from "@/src/components/shared/ContactMapSection";
 
 export function HomepageView() {
   return (
