@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserPlus } from "lucide-react";
+import { User } from "lucide-react";
 
 interface DesktopRightProps {
   className?: string;
@@ -13,7 +13,6 @@ export function LoginCard({ className }: DesktopRightProps) {
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Outside click detection
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -38,13 +37,13 @@ export function LoginCard({ className }: DesktopRightProps) {
   };
 
   return (
-    <div className={`hidden lg:flex items-center gap-6 ml-auto select-none ${className}`}>
+    <div className={`flex items-center gap-6 ml-auto select-none ${className}`}>
       <button
         onClick={handleRegister}
-        className="p-2 rounded-lg border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200 cursor-pointer"
+        className="p-2 rounded-full border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200 cursor-pointer"
         aria-label="Register"
       >
-        <UserPlus className="w-5 h-5" />
+        <User className="w-5 h-5" />
       </button>
     </div>
   );
