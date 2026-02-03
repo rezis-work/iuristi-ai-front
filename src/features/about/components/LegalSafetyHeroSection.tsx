@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SheardButton from "@/src/components/shared/SheardButton";
+import FeaturedIn from "./FeaturedIn";
 
 interface LegalSafetyHeroSectionProps {
   officeImageUrl?: string;
@@ -17,8 +18,8 @@ export default function LegalSafetyHeroSection({
 }: LegalSafetyHeroSectionProps) {
   const router = useRouter();
   return (
-    <section className={`w-full bg-white pt-30 pb-5 md:pb-14 ${className}`}>
-      <div>
+    <section className={`w-full pt-30 pb-5 md:pb-14 ${className}`}>
+      <div className="mb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative w-full h-full min-h-100 sm:min-h-125 lg:min-h-150">
             <div className="absolute left-0 -top-5 w-[65%] md:w-[68%] h-[90%] sm:mt-0 sm:h-125 overflow-hidden rounded-xs">
@@ -26,16 +27,20 @@ export default function LegalSafetyHeroSection({
                 src={officeImageUrl}
                 alt="Modern law office workspace"
                 fill
+                priority
+                unoptimized
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
-                priority
               />
+              un
             </div>
             <div className="absolute right-0 bottom-0 sm:-bottom-10 md:-bottom-5 w-[65%] h-[75%] md:w-[68%] overflow-hidden rounded-xs z-10">
               <Image
                 src={professionalImageUrl}
                 alt="Professional legal consultant"
                 fill
+                unoptimized
+                priority
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
@@ -68,6 +73,9 @@ export default function LegalSafetyHeroSection({
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <FeaturedIn />
       </div>
     </section>
   );
