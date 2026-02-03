@@ -6,7 +6,7 @@ export default function AboutUsPage() {
   return (
     <main className="bg-black text-white">
       {/* Hero Section */}
-      <section className="py-20 lg:py-32">
+      <section className="">
         <Wrapper className="mx-auto w-full px-4 sm:px-6 lg:px-28">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-4">
