@@ -1,10 +1,10 @@
-import { LoginForm } from '@/src/features/auth/components/login-form'
-import React from 'react'
+import { LoginForm } from "@/src/features/auth/components/login-form";
+import React from "react";
 
-export default function LoginPage () {
+export default function LoginPage() {
   return (
     <div>
-        <LoginForm />
+      <LoginForm />
     </div>
-  )
+  );
 }
