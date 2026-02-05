@@ -75,8 +75,11 @@ export function RegisterForm() {
                             type="text"
                             placeholder="Enter your full name"
                             disabled={form.formState.isSubmitting}
-                            className="h-12.5 rounded-xs border-none border-gray-700 bg-gray-900 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#FF9D4D]/50 focus:border-[#FF9D4D] focus:outline-none transition-all duration-200"
+                            className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #101828",
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-sm text-red-400" />
@@ -100,8 +103,11 @@ export function RegisterForm() {
                             type="email"
                             placeholder="Enter your email"
                             disabled={form.formState.isSubmitting}
-                            className="h-12.5 rounded-xs border-none border-gray-700 bg-gray-900 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#FF9D4D]/50 focus:border-[#FF9D4D] focus:outline-none transition-all duration-200"
+                            className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #101828",
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-sm text-red-400" />
@@ -125,8 +131,11 @@ export function RegisterForm() {
                             type="password"
                             placeholder="Enter your password"
                             disabled={form.formState.isSubmitting}
-                            className="h-12.5 rounded-xs border-none border-gray-700 bg-gray-900 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#FF9D4D]/50 focus:border-[#FF9D4D] focus:outline-none transition-all duration-200"
+                            className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #101828",
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-sm text-red-400" />
@@ -150,8 +159,11 @@ export function RegisterForm() {
                             type="password"
                             placeholder="Repeat your password"
                             disabled={form.formState.isSubmitting}
-                            className="h-12.5 rounded-xs border-none border-gray-700 bg-gray-900 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#FF9D4D]/50 focus:border-[#FF9D4D] focus:outline-none transition-all duration-200"
+                            className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #101828",
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-sm text-red-400" />

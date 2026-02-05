@@ -32,7 +32,6 @@ export default function LegalSafetyHeroSection({
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-              un
             </div>
             <div className="absolute right-0 bottom-0 sm:-bottom-10 md:-bottom-5 w-[65%] h-[75%] md:w-[68%] overflow-hidden rounded-xs z-10">
               <Image
