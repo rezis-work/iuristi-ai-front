@@ -4,14 +4,20 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { getTitleFromPath } from "@/src/lib/utils";
 
-function SharedImage() {
+interface LegalSafetyHeroSectionProps {
+  professionalImageUrl?: string;
+}
+
+function SharedImage({
+  professionalImageUrl = "/assets/about/aboutImage.jpg",
+}: LegalSafetyHeroSectionProps) {
   const pathname = usePathname();
   const title = getTitleFromPath(pathname);
 
   return (
-    <div className="relative w-full h-85 select-none">
+    <div className="relative w-full min-h-85 select-none">
       <Image
-        src="/assets/about/aboutImage.jpg"
+        src={professionalImageUrl}
         alt="shared background"
         fill
         priority

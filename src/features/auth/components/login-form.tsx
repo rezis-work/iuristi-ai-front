@@ -1,5 +1,7 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import Link from "next/link";
 import {
   Form,
   FormControl,
@@ -8,7 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/src/components/ui/form";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginSchema } from "../schemas/auth-schemas";
 import { Input } from "@/src/components/ui/input";
@@ -20,7 +21,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/src/components/ui/card";
-import Link from "next/link";
+import { Checkbox } from "@/src/components/ui/checkbox";
 import Wrapper from "@/src/components/shared/wrapper";
 import { useLogin } from "@/src/features/auth/hook/auth";
 
@@ -85,8 +86,11 @@ export function LoginForm({ onClose }: LoginFormProps) {
                             type="email"
                             placeholder="Enter your email"
                             disabled={form.formState.isSubmitting}
-                            className="h-12.5 rounded-xs border-none border-gray-700 bg-gray-900 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#FF9D4D]/50 focus:border-[#FF9D4D] transition-all duration-200"
+                            className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #101828",
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-sm text-red-400" />
@@ -110,8 +114,11 @@ export function LoginForm({ onClose }: LoginFormProps) {
                             type="password"
                             placeholder="Enter your password"
                             disabled={form.formState.isSubmitting}
-                            className="h-12.5 rounded-xs border-none border-gray-700 bg-gray-900 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#FF9D4D]/50 focus:border-[#FF9D4D] focus:outline-none transition-all duration-200"
+                            className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #101828",
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-sm text-red-400" />
@@ -119,27 +126,48 @@ export function LoginForm({ onClose }: LoginFormProps) {
                     );
                   }}
                 />
-
+                <div className="text-gray-200 flex items-center justify-between">
+                  <label
+                    htmlFor="remember"
+                    className="flex items-center text-[15px] gap-2 cursor-pointer select-none"
+                  >
+                    <Checkbox
+                      id="remember"
+                      className="w-5 h-5 min-h-5 max-h-5 shrink-0 border-none cursor-pointer rounded-none bg-gray-700 data-[state=checked]:bg-[#FF9D4D] p-0 flex items-center justify-center"
+                    />
+                    Remember me
+                  </label>
+                  <Link
+                    href={"/change_password"}
+                    className="cursor-pointer text-[15px]"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
                 {/* Submit Button */}
-                <Button
-                  type="submit"
-                  disabled={form.formState.isSubmitting}
-                  className="w-full h-13 mt-8 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  {form.formState.isSubmitting ? "Signing in..." : "Login"}
-                </Button>
+                <div className="grid grid-cols-2 gap-3 sm:gap-7 items-center">
+                  <Link
+                    href="/register"
+                    className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
+                    onClick={onClose}
+                  >
+                    <Button
+                      variant={"secondary"}
+                      className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      Sign up
+                    </Button>
+                  </Link>
+                  <Button
+                    type="submit"
+                    disabled={form.formState.isSubmitting}
+                    className="w-full h-13 mt-4 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    {form.formState.isSubmitting ? "Signing in..." : "Login"}
+                  </Button>
+                </div>
               </form>
             </Form>
-            <div className="text-center text-gray-400 text-sm mt-6">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/register"
-                className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
-                onClick={onClose}
-              >
-                Sign up
-              </Link>
-            </div>
           </CardContent>
         </Card>
       </div>

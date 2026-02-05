@@ -1,6 +1,8 @@
 import { toast } from "sonner";
 import { login, LogOut, Register } from "../api/auth";
 import { LoginSchema, RegisterSchema } from "./../schemas/auth-schemas";
+import { changePassword } from "../api/auth";
+import { ChangePasswordSchema } from "../schemas/auth-schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { removeToken } from "@/src/lib/api";
@@ -10,6 +12,7 @@ type UseLoginOptions = {
 };
 
 export function useLogin(options?: UseLoginOptions) {
+  const router = useRouter();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (data: LoginSchema) => {
@@ -34,6 +37,7 @@ export function useLogin(options?: UseLoginOptions) {
       }
 
       toast.success("login successful");
+      router.push("/me");
       if (!options?.disableAutoRedirect) {
         // Use window.location instead of router.push to ensure cookie is set before navigation
         // This gives the cookie time to be available for middleware on the next request
@@ -65,7 +69,7 @@ export function useRegister() {
       // Invalidate the "me" query to refetch user data
       qc.invalidateQueries({ queryKey: ["me"] });
       toast.success("register successful");
-      router.push("/me");
+      router.push("/login");
     },
     onError: () => {
       toast.error("register failed");
@@ -98,6 +102,29 @@ export function useLogOut() {
     },
     onError: () => {
       toast.error("logout failed");
+    },
+  });
+}
+
+// hook/auth.ts
+
+export function useChangePassword() {
+  const qc = useQueryClient();
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: async (data: ChangePasswordSchema) => {
+      return await changePassword(data);
+    },
+    onSuccess: () => {
+      // სურვილის მიხედვით: refresh me, logout, redirect და ა.შ.
+      qc.invalidateQueries({ queryKey: ["me"] });
+      toast.success("Password changed successfully");
+      router.push("/login");
+    },
+    onError: (error: any) => {
+      // შეგიძლია backend error message ამოიღო shared error ფორმატიდან
+      toast.error(error?.message || "Failed to change password");
     },
   });
 }

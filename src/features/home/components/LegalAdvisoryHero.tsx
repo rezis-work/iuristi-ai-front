@@ -14,8 +14,9 @@ export default function LegalAdvisoryHero() {
           src="/images/bg1.jpg"
           alt="Legal professionals collaborating"
           fill
-          className="object-cover mb-14 w-full h-full"
           priority
+          unoptimized
+          className="object-cover mb-14 w-full h-full"
         />
         <div className="px-4 md:px-12 xl:px-0 xl:absolute xl:top-14 xl:-right-111 xl:max-w-xl z-20">
           <div className="space-y-3">
