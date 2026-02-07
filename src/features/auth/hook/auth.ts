@@ -122,7 +122,7 @@ export function useChangePassword() {
       toast.success("Password changed successfully");
       router.push("/login");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       // შეგიძლია backend error message ამოიღო shared error ფორმატიდან
       toast.error(error?.message || "Failed to change password");
     },
