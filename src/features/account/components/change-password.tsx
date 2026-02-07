@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -13,53 +14,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   changePasswordSchema,
   type ChangePasswordSchema,
-} from "@/src/features/auth/schemas/auth-schemas";
+} from "@/src/features/account/schemas/change-password-schema";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
-import { useChangePassword } from "@/src/features/auth/hook/auth";
-import { User } from "lucide-react";
-
-type UnderlinedFieldWrapperProps = {
-  children: React.ReactNode;
-  icon?: React.ReactNode;
-  error?: boolean;
-};
-
-function UnderlinedFieldWrapper({
-  children,
-  icon,
-  error,
-}: UnderlinedFieldWrapperProps) {
-  const hasError = !!error;
-
-  return (
-    <div className="relative group">
-      {children}
-      <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full bg-neutral-800" />
-      <span
-        className={[
-          "pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left",
-          hasError
-            ? "bg-red-500 scale-x-100"
-            : "bg-linear-to-r from-[#ff9D4D] to-[#ff9D4D] scale-x-0 group-focus-within:scale-x-100 group-hover:scale-x-100 transition-transform duration-300 ease-out",
-        ].join(" ")}
-      />
-      {icon && (
-        <span
-          className={[
-            "pointer-events-none absolute right-0 top-1/2 -translate-y-1/2",
-            hasError
-              ? "text-red-400"
-              : "text-zinc-500 group-hover:text-[#ff9D4D] transition-colors",
-          ].join(" ")}
-        >
-          {icon}
-        </span>
-      )}
-    </div>
-  );
-}
+import { useChangePassword } from "@/src/features/account/hooks/use-change-password";
+import { Eye, EyeOff } from "lucide-react";
+import { UnderlinedFieldWrapper } from "@/src/features/account/components/UnderlinedFieldWrapper";
 
 export function ChangePasswordForm() {
   const { mutate: changePassword, isPending } = useChangePassword();
@@ -81,6 +42,10 @@ export function ChangePasswordForm() {
     });
   }
 
+  const [showCurrent, setShowCurrent] = React.useState(false);
+  const [showNew, setShowNew] = React.useState(false);
+  const [showConfirm, setShowConfirm] = React.useState(false);
+
   return (
     <div>
       <Card className="bg-transparent rounded-none md:rounded-sm border-none">
@@ -97,22 +62,36 @@ export function ChangePasswordForm() {
                       Current password
                     </FormLabel>
                     <FormControl>
-                      <UnderlinedFieldWrapper
-                        icon={<User className="w-4 h-4" />}
-                        error={!!fieldState.error}
-                      >
-                        <Input
-                          autoComplete="given"
-                          type="password"
-                          placeholder="Enter your current password"
-                          disabled={isPending}
-                          className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
-                          {...field}
-                          style={{
-                            boxShadow: "inset 0 0 0 1000px #181818",
-                          }}
-                        />
-                      </UnderlinedFieldWrapper>
+                      <div className="relative">
+                        <UnderlinedFieldWrapper
+                          icon={
+                            <button
+                              type="button"
+                              onClick={() => setShowCurrent((prev) => !prev)}
+                              className="ml-1 text-zinc-500 hover:text-[#ff9D4D] transition-colors cursor-pointer"
+                            >
+                              {showCurrent ? (
+                                <EyeOff className="w-4 h-4" />
+                              ) : (
+                                <Eye className="w-4 h-4" />
+                              )}
+                            </button>
+                          }
+                          error={!!fieldState.error}
+                        >
+                          <Input
+                            autoComplete="current-password"
+                            type={showCurrent ? "text" : "password"}
+                            placeholder="Enter your current password"
+                            disabled={isPending}
+                            className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-10 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
+                            {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #181818",
+                            }}
+                          />
+                        </UnderlinedFieldWrapper>
+                      </div>
                     </FormControl>
                     <FormMessage className="text-sm text-red-400" />
                   </FormItem>
@@ -129,22 +108,36 @@ export function ChangePasswordForm() {
                       New password
                     </FormLabel>
                     <FormControl>
-                      <UnderlinedFieldWrapper
-                        icon={<User className="w-4 h-4" />}
-                        error={!!fieldState.error}
-                      >
-                        <Input
-                          autoComplete="given"
-                          type="password"
-                          placeholder="Enter your new password"
-                          disabled={isPending}
-                          className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
-                          {...field}
-                          style={{
-                            boxShadow: "inset 0 0 0 1000px #181818",
-                          }}
-                        />
-                      </UnderlinedFieldWrapper>
+                      <div className="relative">
+                        <UnderlinedFieldWrapper
+                          icon={
+                            <button
+                              type="button"
+                              onClick={() => setShowNew((prev) => !prev)}
+                              className="ml-1 text-zinc-500 hover:text-[#ff9D4D] transition-colors cursor-pointer"
+                            >
+                              {showNew ? (
+                                <EyeOff className="w-4 h-4" />
+                              ) : (
+                                <Eye className="w-4 h-4" />
+                              )}
+                            </button>
+                          }
+                          error={!!fieldState.error}
+                        >
+                          <Input
+                            autoComplete="new-password"
+                            type={showNew ? "text" : "password"}
+                            placeholder="Enter your new password"
+                            disabled={isPending}
+                            className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-10 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
+                            {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #181818",
+                            }}
+                          />
+                        </UnderlinedFieldWrapper>
+                      </div>
                     </FormControl>
                     <FormMessage className="text-sm text-red-400" />
                   </FormItem>
@@ -161,27 +154,42 @@ export function ChangePasswordForm() {
                       Confirm new password
                     </FormLabel>
                     <FormControl>
-                      <UnderlinedFieldWrapper
-                        icon={<User className="w-4 h-4" />}
-                        error={!!fieldState.error}
-                      >
-                        <Input
-                          autoComplete="given"
-                          type="password"
-                          placeholder="Confirm your new password"
-                          disabled={isPending}
-                          className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
-                          {...field}
-                          style={{
-                            boxShadow: "inset 0 0 0 1000px #181818",
-                          }}
-                        />
-                      </UnderlinedFieldWrapper>
+                      <div className="relative">
+                        <UnderlinedFieldWrapper
+                          icon={
+                            <button
+                              type="button"
+                              onClick={() => setShowConfirm((prev) => !prev)}
+                              className="ml-1 text-zinc-500 hover:text-[#ff9D4D] transition-colors cursor-pointer"
+                            >
+                              {showConfirm ? (
+                                <EyeOff className="w-4 h-4" />
+                              ) : (
+                                <Eye className="w-4 h-4" />
+                              )}
+                            </button>
+                          }
+                          error={!!fieldState.error}
+                        >
+                          <Input
+                            autoComplete="new-password"
+                            type={showConfirm ? "text" : "password"}
+                            placeholder="Confirm your new password"
+                            disabled={isPending}
+                            className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-10 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
+                            {...field}
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #181818",
+                            }}
+                          />
+                        </UnderlinedFieldWrapper>
+                      </div>
                     </FormControl>
                     <FormMessage className="text-sm text-red-400" />
                   </FormItem>
                 )}
               />
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-7 items-center">
                 <Button
                   type="submit"
