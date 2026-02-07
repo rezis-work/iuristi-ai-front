@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,7 +22,10 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /opt/lawyer-ai/frontend
+            # Handle untracked files that might conflict
+            git stash || true
+            git clean -fd || true
             git pull origin main
             cd /opt/lawyer-ai
             chmod +x deploy-frontend.sh
-            ./deploy-frontend.sh
+            bash deploy-frontend.sh
