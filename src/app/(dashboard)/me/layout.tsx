@@ -15,7 +15,7 @@ function Layout({
             <AccountSidebar />
           </div>
           <main className="w-full lg:flex-1">
-            <div className="w-full rounded-sm bg-[#181818] px-4 py-5 sm:px-5 sm:py-6 lg:px-6 lg:py-7">
+            <div className="w-full rounded-sm bg-[#181818] px-4 py-5 sm:px-5 sm:py-6 lg:px-6">
               {children}
             </div>
           </main>
