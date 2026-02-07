@@ -2,6 +2,8 @@
 
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -11,7 +13,6 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginSchema } from "../schemas/auth-schemas";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import {
@@ -21,34 +22,39 @@ import {
   CardDescription,
   CardContent,
 } from "@/src/components/ui/card";
-import { Checkbox } from "@/src/components/ui/checkbox";
 import Wrapper from "@/src/components/shared/wrapper";
-import { useLogin } from "@/src/features/auth/hook/auth";
+import { useConfirmPasswordReset } from "@/src/features/auth/hook/use-password-reset";
+import {
+  confirmPasswordResetSchema,
+  type ConfirmPasswordResetSchema,
+} from "@/src/features/auth/schemas/password-reset-schemas";
 
-interface LoginFormProps {
-  onClose?: () => void;
-}
+export function ConfirmPasswordResetForm() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
-export function LoginForm({ onClose }: LoginFormProps) {
-  const { mutate: Login } = useLogin({ disableAutoRedirect: true });
-  const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+  const { mutate: confirmReset } = useConfirmPasswordReset();
+
+  const form = useForm<ConfirmPasswordResetSchema>({
+    resolver: zodResolver(confirmPasswordResetSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      token: token || "",
+      newPassword: "",
+      confirmPassword: "",
     },
   });
 
-  function onSubmit(data: LoginSchema) {
-    Login(data, {
+  // Set token from URL params when available
+  useEffect(() => {
+    if (token) {
+      form.setValue("token", token);
+    }
+  }, [token, form]);
+
+  function onSubmit(data: ConfirmPasswordResetSchema) {
+    confirmReset(data, {
       onSuccess: () => {
         form.reset();
-        // Close the dropdown after successful login
-        if (onClose) {
-          setTimeout(() => {
-            onClose();
-          }, 100);
-        }
       },
     });
   }
@@ -59,10 +65,10 @@ export function LoginForm({ onClose }: LoginFormProps) {
         <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-3xl font-bold text-white mb-2">
-              Welcome Back
+              Set New Password
             </CardTitle>
             <CardDescription className="text-gray-400 text-base">
-              Sign in to your account
+              Enter your new password below
             </CardDescription>
           </CardHeader>
           <CardContent className="sm:px-30 md:px-4">
@@ -71,20 +77,23 @@ export function LoginForm({ onClose }: LoginFormProps) {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
               >
-                {/* Email Field */}
+                {/* Hidden Token Field */}
+                <input type="hidden" {...form.register("token")} />
+
+                {/* New Password Field */}
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="newPassword"
                   render={({ field }) => {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Email Address
+                          New Password
                         </FormLabel>
                         <FormControl>
                           <Input
-                            type="email"
-                            placeholder="Enter your email"
+                            type="password"
+                            placeholder="Enter new password"
                             disabled={form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -99,20 +108,20 @@ export function LoginForm({ onClose }: LoginFormProps) {
                   }}
                 />
 
-                {/* Password Field */}
+                {/* Confirm Password Field */}
                 <FormField
                   control={form.control}
-                  name="password"
+                  name="confirmPassword"
                   render={({ field }) => {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Password
+                          Confirm Password
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="password"
-                            placeholder="Enter your password"
+                            placeholder="Confirm new password"
                             disabled={form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -126,45 +135,35 @@ export function LoginForm({ onClose }: LoginFormProps) {
                     );
                   }}
                 />
-                <div className="text-gray-200 flex items-center justify-between">
-                  <label
-                    htmlFor="remember"
-                    className="flex items-center text-[15px] gap-2 cursor-pointer select-none"
-                  >
-                    <Checkbox
-                      id="remember"
-                      className="w-5 h-5 min-h-5 max-h-5 shrink-0 border-none cursor-pointer rounded-none bg-gray-700 data-[state=checked]:bg-[#FF9D4D] p-0 flex items-center justify-center"
-                    />
-                    Remember me
-                  </label>
-                  <Link
-                    // href={"/change-password"}
-                    href={"/reset-password"}
-                    className="cursor-pointer text-[15px]"
-                  >
-                    Forgot password?
-                  </Link>
+
+                {/* Password Requirements */}
+                <div className="text-xs text-gray-400">
+                  <p className="font-medium mb-1">Password requirements:</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>At least 8 characters long</li>
+                    <li>Contains at least one letter</li>
+                    <li>Contains at least one number</li>
+                  </ul>
                 </div>
+
                 {/* Submit Button */}
                 <div className="grid grid-cols-2 gap-3 sm:gap-7 items-center">
-                  <Link
-                    href="/register"
-                    className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
-                    onClick={onClose}
-                  >
+                  <Link href="/login">
                     <Button
                       variant={"secondary"}
                       className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                     >
-                      Sign up
+                      Back to Login
                     </Button>
                   </Link>
                   <Button
                     type="submit"
-                    disabled={form.formState.isSubmitting}
+                    disabled={form.formState.isSubmitting || !token}
                     className="w-full h-13 mt-4 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    {form.formState.isSubmitting ? "Signing in..." : "Login"}
+                    {form.formState.isSubmitting
+                      ? "Resetting..."
+                      : "Reset Password"}
                   </Button>
                 </div>
               </form>

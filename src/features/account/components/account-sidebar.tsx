@@ -45,7 +45,7 @@ export function AccountSidebar() {
       <div className="relative mb-5 h-36 w-36 rounded-full select-none border-[3px] border-[#ff9D4D] bg-[#2B2925] flex items-center justify-center overflow-hidden sm:h-40 sm:w-40">
         <Avatar className="h-28 w-28 border border-black/40 bg-black/40 sm:h-32 sm:w-32">
           <AvatarImage
-            src={user?.imageUrl || undefined}
+            // src={user?.imageUrl || undefined}
             alt={user?.name || "User avatar"}
             className="object-cover"
           />
