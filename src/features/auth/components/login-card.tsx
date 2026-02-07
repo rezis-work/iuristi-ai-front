@@ -140,7 +140,7 @@ export function LoginCard({ className }: UserMenuProps) {
       >
         <Avatar className="w-9 h-9 border border-[#ff9D4D]/70 bg-[#ff9D4D] text-black">
           <AvatarImage
-            src={user.imageUrl || undefined}
+            // src={user.imageUrl || undefined}
             alt={user.name || "User avatar"}
             className="object-cover"
           />
@@ -155,7 +155,7 @@ export function LoginCard({ className }: UserMenuProps) {
           <div className="pl-3 pr-4 py-3 border-b border-neutral-800 flex items-center gap-3 mb-5 bg-zinc-900 rounded-l-[36px] rounded-br-[37px]">
             <Avatar className="w-12 h-12 border border-[#ff9D4D]/70 bg-[#ff9D4D] text-black">
               <AvatarImage
-                src={user.imageUrl || undefined}
+                // src={user.imageUrl || undefined}
                 alt={user.name || "User avatar"}
                 className="object-cover"
               />
