@@ -79,37 +79,57 @@ export function LoginCard({ className }: UserMenuProps) {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(target) &&
+        !dropdownRef.current.querySelector('button')?.contains(target)
       ) {
         setIsOpen(false);
       }
     }
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+      // Use click event with a small delay to allow button click to complete first
+      const timeoutId = setTimeout(() => {
+        document.addEventListener("click", handleClickOutside, true);
+      }, 10);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+      return () => {
+        clearTimeout(timeoutId);
+        document.removeEventListener("click", handleClickOutside, true);
+      };
+    }
   }, [isOpen]);
 
-  const handleLogin = () => router.push("/login");
-  const handleProfile = () => {
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push("/login");
+  };
+  const handleProfile = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     router.push("/me/profile");
     setIsOpen(false);
   };
-  const handleLogout = () => {
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     logout();
     setIsOpen(false);
+  };
+  const handleToggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOpen((prev) => !prev);
   };
 
   if (!user) {
     return (
       <div className={`flex items-center ml-auto select-none ${className}`}>
         <button
+          type="button"
           onClick={handleLogin}
           className="p-2 rounded-full border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200 cursor-pointer"
           aria-label="Sign in"
@@ -134,7 +154,8 @@ export function LoginCard({ className }: UserMenuProps) {
       ref={dropdownRef}
     >
       <button
-        onClick={() => setIsOpen((prev) => !prev)}
+        type="button"
+        onClick={handleToggleMenu}
         className="flex items-center gap-2 py-1.5 bg-black/60 text-white hover:bg-black cursor-pointer transition-colors duration-200"
         aria-label="Open user menu"
       >
@@ -151,7 +172,7 @@ export function LoginCard({ className }: UserMenuProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-22 min-w-55 rounded-tl-[37px] rounded-br-[30px] bg-black z-50">
+        <div className="absolute right-0 top-22 min-w-55 rounded-tl-[37px] rounded-br-[30px] bg-black z-[70] shadow-2xl">
           <div className="pl-3 pr-4 py-3 border-b border-neutral-800 flex items-center gap-3 mb-5 bg-zinc-900 rounded-l-[36px] rounded-br-[37px]">
             <Avatar className="w-12 h-12 border border-[#ff9D4D]/70 bg-[#ff9D4D] text-black">
               <AvatarImage
@@ -174,6 +195,7 @@ export function LoginCard({ className }: UserMenuProps) {
           <div className="text-xs text-gray-200">
             <div className="bg-zinc-900 mx-2 rounded-tl-2xl rounded-br-2xl mb-5">
               <button
+                type="button"
                 onClick={handleProfile}
                 className="w-full flex items-center cursor-pointer gap-3 px-4 py-3 transition-colors text-left"
               >
@@ -183,6 +205,7 @@ export function LoginCard({ className }: UserMenuProps) {
             </div>
             <div className="bg-[#ff9D4D] rounded-br-[30px] cursor-pointer">
               <button
+                type="button"
                 onClick={handleLogout}
                 className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-5 transition-colors text-left text-white"
               >
