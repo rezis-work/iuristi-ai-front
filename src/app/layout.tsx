@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { QueryProvider } from "../providers/tanstack-provider";
+import "@/src/app/globals.css";
+import { QueryProvider } from "@/src/providers/tanstack-provider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import Header from "@/src/components/header/Header";
+import Footer from "@/src/components/footer/Footer";
+import RightSidePanel from "@/src/components/shared/RightSidePanel";
+import ScrollToTop from "@/src/components/shared/ScrollToTop";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,10 +35,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-        <NuqsAdapter>
-          {children}
+          <NuqsAdapter>
+            <Header />
+            {children}
+            <Footer />
+            <RightSidePanel />
+            <ScrollToTop />
+            <Toaster position="top-center" richColors duration={2500} />
           </NuqsAdapter>
-          </QueryProvider>
+        </QueryProvider>
       </body>
     </html>
   );
