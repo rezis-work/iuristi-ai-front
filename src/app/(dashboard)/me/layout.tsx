@@ -1,6 +1,7 @@
 import React from "react";
 import Wrapper from "@/src/components/shared/wrapper";
 import { AccountSidebar } from "@/src/features/account/components/account-sidebar";
+import Header from "@/src/features/account/components/Header";
 
 function Layout({
   children,
@@ -14,11 +15,13 @@ function Layout({
           <div className="md:w-72 lg:shrink-0 select-none">
             <AccountSidebar />
           </div>
-          <main className="w-full lg:flex-1">
-            <div className="w-full rounded-sm bg-[#181818] px-4 py-5 sm:px-5 sm:py-6 lg:px-6">
+          <div className="w-full lg:flex-1 flex flex-col">
+            <Header />
+            {/* Content */}
+            <div className="w-full rounded-sm bg-[#181818] px-4 py-5 sm:px-5 sm:py-6 lg:px-6 flex-1">
               {children}
             </div>
-          </main>
+          </div>
         </div>
       </Wrapper>
     </div>

@@ -1,9 +1,9 @@
-import AcountPageWiew from "@/src/features/account/view/acountpage-view";
+import { ProfileForm } from "@/src/features/account/components/profile-form";
 
 function ProfilePage() {
   return (
     <div>
-      <AcountPageWiew />
+      <ProfileForm />
     </div>
   );
 }
