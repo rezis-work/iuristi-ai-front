@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useState } from "react";

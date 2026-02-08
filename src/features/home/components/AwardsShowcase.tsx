@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Wrapper from "@/src/components/shared/wrapper";
 import SectionHeader from "@/src/components/shared/SectionHeader";
 import { awards } from "@/src/constants/awards";
