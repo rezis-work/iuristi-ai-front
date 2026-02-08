@@ -116,8 +116,6 @@ import {
  * Sends password reset email to user
  */
 export function useRequestPasswordReset() {
-  const router = useRouter();
-
   return useMutation({
     mutationFn: async (data: RequestPasswordResetSchema) => {
       try {
@@ -134,15 +132,21 @@ export function useRequestPasswordReset() {
         console.log("✅ Password reset email sent to:", variables.email);
       }
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       console.log("Error object:", error);
 
       // Parse error if it's a string
-      let errorData = error;
-      if (typeof error === "string") {
+      let errorData: { error?: { code?: string; message?: string }; code?: string; message?: string } = { error: { code: "UNKNOWN" } };
+      if (error instanceof Error) {
+        try {
+          errorData = JSON.parse(error.message);
+        } catch {
+          errorData = { error: { code: "UNKNOWN", message: error.message } };
+        }
+      } else if (typeof error === "string") {
         try {
           errorData = JSON.parse(error);
-        } catch (e) {
+        } catch {
           errorData = { error: { code: "UNKNOWN" } };
         }
       }
@@ -185,15 +189,21 @@ export function useConfirmPasswordReset() {
       toast.success("Password reset successful");
       router.push("/login");
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       console.log("Error object:", error);
 
       // Parse error if it's a string
-      let errorData = error;
-      if (typeof error === "string") {
+      let errorData: { error?: { code?: string; message?: string }; code?: string; message?: string } = { error: { code: "UNKNOWN" } };
+      if (error instanceof Error) {
+        try {
+          errorData = JSON.parse(error.message);
+        } catch {
+          errorData = { error: { code: "UNKNOWN", message: error.message } };
+        }
+      } else if (typeof error === "string") {
         try {
           errorData = JSON.parse(error);
-        } catch (e) {
+        } catch {
           errorData = { error: { code: "UNKNOWN" } };
         }
       }

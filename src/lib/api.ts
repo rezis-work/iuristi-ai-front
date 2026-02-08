@@ -65,15 +65,19 @@ export function ClearAuthCookie() {
   document.cookie = `${COOKIE_NAME}=; Path=/; Expires=0; SameSite=Lax `;
 }
 
-// BASE_URL env-იდან, თუ არაა – dev-ში default 4000 პორტზე
+// BASE_URL env-იდან, თუ არაა – dev-ში default localhost, production-ში relative path
+// In production, use relative /api path (nginx will proxy it)
+// In development, use localhost:3001
+// NEXT_PUBLIC_API_URL should be set at build time via Docker build args
 
 const BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"
+  process.env.NEXT_PUBLIC_API_URL ??
+  (process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3001")
 ).trim();
 
 export async function api<T>(
   path: string,
-  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {},
+  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {}
 ) {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -130,7 +134,7 @@ export async function api<T>(
         errorMessage.includes("<html>"))
     ) {
       throw new Error(
-        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`,
+        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`
       );
     }
     if (
@@ -156,7 +160,7 @@ export async function api<T>(
     }
 
     throw new Error(
-      errorMessage || `Request failed: ${res.status} ${res.statusText}`,
+      errorMessage || `Request failed: ${res.status} ${res.statusText}`
     );
   }
   // Return empty as any if no body
@@ -170,7 +174,7 @@ export async function api<T>(
 // Form/multipart-friendly API helper (does not set Content-Type)
 export async function apiForm<T>(
   path: string,
-  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {},
+  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {}
 ): Promise<T> {
   // Do NOT set Content-Type so the browser can set proper multipart boundary
   const headers: HeadersInit = {
@@ -220,11 +224,11 @@ export async function apiForm<T>(
       (message.includes("<!DOCTYPE html>") || message.includes("<html>"))
     ) {
       throw new Error(
-        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`,
+        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`
       );
     }
     throw new Error(
-      message || `Request failed: ${res.status} ${res.statusText}`,
+      message || `Request failed: ${res.status} ${res.statusText}`
     );
   }
 
@@ -239,7 +243,7 @@ export async function apiForm<T>(
 // Blob-ის მისაღებად API helper (PDF, images, etc.)
 export async function apiBlob(
   path: string,
-  options: RequestInit & { auth?: boolean } = {},
+  options: RequestInit & { auth?: boolean } = {}
 ): Promise<Blob | null> {
   const headers: HeadersInit = {
     ...(options.headers || {}),
@@ -283,11 +287,11 @@ export async function apiBlob(
       (message.includes("<!DOCTYPE html>") || message.includes("<html>"))
     ) {
       throw new Error(
-        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`,
+        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`
       );
     }
     throw new Error(
-      message || `Request failed: ${res.status} ${res.statusText}`,
+      message || `Request failed: ${res.status} ${res.statusText}`
     );
   }
 

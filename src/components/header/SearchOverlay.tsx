@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { X, Search } from "lucide-react";
 import Wrapper from "@/src/components/shared/wrapper";
 

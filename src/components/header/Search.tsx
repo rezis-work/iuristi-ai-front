@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { X, Search as Search2 } from "lucide-react";
 import Wrapper from "@/src/components/shared/wrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,7 @@ interface SearchProps {
   className?: string;
 }
 
-export function Search({ isOpen, onClose, className }: SearchProps) {
+export function Search({ isOpen, onClose }: SearchProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,10 +40,10 @@ export function Search({ isOpen, onClose, className }: SearchProps) {
     form.reset();
   }
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     form.reset();
     onClose();
-  };
+  }, [form, onClose]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -53,7 +53,7 @@ export function Search({ isOpen, onClose, className }: SearchProps) {
       document.addEventListener("keydown", handleEscape);
     }
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   return (
     <AnimatePresence mode="wait">

@@ -10,6 +10,7 @@ import {
   AvatarFallback,
 } from "@/src/components/ui/avatar";
 import { MONTHS_EN } from "@/src/features/account/constants/months";
+import { Account } from "@/src/features/auth/api/get-account";
 
 function formatEnglishDate(dateString?: string | null) {
   if (!dateString) return "-";

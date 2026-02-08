@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { MoveLeft, MoveRight, Quote } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import Wrapper from "@/src/components/shared/wrapper";
 import { NumberTicker } from "@/src/components/magic-ui/number-ticker";
 

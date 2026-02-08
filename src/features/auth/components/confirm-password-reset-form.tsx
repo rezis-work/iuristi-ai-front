@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { motion } from "motion/react";
 import {
   Form,
   FormControl,
@@ -33,7 +34,7 @@ export function ConfirmPasswordResetForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  const { mutate: confirmReset } = useConfirmPasswordReset();
+  const { mutate: confirmReset, isPending } = useConfirmPasswordReset();
 
   const form = useForm<ConfirmPasswordResetSchema>({
     resolver: zodResolver(confirmPasswordResetSchema),
@@ -61,7 +62,12 @@ export function ConfirmPasswordResetForm() {
 
   return (
     <Wrapper className="mx-auto">
-      <div className="w-full md:max-w-xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full md:max-w-xl mx-auto"
+      >
         <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-3xl font-bold text-white mb-2">
@@ -122,7 +128,7 @@ export function ConfirmPasswordResetForm() {
                           <Input
                             type="password"
                             placeholder="Confirm new password"
-                            disabled={form.formState.isSubmitting}
+                            disabled={isPending || form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
                             style={{
@@ -150,6 +156,7 @@ export function ConfirmPasswordResetForm() {
                 <div className="grid grid-cols-2 gap-3 sm:gap-7 items-center">
                   <Link href="/login">
                     <Button
+                      disabled={isPending || form.formState.isSubmitting}
                       variant={"secondary"}
                       className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                     >
@@ -158,10 +165,10 @@ export function ConfirmPasswordResetForm() {
                   </Link>
                   <Button
                     type="submit"
-                    disabled={form.formState.isSubmitting || !token}
+                    disabled={isPending || form.formState.isSubmitting || !token}
                     className="w-full h-13 mt-4 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    {form.formState.isSubmitting
+                    {isPending || form.formState.isSubmitting
                       ? "Resetting..."
                       : "Reset Password"}
                   </Button>
@@ -170,7 +177,7 @@ export function ConfirmPasswordResetForm() {
             </Form>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
     </Wrapper>
   );
 }

@@ -3,7 +3,8 @@ import { ChangePasswordSchema } from "../schemas/change-password-schema";
 
 export async function changePassword(data: ChangePasswordSchema) {
   try {
-    const { confirmPassword, ...payload } = data; // confirmPassword backend-ს არ სჭირდება
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword: _, ...payload } = data; // confirmPassword backend-ს არ სჭირდება
     const response = await api<{ changed: boolean }>("/auth/password/change", {
       method: "POST",
       body: JSON.stringify(payload),

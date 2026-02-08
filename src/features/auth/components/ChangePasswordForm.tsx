@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useSearchParams, useRouter } from "next/navigation";
+import { motion } from "motion/react";
 import {
   Form,
   FormControl,
@@ -52,7 +53,12 @@ export function ChangePasswordForm() {
 
   return (
     <Wrapper className="mx-auto">
-      <div className="w-full md:max-w-xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full md:max-w-xl mx-auto"
+      >
         <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-3xl font-bold text-white mb-2">
@@ -169,7 +175,7 @@ export function ChangePasswordForm() {
             </Form>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
     </Wrapper>
   );
 }

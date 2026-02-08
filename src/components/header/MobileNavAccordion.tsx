@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { itemVariants } from "@/src/components/header/lib/variants";
 import { navLinks } from "@/src/constants/navlinks";
 import { usePathname } from "next/navigation";

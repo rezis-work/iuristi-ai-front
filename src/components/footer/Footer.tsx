@@ -26,7 +26,7 @@ function Footer() {
                 We protect your future.
                 <br />
                 <span className="underline underline-offset-4">
-                  Let's talk.
+                  Let&apos;s talk.
                 </span>
               </h2>
               <div className="flex items-start sm:items-center flex-col sm:flex-row justify-between w-full mt-8">

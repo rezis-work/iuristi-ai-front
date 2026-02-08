@@ -2,7 +2,6 @@
 
 import React from "react";
 import Wrapper from "@/src/components/shared/wrapper";
-import SheardButton from "@/src/components/shared/SheardButton";
 
 export default function AwardSection() {
   return (
