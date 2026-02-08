@@ -25,9 +25,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Accept build argument for API URL (NEXT_PUBLIC_* vars must be set at build time)
+ARG NEXT_PUBLIC_API_URL=https://iuristi.online/api
+
 # Set environment variables for build
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
 # Build Next.js
 RUN if [ -f pnpm-lock.yaml ]; then \
