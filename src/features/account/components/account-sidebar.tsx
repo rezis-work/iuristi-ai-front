@@ -67,6 +67,7 @@ export function AccountSidebar() {
           </AvatarFallback>
         </Avatar>
       </div>
+      
       <h1 className="mb-6 text-center text-[20px] sm:text-[22px] font-semibold tracking-wide text-neutral-100">
         {profile?.name || profile?.email || "User"}
       </h1>
@@ -83,6 +84,7 @@ export function AccountSidebar() {
             <span className="font-medium text-neutral-200 text-right truncate max-w-[60%]">
               {profile.email}
             </span>
+
           </div>
         )}
         {profile?.phone && (
