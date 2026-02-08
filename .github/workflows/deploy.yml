@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,5 +27,7 @@ jobs:
             git clean -fd || true
             git pull origin main
             cd /opt/lawyer-ai
+            # Convert Windows line endings (CRLF) to Unix (LF) if needed
+            sed -i 's/\r$//' deploy-frontend.sh || true
             chmod +x deploy-frontend.sh
             bash deploy-frontend.sh
