@@ -21,7 +21,7 @@ function NotFound() {
           Page Not Found
         </p>
         <div className="text-center sm:text-lg lg:text-xl text-zinc-200 mb-10 drop-shadow-lg">
-          <p>We're sorry but</p>
+          <p>We&apos;re sorry but</p>
           <p>something went wrong.</p>
         </div>
         <Link href={"/"}>

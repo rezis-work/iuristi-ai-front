@@ -17,8 +17,9 @@ export function useChangePassword() {
       toast.success("Password changed successfully");
       router.push("/me/profile");
     },
-    onError: (error: any) => {
-      toast.error(error?.message || "Failed to change password");
+    onError: (error: Error | unknown) => {
+      const message = error instanceof Error ? error.message : "Failed to change password";
+      toast.error(message);
     },
   });
 }

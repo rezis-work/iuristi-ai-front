@@ -103,7 +103,7 @@ export default function ContactMapSection() {
 
       setSubmitted(true);
       form.reset();
-    } catch (error) {
+    } catch {
       toast.error("Failed to send message.", {
         description: "Please try again later.",
       });

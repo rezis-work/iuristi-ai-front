@@ -144,23 +144,28 @@ export default function Counter({
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    setFirstDigitProgress(0);
-    setStarted(true);
+    // Use setTimeout to avoid synchronous setState in effect
+    const timeoutId = setTimeout(() => {
+      setStarted(true);
+      setFirstDigitProgress(0);
 
-    const duration = 800;
-    const startTime = Date.now();
+      const duration = 800;
+      const startTime = Date.now();
 
-    const updateProgress = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      setFirstDigitProgress(progress);
+      const updateProgress = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        setFirstDigitProgress(progress);
 
-      if (progress < 1) {
-        requestAnimationFrame(updateProgress);
-      }
-    };
+        if (progress < 1) {
+          requestAnimationFrame(updateProgress);
+        }
+      };
 
-    updateProgress();
+      requestAnimationFrame(updateProgress);
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
   }, [targetValue]);
 
   const height = fontSize + padding;

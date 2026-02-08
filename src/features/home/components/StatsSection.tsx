@@ -2,7 +2,7 @@
 
 import React from "react";
 import Wrapper from "@/src/components/shared/wrapper";
-import { Heart, Award, Briefcase, Users } from "lucide-react";
+import { Award, Briefcase } from "lucide-react";
 
 const stats = [
   {

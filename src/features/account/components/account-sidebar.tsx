@@ -10,6 +10,7 @@ import {
   AvatarFallback,
 } from "@/src/components/ui/avatar";
 import { MONTHS_EN } from "@/src/features/account/constants/months";
+import { Account } from "@/src/features/auth/api/get-account";
 
 function formatEnglishDate(dateString?: string | null) {
   if (!dateString) return "-";
@@ -34,7 +35,7 @@ export function AccountSidebar() {
       .toUpperCase() || "U";
 
   const createdAtFormatted = useMemo(
-    () => formatEnglishDate((user as any)?.createdAt),
+    () => formatEnglishDate((user as Account & { createdAt?: string })?.createdAt),
     [user],
   );
 
