@@ -372,13 +372,13 @@ export function ProfileForm() {
                             <SelectValue placeholder="Select language" />
                           </SelectTrigger>
                           <SelectContent side="bottom" className="bg-[#1A1A1A] border-neutral-800">
-                            <SelectItem value="ka" className="text-neutral-100 data-[highlighted]:bg-[#2B2925] data-[highlighted]:text-[#ff9D4D]">
+                            <SelectItem value="ka" className="text-neutral-100 data-highlighted:bg-[#2B2925] data-highlighted:text-[#ff9D4D]">
                               ქართული (Georgian)
                             </SelectItem>
-                            <SelectItem value="en" className="text-neutral-100 data-[highlighted]:bg-[#2B2925] data-[highlighted]:text-[#ff9D4D]">
+                            <SelectItem value="en" className="text-neutral-100 data-highlighted:bg-[#2B2925] data-highlighted:text-[#ff9D4D]">
                               English
                             </SelectItem>
-                            <SelectItem value="ru" className="text-neutral-100 data-[highlighted]:bg-[#2B2925] data-[highlighted]:text-[#ff9D4D]">
+                            <SelectItem value="ru" className="text-neutral-100 data-highlighted:bg-[#2B2925] data-highlighted:text-[#ff9D4D]">
                               Русский (Russian)
                             </SelectItem>
                           </SelectContent>
@@ -439,19 +439,19 @@ export function ProfileForm() {
                           <SelectContent className="bg-[#1A1A1A] border-neutral-800">
                             <SelectItem
                               value="person"
-                              className="text-neutral-100 data-[highlighted]:bg-[#2B2925] data-[highlighted]:text-[#ff9D4D]"
+                              className="text-neutral-100 data-highlighted:bg-[#2B2925] data-highlighted:text-[#ff9D4D]"
                             >
                               Person
                             </SelectItem>
                             <SelectItem
                               value="lawyer"
-                              className="text-neutral-100 data-[highlighted]:bg-[#2B2925] data-[highlighted]:text-[#ff9D4D]"
+                              className="text-neutral-100 data-highlighted:bg-[#2B2925] data-highlighted:text-[#ff9D4D]"
                             >
                               Lawyer
                             </SelectItem>
                             <SelectItem
                               value="business_owner"
-                              className="text-neutral-100 data-[highlighted]:bg-[#2B2925] data-[highlighted]:text-[#ff9D4D]"
+                              className="text-neutral-100 data-highlighted:bg-[#2B2925] data-highlighted:text-[#ff9D4D]"
                             >
                               Business Owner
                             </SelectItem>
