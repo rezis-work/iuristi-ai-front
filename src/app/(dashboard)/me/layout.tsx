@@ -15,11 +15,8 @@ function Layout({
           <div className="md:w-72 lg:shrink-0 select-none">
             <AccountSidebar />
           </div>
-
           <div className="w-full lg:flex-1 flex flex-col">
-            {/* Header მარჯვენა მხარეს AccountSidebar-ის გვერდით */}
             <Header />
-
             {/* Content */}
             <div className="w-full rounded-sm bg-[#181818] px-4 py-5 sm:px-5 sm:py-6 lg:px-6 flex-1">
               {children}
