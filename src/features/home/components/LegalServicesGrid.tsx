@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ArrowRight, Globe, ShieldAlert, Users, Scale } from "lucide-react";
 
 interface ServiceCard {
@@ -12,7 +12,7 @@ interface ServiceCard {
 
 const LegalServicesGrid: React.FC = () => {
   const [clickedCard, setClickedCard] = useState<string | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible] = useState(true);
 
   const services: ServiceCard[] = [
     {
@@ -40,10 +40,6 @@ const LegalServicesGrid: React.FC = () => {
       delay: 300,
     },
   ];
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   const handleCardClick = (cardId: string) => {
     setClickedCard(clickedCard === cardId ? null : cardId);

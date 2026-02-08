@@ -2,7 +2,6 @@
 
 import React from "react";
 import Wrapper from "@/src/components/shared/wrapper";
-import Link from "next/link";
 
 export default function CTASection() {
   return (
@@ -28,7 +27,7 @@ export default function CTASection() {
           </div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
-            We work on contingency: you don't owe anything until we win!
+            We work on contingency: you don&apos;t owe anything until we win!
           </h2>
 
           <div className="mt-12 flex justify-center">

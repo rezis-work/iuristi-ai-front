@@ -1,4 +1,4 @@
-import { loginSchema, RegisterSchema } from "./../schemas/auth-schemas";
+import { RegisterSchema } from "./../schemas/auth-schemas";
 import { api, setToken } from "@/src/lib/api";
 import { LoginSchema } from "../schemas/auth-schemas";
 import { Account } from "./get-account";
@@ -36,7 +36,8 @@ export async function login(data: LoginSchema) {
 export async function Register(data: RegisterSchema) {
   try {
     // Remove confirmPassword before sending to backend
-    const { confirmPassword, ...registerData } = data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword: _, ...registerData } = data;
     const response = await api<{ accessToken?: string; user?: Account }>(
       "/auth/register",
       {
@@ -92,7 +93,8 @@ export async function GetMe() {
 
 export async function changePassword(data: ChangePasswordSchema) {
   try {
-    const { confirmPassword, ...payload } = data; // confirmPassword backend-ს არ სჭირდება
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword: _, ...payload } = data; // confirmPassword backend-ს არ სჭირდება
     const response = await api<{ changed: boolean }>("/auth/password/change", {
       method: "POST",
       body: JSON.stringify(payload),

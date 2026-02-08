@@ -55,7 +55,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Lock, User as UserIcon } from "lucide-react";
+import { LogOut, User as UserIcon } from "lucide-react";
 
 import { useLogOut } from "@/src/features/auth/hook/auth";
 import { useMe } from "@/src/features/auth/hook/use-getme";

@@ -59,7 +59,8 @@ export function DottedMap({
     }
 
     return { xStep: step || 1, yToRowIndex: rowMap };
-  }, [points]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [points.length]);
 
   return (
     <svg

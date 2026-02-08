@@ -17,6 +17,7 @@ export default function Header() {
 
   const [isFixed, setIsFixed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(120);
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -32,7 +33,18 @@ export default function Header() {
   }, [isMobileMenuOpen, isMobileSearchOpen]);
 
   useEffect(() => {
-    const headerHeight = headerRef.current?.offsetHeight || 620;
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+
+    updateHeaderHeight();
+    window.addEventListener("resize", updateHeaderHeight);
+    return () => window.removeEventListener("resize", updateHeaderHeight);
+  }, []);
+
+  useEffect(() => {
     const threshold = headerHeight * 2;
 
     const handleScroll = () => {
@@ -59,14 +71,14 @@ export default function Header() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isFixed]);
+  }, [isFixed, headerHeight]);
 
   const toggleDesktopSearch = () => setIsDesktopSearchOpen((prev) => !prev);
 
   return (
     <React.Fragment>
       {isFixed && (
-        <div style={{ height: headerRef.current?.offsetHeight || 120 }} />
+        <div style={{ height: headerHeight }} />
       )}
       <header
         ref={headerRef}

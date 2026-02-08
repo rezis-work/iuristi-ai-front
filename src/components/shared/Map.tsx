@@ -13,7 +13,6 @@ type Props = {
 export default function Map({
   lat = 40.70582497139078,
   lng = -74.01437792445523,
-  zoom = 14,
   className = "",
   placeName,
 }: Props) {
