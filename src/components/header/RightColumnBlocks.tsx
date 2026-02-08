@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { rightColumnBlocks } from "@/src/components/header/constants";
 import { rightColumnContainer, rightColumnItem } from "@/src/components/header/lib/variants";

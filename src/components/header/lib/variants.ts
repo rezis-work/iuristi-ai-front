@@ -1,6 +1,6 @@
 "use client";
 
-import { Variants } from "framer-motion";
+import { Variants } from "motion/react";
 
 export const overlayVariants: Variants = {
   hidden: { opacity: 0, y: "-110%" },

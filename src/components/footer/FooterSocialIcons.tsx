@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { socials } from "@/src/constants/socials";
 
 export function FooterSocialIcons() {

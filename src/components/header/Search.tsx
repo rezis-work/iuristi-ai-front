@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { X, Search as Search2 } from "lucide-react";
 import Wrapper from "@/src/components/shared/wrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
