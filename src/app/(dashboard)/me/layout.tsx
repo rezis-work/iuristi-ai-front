@@ -8,7 +8,6 @@ function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <div className="bg-[#111111] text-neutral-100">
       <Wrapper className="mx-auto px-4 sm:px-6 lg:px-28">
@@ -19,7 +18,7 @@ function Layout({
 
           <div className="w-full lg:flex-1 flex flex-col">
             {/* Header მარჯვენა მხარეს AccountSidebar-ის გვერდით */}
-       <Header/>
+            <Header />
 
             {/* Content */}
             <div className="w-full rounded-sm bg-[#181818] px-4 py-5 sm:px-5 sm:py-6 lg:px-6 flex-1">

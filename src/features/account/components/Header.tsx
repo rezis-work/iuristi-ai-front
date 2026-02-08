@@ -1,54 +1,52 @@
 "use client";
 
-import SheardButton from '@/src/components/shared/SheardButton'
-import { usePathname, useRouter } from 'next/navigation'
+import SheardButton from "@/src/components/shared/SheardButton";
+import { usePathname, useRouter } from "next/navigation";
 
 function Header() {
-    const router = useRouter();
-    const pathname = usePathname();
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <header>
-          <aside className="flex items-center justify-between mb-4 py-4 px-5 rounded-sm bg-zinc-800">
-              <h1 className="text-xl sm:text-2xl lg:text-xl font-bold text-white">
-                Profile
-              </h1>
+      <aside className="flex items-center justify-between mb-4 py-4 px-5 rounded-sm bg-zinc-800">
+        <h1 className="text-xl sm:text-2xl lg:text-xl font-bold text-white">
+          Profile
+        </h1>
 
-              <div className="flex items-center gap-3">
-                {/* /me/profile */}
-                <SheardButton
-                  onClick={() => router.push("/me/profile")}
-                  className={`text-sm px-4 py-5 ${
-                    pathname === "/me/profile" ? "text-white" : "text-black"
-                  }`}
-                >
-                  Profile
-                </SheardButton>
+        <div className="flex items-center gap-3">
+          {/* /me/profile */}
+          <SheardButton
+            onClick={() => router.push("/me/profile")}
+            className={`text-sm px-4 py-5 ${
+              pathname === "/me/profile" ? "text-white" : "text-black"
+            }`}
+          >
+            Profile
+          </SheardButton>
 
-                {/* /me/settings */}
-                <SheardButton
-                  onClick={() => router.push("/me/settings")}
-                  className={`text-sm px-4 py-5 ${
-                    pathname === "/me/settings" ? "text-white" : "text-black"
-                  }`}
-                >
-                  settings
-                </SheardButton>
+          {/* /me/settings */}
+          <SheardButton
+            onClick={() => router.push("/me/settings")}
+            className={`text-sm px-4 py-5 ${
+              pathname === "/me/settings" ? "text-white" : "text-black"
+            }`}
+          >
+            settings
+          </SheardButton>
 
-                {/* /me/change-password */}
-                <SheardButton
-                  onClick={() => router.push("/me/change-password")}
-                  className={`text-sm px-4 py-5 ${
-                    pathname === "/me/change-password"
-                      ? "text-white"
-                      : "text-black"
-                  }`}
-                >
-                  Change password
-                </SheardButton>
-              </div>
-            </aside>
+          {/* /me/change-password */}
+          <SheardButton
+            onClick={() => router.push("/me/change-password")}
+            className={`text-sm px-4 py-5 ${
+              pathname === "/me/change-password" ? "text-white" : "text-black"
+            }`}
+          >
+            Change password
+          </SheardButton>
+        </div>
+      </aside>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
