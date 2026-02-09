@@ -37,7 +37,7 @@ export function useLogin(options?: UseLoginOptions) {
       }
 
       toast.success("login successful");
-      router.push("/me");
+      router.push("/me/profile");
       if (!options?.disableAutoRedirect) {
         // Use window.location instead of router.push to ensure cookie is set before navigation
         // This gives the cookie time to be available for middleware on the next request

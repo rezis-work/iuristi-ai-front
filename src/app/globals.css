@@ -147,7 +147,6 @@ select.keep-bg:-webkit-autofill:focus {
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(#e94c09);
   z-index: 50px;
-  cursor: pointer;
 }
 .mobile-menu-overlay::-webkit-scrollbar {
   width: 0px;
@@ -160,5 +159,4 @@ select.keep-bg:-webkit-autofill:focus {
 
 .mobile-menu-overlay::-webkit-scrollbar-thumb {
   background: transparent;
-  cursor: pointer;
 }
