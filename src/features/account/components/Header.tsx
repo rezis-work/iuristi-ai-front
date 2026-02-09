@@ -8,8 +8,8 @@ function Header() {
   const pathname = usePathname();
   return (
     <header>
-      <aside className="flex items-center justify-between mb-4 py-4 px-5 rounded-sm bg-zinc-800">
-        <h1 className="text-xl sm:text-2xl lg:text-xl font-bold text-white">
+      <aside className="flex items-center justify-between mb-4 py-4 px-4 sm:px-5 rounded-sm bg-zinc-800">
+        <h1 className="text-xl hidden sm:flex sm:text-lg font-bold text-white">
           Profile
         </h1>
 
@@ -17,7 +17,7 @@ function Header() {
           {/* /me/profile */}
           <SheardButton
             onClick={() => router.push("/me/profile")}
-            className={`text-sm px-4 py-5 ${
+            className={`text-xs py-0 sm:px-4 sm:py-5 ${
               pathname === "/me/profile" ? "text-white" : "text-black"
             }`}
           >
@@ -27,7 +27,7 @@ function Header() {
           {/* /me/settings */}
           <SheardButton
             onClick={() => router.push("/me/settings")}
-            className={`text-sm px-4 py-5 ${
+            className={`text-xs py-0 sm:px-4 sm:py-5 ${
               pathname === "/me/settings" ? "text-white" : "text-black"
             }`}
           >
@@ -37,7 +37,7 @@ function Header() {
           {/* /me/change-password */}
           <SheardButton
             onClick={() => router.push("/me/change-password")}
-            className={`text-sm px-4 py-5 ${
+            className={`text-xs py-0 sm:px-4 sm:py-5 ${
               pathname === "/me/change-password" ? "text-white" : "text-black"
             }`}
           >

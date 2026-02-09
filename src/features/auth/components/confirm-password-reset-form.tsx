@@ -165,7 +165,9 @@ export function ConfirmPasswordResetForm() {
                   </Link>
                   <Button
                     type="submit"
-                    disabled={isPending || form.formState.isSubmitting || !token}
+                    disabled={
+                      isPending || form.formState.isSubmitting || !token
+                    }
                     className="w-full h-13 mt-4 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {isPending || form.formState.isSubmitting

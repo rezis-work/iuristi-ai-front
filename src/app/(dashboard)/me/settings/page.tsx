@@ -1,7 +1,9 @@
-import React from "react";
+import { SettingsForm } from "@/src/features/account/components/settings-form";
 
-function page() {
-  return <div>page</div>;
+export default function SettingsPage() {
+  return (
+    <div className="w-full">
+      <SettingsForm />
+    </div>
+  );
 }
-
-export default page;

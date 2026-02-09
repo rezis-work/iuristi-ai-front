@@ -1,5 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getProfile, updateProfile, deleteAvatar, type UpdateProfileData } from "../api/profile";
+import {
+  getProfile,
+  updateProfile,
+  deleteAvatar,
+  type UpdateProfileData,
+} from "../api/profile";
 import { toast } from "sonner";
 
 export function useProfile() {
@@ -51,4 +56,3 @@ export function useDeleteAvatar() {
     },
   });
 }
-

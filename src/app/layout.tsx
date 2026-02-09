@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/src/app/globals.css";
-import { Suspense } from "react";
+// import { Suspense } from "react";
 import { QueryProvider } from "@/src/providers/tanstack-provider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import Header from "@/src/components/header/Header";
@@ -36,16 +36,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-          <Suspense fallback={<div>Loading...</div>}>
-            <NuqsAdapter>
-              <Header />
-              {children}
-              <Footer />
-              <RightSidePanel />
-              <ScrollToTop />
-              <Toaster position="top-center" richColors duration={2500} />
-            </NuqsAdapter>
-          </Suspense>
+          {/* <Suspense fallback={<div>Loading...</div>}> */}
+          <NuqsAdapter>
+            <Header />
+            {children}
+            <Footer />
+            <RightSidePanel />
+            <ScrollToTop />
+            <Toaster position="top-center" richColors duration={2500} />
+          </NuqsAdapter>
+          {/* </Suspense> */}
         </QueryProvider>
       </body>
     </html>

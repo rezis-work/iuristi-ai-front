@@ -34,9 +34,7 @@ export async function getProfile(): Promise<Profile> {
   }
 }
 
-export async function updateProfile(
-  data: UpdateProfileData,
-): Promise<Profile> {
+export async function updateProfile(data: UpdateProfileData): Promise<Profile> {
   try {
     const response = await api<Profile>("/me/profile", {
       method: "PATCH",
@@ -62,4 +60,3 @@ export async function deleteAvatar(): Promise<Profile> {
     throw error;
   }
 }
-
