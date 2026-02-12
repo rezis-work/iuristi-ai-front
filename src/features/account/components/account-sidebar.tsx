@@ -41,13 +41,13 @@ export function AccountSidebar() {
 
   if (isLoading) {
     return (
-      <aside className="w-full rounded-sm bg-[#1A1A1A] px-5 pt-8 pb-0 flex flex-col items-center sm:max-w-auto md:mx-auto lg:mx-0 md:w-62 lg:w-72">
+      <aside className="w-full rounded-sm bg-zinc-900 px-5 pt-8 pb-0 flex flex-col items-center">
         <div className="animate-pulse w-full">
-          <div className="h-36 w-36 rounded-full bg-[#2B2925] mx-auto mb-5 sm:h-40 sm:w-40" />
-          <div className="h-6 w-32 bg-[#2B2925] mx-auto mb-6 rounded" />
+          <div className="h-36 w-36 rounded-full bg-zinc-900 mx-auto mb-5 sm:h-40 sm:w-40" />
+          <div className="h-6 w-32 bg-zinc-900 mx-auto mb-6 rounded" />
           <div className="space-y-3 mb-6">
-            <div className="h-4 bg-[#2B2925] rounded" />
-            <div className="h-4 bg-[#2B2925] rounded" />
+            <div className="h-4 bg-zinc-900 rounded" />
+            <div className="h-4 bg-zinc-900 rounded" />
           </div>
         </div>
       </aside>
@@ -55,15 +55,15 @@ export function AccountSidebar() {
   }
 
   return (
-    <aside className="w-full rounded-sm bg-[#1A1A1A] px-5 pt-8 pb-0 flex flex-col items-center sm:max-w-auto md:mx-auto lg:mx-0 md:w-62 lg:w-72">
+    <aside className="w-full rounded-sm bg-zinc-900 px-5 pt-8 pb-0 flex flex-col items-center">
       <div className="relative mb-5 h-36 w-36 rounded-full select-none border-[3px] border-[#ff9D4D] bg-[#2B2925] flex items-center justify-center overflow-hidden sm:h-40 sm:w-40">
-        <Avatar className="h-28 w-28 border border-black/40 bg-black/40 sm:h-32 sm:w-32">
+        <Avatar className="h-42 w-42 border border-black/40 bg-black/40 sm:h-42 sm:w-42">
           <AvatarImage
             src={profile?.avatarUrl || undefined}
             alt={profile?.name || "User avatar"}
             className="object-cover"
           />
-          <AvatarFallback className="bg-[#2B2925] text-2xl sm:text-3xl font-semibold text-neutral-100">
+          <AvatarFallback className="bg-zinc-900 text-2xl sm:text-3xl font-semibold text-neutral-100">
             {initials}
           </AvatarFallback>
         </Avatar>

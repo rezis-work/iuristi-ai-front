@@ -13,5 +13,7 @@ export function useMe() {
         return null;
       }
     },
+    staleTime: 0, // Always stale, refetch on invalidation
+    gcTime: 5 * 60 * 1000, // 5 minutes cache time
   });
 }
