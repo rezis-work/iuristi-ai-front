@@ -81,7 +81,7 @@ export async function LogOut() {
 
 export async function GetMe() {
   try {
-    const response = await api<Account>("/auth/me", {
+    const response = await api<Account>("/me/profile", {
       auth: true,
     });
     return response;

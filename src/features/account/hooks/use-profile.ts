@@ -33,7 +33,6 @@ export function useUpdateProfile() {
       // Update cache with new data - this will automatically update all components using useProfile
       queryClient.setQueryData(["profile"], updatedData);
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      toast.success("Profile updated successfully");
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to update profile");

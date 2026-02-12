@@ -39,6 +39,7 @@ export type Account = {
   email: string;
   role?: string;
   name: string;
+  avatarUrl?: string | null;
 };
 
 export async function fetchMe() {

@@ -94,9 +94,10 @@ export function useLogOut() {
     onSuccess: () => {
       // Remove token from storage
       removeToken();
-      // Clear all queries and invalidate "me" query
-      qc.invalidateQueries({ queryKey: ["me"] });
-      qc.clear();
+      // Set the "me" query data to null
+      qc.setQueryData(["me"], null);
+      // Invalidate all queries
+      qc.invalidateQueries();
       toast.success("logout successful");
       router.push("/login");
     },
