@@ -22,3 +22,26 @@ export interface Award {
   client: string;
   year: string;
 }
+
+// Invite Types
+export interface Invite {
+  id: string;
+  email: string;
+  role: "lawyer" | "admin";
+  status: "pending" | "accepted" | "revoked" | "expired";
+  expiresAt: string;
+  acceptedAt: string | null;
+  revokedAt: string | null;
+  createdAt: string;
+}
+
+export interface InvitePreview {
+  valid: boolean;
+  org?: {
+    id: string;
+    name: string;
+    logoUrl: string | null;
+  };
+  role?: string;
+  expiresAt?: string;
+}
