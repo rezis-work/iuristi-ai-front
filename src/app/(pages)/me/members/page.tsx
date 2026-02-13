@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { InviteManagement } from "@/src/features/account/components/InviteManagement";
+import { MembersList } from "@/src/features/account/components/MembersList";
 import { Suspense, useState, useEffect } from "react";
 import { useMyOrgs } from "@/src/features/account/hooks/use-orgs";
 import {
@@ -11,24 +11,24 @@ import {
   DropdownMenuItem,
 } from "@/src/components/ui/dropdown-menu";
 import { ORG_ID_UUID_REGEX } from "@/src/lib/org";
-import { Building2, ChevronDown } from "lucide-react";
+import { Building2, ChevronDown, Users } from "lucide-react";
 import SheardButton from "@/src/components/shared/SheardButton";
 
-export default function InvitesPage() {
+export default function MembersPage() {
   return (
     <Suspense
       fallback={
         <div className="space-y-6 select-none">
-          <p className="text-sm text-zinc-400">Loading invites...</p>
+          <p className="text-sm text-zinc-400">Loading members...</p>
         </div>
       }
     >
-      <InvitesPageContent />
+      <MembersPageContent />
     </Suspense>
   );
 }
 
-function InvitesPageContent() {
+function MembersPageContent() {
   const searchParams = useSearchParams();
   const rawParamOrgId = searchParams.get("orgId");
 
@@ -67,17 +67,17 @@ function InvitesPageContent() {
       <section className="w-full mb-2">
         <div className="space-y-4">
           <div className="space-y-1">
-            <h1 className="text-xl sm:text-2xl font-semibold text-white">
-              Manage Invites
+            <h1 className="text-xl sm:text-2xl font-semibold text-white flex items-center gap-2">
+              <Users className="w-6 h-6" />
+              Manage Members
             </h1>
             <p className="text-sm text-zinc-400 max-w-xl">
-              Send invites, create shareable links, and manage pending
-              invitations for your organization.
+              View, update roles, and manage members of your organization. Only
+              organization owners can perform these actions.
             </p>
           </div>
 
           {isLoadingOrgs ? (
-            // Skeleton ამოღებულია, შეგიძლია ეს ბლოკიც საერთოდ წაშალო
             <div className="space-y-2" />
           ) : !orgs || orgs.length === 0 ? (
             <div className="text-sm text-zinc-500">
@@ -150,11 +150,11 @@ function InvitesPageContent() {
       {/* Content area */}
       {orgId ? (
         <div className="space-y-4">
-          <InviteManagement orgId={orgId} />
+          <MembersList orgId={orgId} />
         </div>
       ) : (
         <p className="text-sm text-zinc-500">
-          Select an organization above to start managing invites.
+          Select an organization above to start managing members.
         </p>
       )}
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { InviteManagement } from "@/src/features/account/components/InviteManagement";
+import { LawyerProfileForm } from "@/src/features/account/components/LawyerProfileForm";
 import { Suspense, useState, useEffect } from "react";
 import { useMyOrgs } from "@/src/features/account/hooks/use-orgs";
 import {
@@ -14,25 +14,24 @@ import { ORG_ID_UUID_REGEX } from "@/src/lib/org";
 import { Building2, ChevronDown } from "lucide-react";
 import SheardButton from "@/src/components/shared/SheardButton";
 
-export default function InvitesPage() {
+export default function LawyerProfilePage() {
   return (
     <Suspense
       fallback={
         <div className="space-y-6 select-none">
-          <p className="text-sm text-zinc-400">Loading invites...</p>
+          <p className="text-sm text-zinc-400">Loading lawyer profile...</p>
         </div>
       }
     >
-      <InvitesPageContent />
+      <LawyerProfilePageContent />
     </Suspense>
   );
 }
 
-function InvitesPageContent() {
+function LawyerProfilePageContent() {
   const searchParams = useSearchParams();
   const rawParamOrgId = searchParams.get("orgId");
 
-  // მხოლოდ მაშინ ვაყენებთ initial orgId-ს, თუ URL-დან მოსული მნიშვნელობა სწორი UUID-ია
   const initialOrgId =
     rawParamOrgId && ORG_ID_UUID_REGEX.test(rawParamOrgId)
       ? rawParamOrgId
@@ -41,7 +40,6 @@ function InvitesPageContent() {
   const [orgId, setOrgId] = useState<string | null>(initialOrgId);
   const { data: orgs, isLoading: isLoadingOrgs } = useMyOrgs();
 
-  // Set initial orgId from URL if it exists in user's orgs
   useEffect(() => {
     if (initialOrgId && orgs && !orgId) {
       const orgExists = orgs.some((org) => org.id === initialOrgId);
@@ -63,21 +61,19 @@ function InvitesPageContent() {
 
   return (
     <div className="space-y-6 select-none">
-      {/* Header-style dark bar */}
+      {/* Header Section */}
       <section className="w-full mb-2">
         <div className="space-y-4">
           <div className="space-y-1">
             <h1 className="text-xl sm:text-2xl font-semibold text-white">
-              Manage Invites
+              Lawyer Profile
             </h1>
             <p className="text-sm text-zinc-400 max-w-xl">
-              Send invites, create shareable links, and manage pending
-              invitations for your organization.
+              Manage your practice areas and professional information.
             </p>
           </div>
 
           {isLoadingOrgs ? (
-            // Skeleton ამოღებულია, შეგიძლია ეს ბლოკიც საერთოდ წაშალო
             <div className="space-y-2" />
           ) : !orgs || orgs.length === 0 ? (
             <div className="text-sm text-zinc-500">
@@ -147,14 +143,14 @@ function InvitesPageContent() {
         </div>
       </section>
 
-      {/* Content area */}
+      {/* Content Area */}
       {orgId ? (
         <div className="space-y-4">
-          <InviteManagement orgId={orgId} />
+          <LawyerProfileForm orgId={orgId} />
         </div>
       ) : (
         <p className="text-sm text-zinc-500">
-          Select an organization above to start managing invites.
+          Select an organization above to manage your lawyer profile.
         </p>
       )}
     </div>
