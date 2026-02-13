@@ -36,7 +36,12 @@ import {
 } from "@/src/components/ui/table";
 import type { InviteStatus, InviteListItem } from "../api/invites";
 import { Input } from "@/src/components/ui/input";
-import { Form, FormControl, FormField, FormItem } from "@/src/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+} from "@/src/components/ui/form";
 import { UnderlinedFieldWrapper } from "@/src/components/shared/UnderlinedFieldWrapper";
 
 interface InvitesListProps {
@@ -88,9 +93,7 @@ export function InvitesList({ orgId }: InvitesListProps) {
             variant="ghost"
             size="sm"
             className="-ml-2 px-2 text-xs rounded-none font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === "asc")
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             <span className="flex items-center gap-1">
               Email
@@ -117,9 +120,7 @@ export function InvitesList({ orgId }: InvitesListProps) {
             variant="ghost"
             size="sm"
             className="-ml-2 px-2 text-xs font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === "asc")
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             <span className="flex items-center gap-1">
               Role
@@ -167,9 +168,7 @@ export function InvitesList({ orgId }: InvitesListProps) {
             variant="ghost"
             size="sm"
             className="-ml-2 px-2 text-xs font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === "asc")
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             <span className="flex items-center gap-1">
               Created
@@ -199,9 +198,7 @@ export function InvitesList({ orgId }: InvitesListProps) {
             variant="ghost"
             size="sm"
             className="-ml-2 px-2 text-xs font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === "asc")
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             <span className="flex items-center gap-1">
               Expires
@@ -353,32 +350,29 @@ export function InvitesList({ orgId }: InvitesListProps) {
       {/* Search bar */}
       <div className="flex items-center gap-2 border-b border-zinc-800 px-3 py-2.5">
         <Form {...form}>
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="w-full"
-          >
+          <form onSubmit={(e) => e.preventDefault()} className="w-full">
             <FormField
               control={form.control}
               name="search"
               render={({ field, fieldState }) => (
-                <FormItem className="relative w-full max-w-xs">                 
-                 <FormControl>
-<UnderlinedFieldWrapper
-                                  icon={<Search className="w-4 h-4" />}
-                                  error={!!fieldState.error}
-                                >
-                                  <Input
-                                    {...field}
-                                    value={field.value ?? ""}
-                                    onChange={(e) => {
-                                      field.onChange(e);
-                                      table.setGlobalFilter(e.target.value);
-                                    }}
-                                    placeholder="Search invites (email, role, status)..."
-                                    autoComplete="given-name"
-                                    className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
-                                  />
-                                </UnderlinedFieldWrapper>
+                <FormItem className="relative w-full max-w-xs">
+                  <FormControl>
+                    <UnderlinedFieldWrapper
+                      icon={<Search className="w-4 h-4" />}
+                      error={!!fieldState.error}
+                    >
+                      <Input
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          table.setGlobalFilter(e.target.value);
+                        }}
+                        placeholder="Search invites (email, role, status)..."
+                        autoComplete="given-name"
+                        className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
+                      />
+                    </UnderlinedFieldWrapper>
                   </FormControl>
                 </FormItem>
               )}
@@ -425,12 +419,9 @@ export function InvitesList({ orgId }: InvitesListProps) {
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className="max-w-[220px] truncate px-3 py-2.5 align-middle text-sm text-zinc-200"
+                    className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200"
                   >
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext(),
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
@@ -556,9 +547,7 @@ export function InvitesList({ orgId }: InvitesListProps) {
             <span className="uppercase tracking-wide text-[10px] text-zinc-500">
               Page
             </span>
-            <span className="text-xs font-semibold text-zinc-100">
-              {page}
-            </span>
+            <span className="text-xs font-semibold text-zinc-100">{page}</span>
             <span className="text-zinc-500">/</span>
             <span className="text-xs font-medium text-zinc-300">
               {pageCount || 1}
