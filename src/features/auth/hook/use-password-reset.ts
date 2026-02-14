@@ -57,7 +57,8 @@ export function useRequestPasswordReset() {
         });
       } else if (errorCode === "PASSWORD_RESET_DAILY_LIMIT") {
         toast.error("📅 Daily limit reached", {
-          description: "You've reached the limit for today. Please try again tomorrow.",
+          description:
+            "You've reached the limit for today. Please try again tomorrow.",
         });
       } else if (
         errorMessage?.includes("user doesn't exist") ||
@@ -127,7 +128,8 @@ export function useConfirmPasswordReset() {
         });
       } else if (errorCode === "INVALID_TOKEN") {
         toast.error("🔗 Invalid reset link", {
-          description: "This link has expired. Please request a new password reset.",
+          description:
+            "This link has expired. Please request a new password reset.",
         });
       } else if (
         errorMessage?.includes("password") &&
