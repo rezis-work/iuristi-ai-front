@@ -1,104 +1,3 @@
-// import { useMutation } from "@tanstack/react-query";
-// import { useRouter } from "next/navigation";
-// import { toast } from "sonner";
-// import {
-//   requestPasswordReset,
-//   confirmPasswordReset,
-// } from "../api/password-reset";
-// import {
-//   RequestPasswordResetSchema,
-//   ConfirmPasswordResetSchema,
-// } from "../schemas/password-reset-schemas";
-
-// /**
-//  * Hook for requesting password reset
-//  * Sends password reset email to user
-//  */
-// export function useRequestPasswordReset() {
-//   const router = useRouter();
-
-//   return useMutation({
-//     mutationFn: async (data: RequestPasswordResetSchema) => {
-//       try {
-//         const response = await requestPasswordReset(data);
-//         return response;
-//       } catch (error) {
-//         console.log("Failed in request password reset hook", error);
-//         throw error;
-//       }
-//     },
-//     onSuccess: (data, variables) => {
-//       if (data?.sent) {
-//         toast.success("Password reset email sent! Please check your inbox.", {
-//           description: `We've sent a reset link to ${variables.email}`,
-//         });
-//         // Optional: redirect to login or a confirmation page
-//         // router.push("/login");
-//       }
-//     },
-//     onError: (error: any) => {
-//       // Check for specific error codes
-//       if (error?.code === "PASSWORD_RESET_COOLDOWN") {
-//         toast.error("Please wait before requesting another reset email", {
-//           description: error.message || "Try again in a few moments",
-//         });
-//       } else if (error?.code === "PASSWORD_RESET_DAILY_LIMIT") {
-//         toast.error("Daily limit reached", {
-//           description: error.message || "Please try again tomorrow",
-//         });
-//       } else {
-//         toast.error("Failed to send reset email", {
-//           description: "Please try again later",
-//         });
-//       }
-//     },
-//   });
-// }
-
-// /**
-//  * Hook for confirming password reset
-//  * Updates password using reset token
-//  */
-// export function useConfirmPasswordReset() {
-//   const router = useRouter();
-
-//   return useMutation({
-//     mutationFn: async (data: ConfirmPasswordResetSchema) => {
-//       try {
-//         // Remove confirmPassword before sending to backend
-//         const { confirmPassword, ...resetData } = data;
-//         const response = await confirmPasswordReset(resetData);
-//         return response;
-//       } catch (error) {
-//         console.log("Failed in confirm password reset hook", error);
-//         throw error;
-//       }
-//     },
-//     onSuccess: (data) => {
-//       if (data?.reset) {
-//         toast.success("Password reset successful!", {
-//           description: "You can now log in with your new password",
-//         });
-//         // Redirect to login page
-//         setTimeout(() => {
-//           router.push("/login");
-//         }, 1000);
-//       }
-//     },
-//     onError: (error: any) => {
-//       // Check for specific error codes
-//       if (error?.code === "INVALID_TOKEN") {
-//         toast.error("Invalid or expired reset link", {
-//           description: "Please request a new password reset",
-//         });
-//       } else {
-//         toast.error("Failed to reset password", {
-//           description: "Please try again or request a new reset link",
-//         });
-//       }
-//     },
-//   });
-// }
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -118,51 +17,62 @@ import {
 export function useRequestPasswordReset() {
   return useMutation({
     mutationFn: async (data: RequestPasswordResetSchema) => {
-      try {
-        const response = await requestPasswordReset(data);
-        return response;
-      } catch (error) {
-        console.log("Failed in request password reset hook", error);
-        throw error;
-      }
+      const response = await requestPasswordReset(data);
+      return response;
     },
     onSuccess: (data, variables) => {
       if (data?.sent) {
-        toast.success("Password reset email sent! Please check your inbox.");
-        console.log("✅ Password reset email sent to:", variables.email);
+        toast.success("✉️ Email sent!", {
+          description: `Check your inbox at ${variables.email} for the reset link. It expires in 30 minutes.`,
+        });
       }
     },
     onError: (error: Error | unknown) => {
-      console.log("Error object:", error);
+      // Error is already parsed by the api() function
+      // It has the format: new Error(message) with error.code property
+      const apiError = error as Error & { code?: string };
+      const errorCode = apiError?.code;
+      const errorMessage = apiError?.message;
 
-      // Parse error if it's a string
-      let errorData: { error?: { code?: string; message?: string }; code?: string; message?: string } = { error: { code: "UNKNOWN" } };
-      if (error instanceof Error) {
-        try {
-          errorData = JSON.parse(error.message);
-        } catch {
-          errorData = { error: { code: "UNKNOWN", message: error.message } };
-        }
-      } else if (typeof error === "string") {
-        try {
-          errorData = JSON.parse(error);
-        } catch {
-          errorData = { error: { code: "UNKNOWN" } };
-        }
+      // Log only unexpected errors (not handled error codes)
+      const isHandledError =
+        errorCode === "RATE_LIMITED" ||
+        errorCode === "PASSWORD_RESET_COOLDOWN" ||
+        errorCode === "PASSWORD_RESET_DAILY_LIMIT" ||
+        errorMessage?.includes("user doesn't exist") ||
+        errorMessage?.includes("not found");
+
+      if (!isHandledError) {
+        console.error("Unexpected password reset request error:", error);
       }
 
-      const errorCode = errorData?.error?.code || errorData?.code;
-      const errorMessage = errorData?.error?.message || errorData?.message;
-
-      // Check for specific error codes
+      // Handle specific error codes from the backend
       if (errorCode === "RATE_LIMITED") {
-        toast.error("Too many requests. Please wait a moment and try again.");
+        toast.error("🔒 Too many requests", {
+          description: "Please wait a few moments and try again.",
+        });
       } else if (errorCode === "PASSWORD_RESET_COOLDOWN") {
-        toast.error("Please wait before requesting another reset email");
+        toast.error("⏳ Please wait", {
+          description: "You can request another reset email in a moment.",
+        });
       } else if (errorCode === "PASSWORD_RESET_DAILY_LIMIT") {
-        toast.error("Daily limit reached. Please try again tomorrow.");
+        toast.error("📅 Daily limit reached", {
+          description:
+            "You've reached the limit for today. Please try again tomorrow.",
+        });
+      } else if (
+        errorMessage?.includes("user doesn't exist") ||
+        errorMessage?.includes("not found")
+      ) {
+        // Security: Don't reveal if email exists or not
+        toast.success("✓ Check your email", {
+          description:
+            "If this email is registered, you'll receive a reset link shortly.",
+        });
       } else {
-        toast.error(errorMessage || "Failed to send reset email");
+        toast.error("❌ Couldn't send reset email", {
+          description: "Please check your email and try again later.",
+        });
       }
     },
   });
@@ -177,47 +87,67 @@ export function useConfirmPasswordReset() {
 
   return useMutation({
     mutationFn: async (data: ConfirmPasswordResetSchema) => {
-      try {
-        const response = await confirmPasswordReset(data);
-        return response;
-      } catch (error) {
-        console.log("Failed in confirm password reset hook", error);
-        throw error;
-      }
+      // Remove confirmPassword field before sending to API
+      // The backend only expects token and newPassword
+      const { confirmPassword, ...resetData } = data;
+      const response = await confirmPasswordReset(resetData as any);
+      return response;
     },
     onSuccess: () => {
-      toast.success("Password reset successful");
-      router.push("/login");
+      toast.success("🎉 Password reset successfully!", {
+        description: "You can now log in with your new password.",
+      });
+
+      // Redirect to login after a short delay to let user see the success message
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
     },
     onError: (error: Error | unknown) => {
-      console.log("Error object:", error);
+      // Error is already parsed by the api() function
+      // It has the format: new Error(message) with error.code property
+      const apiError = error as Error & { code?: string };
+      const errorCode = apiError?.code;
+      const errorMessage = apiError?.message;
 
-      // Parse error if it's a string
-      let errorData: { error?: { code?: string; message?: string }; code?: string; message?: string } = { error: { code: "UNKNOWN" } };
-      if (error instanceof Error) {
-        try {
-          errorData = JSON.parse(error.message);
-        } catch {
-          errorData = { error: { code: "UNKNOWN", message: error.message } };
-        }
-      } else if (typeof error === "string") {
-        try {
-          errorData = JSON.parse(error);
-        } catch {
-          errorData = { error: { code: "UNKNOWN" } };
-        }
+      // Log only unexpected errors (not handled error codes)
+      const isHandledError =
+        errorCode === "RATE_LIMITED" ||
+        errorCode === "INVALID_TOKEN" ||
+        errorMessage?.includes("password") ||
+        errorMessage?.includes("ValidationError");
+
+      if (!isHandledError) {
+        console.error("Unexpected password reset confirmation error:", error);
       }
 
-      const errorCode = errorData?.error?.code || errorData?.code;
-      const errorMessage = errorData?.error?.message || errorData?.message;
-
-      // Check for specific error codes
+      // Handle specific error codes from the backend
       if (errorCode === "RATE_LIMITED") {
-        toast.error("Too many requests. Please wait a moment and try again.");
+        toast.error("🔒 Too many requests", {
+          description: "Please wait a few moments and try again.",
+        });
       } else if (errorCode === "INVALID_TOKEN") {
-        toast.error("Invalid or expired reset link");
+        toast.error("🔗 Invalid reset link", {
+          description:
+            "This link has expired. Please request a new password reset.",
+        });
+      } else if (
+        errorMessage?.includes("password") &&
+        errorMessage?.includes("match")
+      ) {
+        toast.error("🔐 Passwords don't match", {
+          description: "Please make sure both passwords are identical.",
+        });
+      } else if (errorMessage?.includes("ValidationError")) {
+        toast.error("⚠️ Invalid password", {
+          description:
+            "Password must be 8+ characters with at least one letter and number.",
+        });
       } else {
-        toast.error(errorMessage || "Failed to reset password");
+        toast.error("❌ Couldn't reset password", {
+          description:
+            "Something went wrong. Please try again or request a new reset link.",
+        });
       }
     },
   });

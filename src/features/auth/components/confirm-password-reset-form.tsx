@@ -100,7 +100,7 @@ export function ConfirmPasswordResetForm() {
                           <Input
                             type="password"
                             placeholder="Enter new password"
-                            disabled={form.formState.isSubmitting}
+                            disabled={isPending || form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
                             style={{
