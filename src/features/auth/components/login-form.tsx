@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import {
@@ -24,6 +25,7 @@ import {
 import { Checkbox } from "@/src/components/ui/checkbox";
 import Wrapper from "@/src/components/shared/wrapper";
 import { useLogin } from "@/src/features/auth/hook/auth";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface LoginFormProps {
   onClose?: () => void;
@@ -31,18 +33,42 @@ interface LoginFormProps {
 
 export function LoginForm({ onClose }: LoginFormProps) {
   const { mutate: Login } = useLogin({ disableAutoRedirect: true });
+  const [savedEmail, setSavedEmail, clearSavedEmail, isLoading] =
+    useLocalStorage<string>("login_email", "");
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
+  // Load saved email after localStorage is ready
+  useEffect(() => {
+    if (!isLoading && savedEmail) {
+      form.setValue("email", savedEmail);
+      form.setValue("rememberMe", true);
+    }
+  }, [isLoading, savedEmail]); // Removed form from dependency array to prevent infinite loops
+
   function onSubmit(data: LoginSchema) {
+    // Handle remember me functionality
+    if (data.rememberMe) {
+      setSavedEmail(data.email);
+    } else {
+      clearSavedEmail();
+    }
+
+    // Pass the full data object - login API will remove rememberMe
     Login(data, {
       onSuccess: () => {
-        form.reset();
+        form.reset({
+          email: "",
+          password: "",
+          rememberMe: false,
+        });
         // Close the dropdown after successful login
         if (onClose) {
           setTimeout(() => {
@@ -127,18 +153,29 @@ export function LoginForm({ onClose }: LoginFormProps) {
                   }}
                 />
                 <div className="text-gray-200 flex items-center justify-between">
-                  <label
-                    htmlFor="remember"
-                    className="flex items-center text-[15px] gap-2 cursor-pointer select-none"
-                  >
-                    <Checkbox
-                      id="remember"
-                      className="w-5 h-5 min-h-5 max-h-5 shrink-0 border-none cursor-pointer rounded-none bg-gray-700 data-[state=checked]:bg-[#FF9D4D] p-0 flex items-center justify-center"
-                    />
-                    Remember me
-                  </label>
+                  <FormField
+                    control={form.control}
+                    name="rememberMe"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center gap-2">
+                        <FormControl>
+                          <Checkbox
+                            id="remember"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="w-5 h-5 min-h-5 max-h-5 shrink-0 border-none cursor-pointer rounded-none bg-gray-700 data-[state=checked]:bg-[#FF9D4D] p-0 flex items-center justify-center"
+                          />
+                        </FormControl>
+                        <FormLabel
+                          htmlFor="remember"
+                          className="text-[15px] cursor-pointer select-none"
+                        >
+                          Remember me
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
                   <Link
-                    // href={"/change-password"}
                     href={"/reset-password"}
                     className="cursor-pointer text-[15px]"
                   >
