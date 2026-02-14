@@ -1,12 +1,4 @@
-import {
-  Gauge,
-  Scale,
-  User,
-  Settings,
-  Lock,
-  Mail,
-  Briefcase,
-} from "lucide-react";
+import { Scale, User, Settings, Lock, Mail, Briefcase } from "lucide-react";
 
 type MenuItem = {
   path: string;
@@ -15,7 +7,6 @@ type MenuItem = {
 };
 
 export const menuItems: MenuItem[] = [
-  { path: "/me/userdashboard", label: "Dashboard", icon: Gauge },
   { path: "/me/profile", label: "Profile", icon: User },
   { path: "/me/lawyer-profile", label: "Lawyer Profile", icon: Briefcase },
   { path: "/me/invites", label: "Invites", icon: Mail },
