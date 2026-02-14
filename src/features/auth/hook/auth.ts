@@ -37,7 +37,7 @@ export function useLogin(options?: UseLoginOptions) {
       }
 
       toast.success("login successful");
-      router.push("/me");
+      router.push("/me/profile");
       if (!options?.disableAutoRedirect) {
         // Use window.location instead of router.push to ensure cookie is set before navigation
         // This gives the cookie time to be available for middleware on the next request
@@ -94,9 +94,10 @@ export function useLogOut() {
     onSuccess: () => {
       // Remove token from storage
       removeToken();
-      // Clear all queries and invalidate "me" query
-      qc.invalidateQueries({ queryKey: ["me"] });
-      qc.clear();
+      // Set the "me" query data to null
+      qc.setQueryData(["me"], null);
+      // Invalidate all queries
+      qc.invalidateQueries();
       toast.success("logout successful");
       router.push("/login");
     },

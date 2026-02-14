@@ -77,7 +77,7 @@ const BASE_URL = (
 
 export async function api<T>(
   path: string,
-  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {}
+  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {},
 ) {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -108,16 +108,19 @@ export async function api<T>(
     //json parse ვცდილობთ და ვიღებთ error message-ს
     const contentType = res.headers.get("content-type");
     let errorMessage: string = "";
+    let errorCode: string = "";
+    let errorData: any = null;
 
     if (contentType && contentType.includes("application/json")) {
       try {
-        const errorDate = await res.json();
+        errorData = await res.json();
+        errorCode = errorData?.error?.code || errorData?.code || "";
         // NestJS error format: { message, error, statusCode }
-        const message = errorDate?.message || errorDate?.error;
+        const message = errorData?.message || errorData?.error;
         errorMessage =
           typeof message === "string"
             ? message
-            : JSON.stringify(errorDate || {});
+            : JSON.stringify(errorData || {});
       } catch {
         const text = await res.text();
         errorMessage = text || "";
@@ -134,7 +137,7 @@ export async function api<T>(
         errorMessage.includes("<html>"))
     ) {
       throw new Error(
-        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`
+        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`,
       );
     }
     if (
@@ -159,9 +162,11 @@ export async function api<T>(
       } catch {}
     }
 
-    throw new Error(
-      errorMessage || `Request failed: ${res.status} ${res.statusText}`
-    );
+    const error = new Error(
+      errorMessage || `Request failed: ${res.status} ${res.statusText}`,
+    ) as Error & { code?: string };
+    error.code = errorCode;
+    throw error;
   }
   // Return empty as any if no body
   const contentType = res.headers.get("content-type");
@@ -174,7 +179,7 @@ export async function api<T>(
 // Form/multipart-friendly API helper (does not set Content-Type)
 export async function apiForm<T>(
   path: string,
-  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {}
+  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {},
 ): Promise<T> {
   // Do NOT set Content-Type so the browser can set proper multipart boundary
   const headers: HeadersInit = {
@@ -224,11 +229,11 @@ export async function apiForm<T>(
       (message.includes("<!DOCTYPE html>") || message.includes("<html>"))
     ) {
       throw new Error(
-        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`
+        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`,
       );
     }
     throw new Error(
-      message || `Request failed: ${res.status} ${res.statusText}`
+      message || `Request failed: ${res.status} ${res.statusText}`,
     );
   }
 
@@ -243,7 +248,7 @@ export async function apiForm<T>(
 // Blob-ის მისაღებად API helper (PDF, images, etc.)
 export async function apiBlob(
   path: string,
-  options: RequestInit & { auth?: boolean } = {}
+  options: RequestInit & { auth?: boolean } = {},
 ): Promise<Blob | null> {
   const headers: HeadersInit = {
     ...(options.headers || {}),
@@ -287,11 +292,11 @@ export async function apiBlob(
       (message.includes("<!DOCTYPE html>") || message.includes("<html>"))
     ) {
       throw new Error(
-        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`
+        `API request failed: ${res.status} ${res.statusText}. URL: ${BASE_URL}${path}. Check that your backend is running and the endpoint exists.`,
       );
     }
     throw new Error(
-      message || `Request failed: ${res.status} ${res.statusText}`
+      message || `Request failed: ${res.status} ${res.statusText}`,
     );
   }
 

@@ -123,6 +123,19 @@ body {
   color: var(--main-text-color);
 }
 
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE and Edge */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;              /* Chrome, Safari, Opera */
+  }
+}
+
 /* WebKit ბრაუზერებისთვის (Chrome, Safari, Edge) */
 input.keep-bg:-webkit-autofill,
 input.keep-bg:-webkit-autofill:hover,
@@ -147,7 +160,6 @@ select.keep-bg:-webkit-autofill:focus {
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(#e94c09);
   z-index: 50px;
-  cursor: pointer;
 }
 .mobile-menu-overlay::-webkit-scrollbar {
   width: 0px;
@@ -160,5 +172,4 @@ select.keep-bg:-webkit-autofill:focus {
 
 .mobile-menu-overlay::-webkit-scrollbar-thumb {
   background: transparent;
-  cursor: pointer;
 }
