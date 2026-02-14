@@ -1,10 +1,10 @@
 import { api } from "@/src/lib/api";
 import { assertValidOrgId, withOrgContext } from "@/src/lib/org";
 import type { UpsertLawyerProfileInput } from "../schemas/lawyer-profile.schema";
-import { lawyerProfileResponseSchema } from "../schemas/lawyer-profile.schema";
+
 
 export type UpsertLawyerProfileResponse = {
-  lawyerProfile: any;
+  lawyerProfile
 };
 
 export type GetLawyerProfileResponse = {
@@ -14,7 +14,7 @@ export type GetLawyerProfileResponse = {
 /**
  * Get lawyer profile for the authenticated user
  */
-export async function getLawyerProfile(orgId: string): Promise<any | null> {
+export async function getLawyerProfile(orgId: string) {
   try {
     assertValidOrgId(orgId);
     const response = await api<GetLawyerProfileResponse>(

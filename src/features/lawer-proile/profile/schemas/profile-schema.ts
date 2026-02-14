@@ -20,7 +20,6 @@ export const updateProfileSchema = z.object({
     ])
     .optional(),
   avatarUrl: z.string().url("Invalid URL").optional(),
-  language: z.enum(["ka", "en", "ru"]).optional(),
   timezone: z
     .string()
     .min(3, "Timezone must be at least 3 characters")

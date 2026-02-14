@@ -36,7 +36,7 @@ export function InviteLinkGenerator({ orgId }: InviteLinkGeneratorProps) {
   const createInviteLinkMutation = useCreateInviteLink(orgId);
 
   const form = useForm<CreateInviteLinkFormData>({
-    resolver: zodResolver(createInviteLinkFormSchema) as any,
+    resolver: zodResolver(createInviteLinkFormSchema),
     defaultValues: {
       email: "",
       role: "lawyer",
@@ -64,11 +64,11 @@ export function InviteLinkGenerator({ orgId }: InviteLinkGeneratorProps) {
     <div className="space-y-4">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmit as any)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="space-y-4"
         >
           <FormField
-            control={form.control as any}
+            control={form.control}
             name="email"
             render={({ field, fieldState }) => (
               <FormItem>
@@ -94,7 +94,7 @@ export function InviteLinkGenerator({ orgId }: InviteLinkGeneratorProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <FormField
-              control={form.control as any}
+              control={form.control}
               name="role"
               render={({ field }) => (
                 <FormItem>
@@ -167,7 +167,7 @@ export function InviteLinkGenerator({ orgId }: InviteLinkGeneratorProps) {
             />
 
             <FormField
-              control={form.control as any}
+              control={form.control}
               name="expiresInDays"
               render={({ field }) => (
                 <FormItem>

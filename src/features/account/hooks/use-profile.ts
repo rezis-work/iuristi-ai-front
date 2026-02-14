@@ -4,7 +4,7 @@ import {
   updateProfile,
   deleteAvatar,
   type UpdateProfileData,
-} from "../api/profile";
+} from "@/src/features/lawer-proile/profile/api/profile-api";
 import { toast } from "sonner";
 
 export function useProfile() {
@@ -30,8 +30,8 @@ export function useUpdateProfile() {
   return useMutation({
     mutationFn: (data: UpdateProfileData) => updateProfile(data),
     onSuccess: (updatedData) => {
-      // Update cache with new data - this will automatically update all components using useProfile
       queryClient.setQueryData(["profile"], updatedData);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
       queryClient.invalidateQueries({ queryKey: ["me"] });
     },
     onError: (error: Error) => {
@@ -47,6 +47,7 @@ export function useDeleteAvatar() {
     mutationFn: () => deleteAvatar(),
     onSuccess: (data) => {
       queryClient.setQueryData(["profile"], data);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
       queryClient.invalidateQueries({ queryKey: ["me"] });
       toast.success("Avatar deleted successfully");
     },

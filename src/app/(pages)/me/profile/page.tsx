@@ -1,9 +1,11 @@
-import { ProfileForm } from "@/src/features/account/components/profile-form";
+
+import ProfileMe from "@/src/features/lawer-proile/profile/components/profile";
+
 
 function ProfilePage() {
   return (
     <div>
-      <ProfileForm />
+      <ProfileMe/>
     </div>
   );
 }

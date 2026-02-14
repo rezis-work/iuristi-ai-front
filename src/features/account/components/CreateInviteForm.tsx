@@ -34,7 +34,7 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
   const createInviteMutation = useCreateInvite(orgId);
 
   const form = useForm<CreateInviteFormData>({
-    resolver: zodResolver(createInviteFormSchema) as any,
+    resolver: zodResolver(createInviteFormSchema) ,
     defaultValues: {
       email: "",
       role: "lawyer",
@@ -53,11 +53,11 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmit as any)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-4"
       >
         <FormField
-          control={form.control as any}
+          control={form.control }
           name="email"
           render={({ field, fieldState }) => (
             <FormItem>
@@ -83,7 +83,7 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
 
         <div className="grid grid-cols-2 gap-4">
           <FormField
-            control={form.control as any}
+            control={form.control }
             name="role"
             render={({ field }) => (
               <FormItem>
@@ -156,7 +156,7 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
           />
 
           <FormField
-            control={form.control as any}
+            control={form.control }
             name="expiresInDays"
             render={({ field }) => (
               <FormItem>

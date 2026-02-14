@@ -1,10 +1,9 @@
-import ContactMapSection from "@/src/components/shared/ContactMapSection";
+
+import OrgsCreatePage from "@/src/features/lawer-proile/orgs/components/orgs-create";
 
 function ContactPage() {
   return (
-    <section>
-      <ContactMapSection />
-    </section>
+    <OrgsCreatePage/>
   );
 }
 

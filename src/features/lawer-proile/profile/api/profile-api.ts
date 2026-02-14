@@ -6,7 +6,7 @@ export type Profile = {
   name: string | null;
   phone: string | null;
   avatarUrl: string | null;
-  language: "ka" | "en" | "ru";
+ 
   timezone: string;
   accountType: "person" | "lawyer" | "business_owner";
   createdAt: string;
@@ -16,8 +16,7 @@ export type UpdateProfileData = {
   name?: string;
   phone?: string;
   avatarUrl?: string;
-  avatarKey?: string;
-  language?: "ka" | "en" | "ru";
+ 
   timezone?: string;
   accountType?: "person" | "lawyer" | "business_owner";
 };

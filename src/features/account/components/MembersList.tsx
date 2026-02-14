@@ -4,15 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formatDistanceToNow } from "date-fns";
 import {
-  ColumnDef,
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  getFilteredRowModel,
-  flexRender,
-} from "@tanstack/react-table";
-import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
@@ -66,11 +57,16 @@ import {
   FormItem,
 } from "@/src/components/ui/form";
 import { UnderlinedFieldWrapper } from "@/src/components/shared/UnderlinedFieldWrapper";
-import { memberRoleEnum } from "../schemas/members.schema";
+import type { MemberRole } from "../schemas/members.schema";
 
 interface MembersListProps {
   orgId: string | null;
 }
+
+const PAGE_SIZE = 10;
+
+type SortKey = "email" | "name" | "role" | "createdAt" | null;
+type SortDir = "asc" | "desc";
 
 const getRoleColor = (role: string) => {
   switch (role.toLowerCase()) {
@@ -102,18 +98,19 @@ export function MembersList({ orgId }: MembersListProps) {
   const updateRoleMutation = useUpdateMemberRole(orgId);
   const removeMemberMutation = useRemoveMember(orgId);
 
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [search, setSearch] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>(null);
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
+  const [pageIndex, setPageIndex] = useState(0);
   const [memberToRemove, setMemberToRemove] = useState<MemberResponse | null>(
     null,
   );
   const [updatingMemberId, setUpdatingMemberId] = useState<string | null>(null);
+
   const form = useForm<{ search: string }>({
-    defaultValues: {
-      search: "",
-    },
+    defaultValues: { search: "" },
   });
 
-  // Count owners to determine if this is the last owner
   const ownerCount = useMemo(
     () => members?.filter((m) => m.role === "owner").length || 0,
     [members],
@@ -124,15 +121,15 @@ export function MembersList({ orgId }: MembersListProps) {
   };
 
   useEffect(() => {
-    form.setValue("search", globalFilter);
-  }, [globalFilter, form]);
+    form.setValue("search", search);
+  }, [search, form]);
 
   const handleRoleChange = (userId: string, newRole: string) => {
     setUpdatingMemberId(userId);
     updateRoleMutation.mutate(
       {
         userId,
-        data: { role: newRole as any },
+        data: { role: newRole as MemberRole },
       },
       {
         onSettled: () => setUpdatingMemberId(null),
@@ -151,206 +148,78 @@ export function MembersList({ orgId }: MembersListProps) {
     }
   };
 
-  const columns = useMemo<ColumnDef<MemberResponse>[]>(
-    () => [
-      {
-        accessorKey: "email",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 px-2 text-xs rounded-none font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="flex items-center gap-1">
-              Email
-              {column.getIsSorted() === "asc" ? (
-                <ArrowUp className="h-3 w-3" />
-              ) : column.getIsSorted() === "desc" ? (
-                <ArrowDown className="h-3 w-3" />
-              ) : (
-                <ArrowUpDown className="h-3 w-3 opacity-40" />
-              )}
-            </span>
-          </Button>
-        ),
-        cell: ({ row }) => (
-          <div className="font-medium text-zinc-100">
-            {row.getValue("email")}
-          </div>
-        ),
-      },
-      {
-        accessorKey: "name",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 px-2 text-xs rounded-none font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="flex items-center gap-1">
-              Name
-              {column.getIsSorted() === "asc" ? (
-                <ArrowUp className="h-3 w-3" />
-              ) : column.getIsSorted() === "desc" ? (
-                <ArrowDown className="h-3 w-3" />
-              ) : (
-                <ArrowUpDown className="h-3 w-3 opacity-40" />
-              )}
-            </span>
-          </Button>
-        ),
-        cell: ({ row }) => {
-          const name = row.getValue("name") as string | null;
-          return (
-            <div className="text-sm text-zinc-300">
-              {name || <span className="text-zinc-500">—</span>}
-            </div>
-          );
-        },
-      },
-      {
-        accessorKey: "role",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 px-2 text-xs font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="flex items-center gap-1">
-              Role
-              {column.getIsSorted() === "asc" ? (
-                <ArrowUp className="h-3 w-3" />
-              ) : column.getIsSorted() === "desc" ? (
-                <ArrowDown className="h-3 w-3" />
-              ) : (
-                <ArrowUpDown className="h-3 w-3 opacity-40" />
-              )}
-            </span>
-          </Button>
-        ),
-        cell: ({ row }) => {
-          const member = row.original;
-          const currentRole = member.role;
-          const disabled =
-            isLastOwner(member) || updatingMemberId === member.userId;
-          return (
-            <div className="relative">
-              <Select
-                value={currentRole}
-                onValueChange={(value) =>
-                  handleRoleChange(member.userId, value)
-                }
-                disabled={disabled}
-              >
-                <SelectTrigger
-                  className={`h-8 w-32 border-zinc-700 text-xs text-zinc-200 ${disabled ? "bg-zinc-900/30 cursor-not-allowed opacity-60 hover:bg-zinc-900/30" : "bg-zinc-900/50 hover:bg-zinc-800/50"}`}
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-zinc-950 border-zinc-800">
-                  {roleOptions.map((option) => (
-                    <SelectItem
-                      key={option.value}
-                      value={option.value}
-                      className="text-xs text-zinc-200 focus:bg-zinc-800 focus:text-zinc-100"
-                    >
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          );
-        },
-      },
-      {
-        accessorKey: "createdAt",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 px-2 text-xs font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="flex items-center gap-1">
-              Joined
-              {column.getIsSorted() === "asc" ? (
-                <ArrowUp className="h-3 w-3" />
-              ) : column.getIsSorted() === "desc" ? (
-                <ArrowDown className="h-3 w-3" />
-              ) : (
-                <ArrowUpDown className="h-3 w-3 opacity-40" />
-              )}
-            </span>
-          </Button>
-        ),
-        cell: ({ row }) => {
-          const date = new Date(row.getValue("createdAt"));
-          return (
-            <div className="text-xs text-zinc-400">
-              {formatDistanceToNow(date, { addSuffix: true })}
-            </div>
-          );
-        },
-      },
-      {
-        id: "actions",
-        header: () => (
-          <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-            Actions
-          </span>
-        ),
-        cell: ({ row }) => {
-          const member = row.original;
-          return (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-7 w-7 rounded-full border border-rose-500/40 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 hover:text-rose-100 disabled:opacity-40 disabled:cursor-not-allowed"
-              onClick={() => handleRemoveClick(member)}
-              disabled={removeMemberMutation.isPending || isLastOwner(member)}
-              title={
-                isLastOwner(member)
-                  ? "Cannot remove last owner"
-                  : "Remove member"
-              }
-            >
-              <UserX className="h-3.5 w-3.5" />
-            </Button>
-          );
-        },
-      },
-    ],
-    [
-      updateRoleMutation.isPending,
-      removeMemberMutation.isPending,
-      ownerCount,
-      updatingMemberId,
-    ],
-  );
+  const filtered = useMemo(() => {
+    const list = members || [];
+    if (!search.trim()) return list;
+    const q = search.toLowerCase();
+    return list.filter(
+      (m) =>
+        m.email.toLowerCase().includes(q) ||
+        (m.name?.toLowerCase().includes(q) ?? false) ||
+        m.role.toLowerCase().includes(q),
+    );
+  }, [members, search]);
 
-  const table = useReactTable({
-    data: members || [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      globalFilter,
-    },
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: "auto",
-    initialState: {
-      pagination: {
-        pageIndex: 0,
-        pageSize: 10,
-      },
-    },
-  });
+  const sorted = useMemo(() => {
+    if (!sortKey) return filtered;
+    return [...filtered].sort((a, b) => {
+      const aVal = a[sortKey];
+      const bVal = b[sortKey];
+      if (aVal == null || bVal == null) return 0;
+      const cmp =
+        typeof aVal === "string" && typeof bVal === "string"
+          ? aVal.localeCompare(bVal)
+          : new Date(aVal).getTime() - new Date(bVal).getTime();
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+  }, [filtered, sortKey, sortDir]);
+
+  const paginated = useMemo(() => {
+    const start = pageIndex * PAGE_SIZE;
+    return sorted.slice(start, start + PAGE_SIZE);
+  }, [sorted, pageIndex]);
+
+  const pageCount = Math.ceil(sorted.length / PAGE_SIZE) || 1;
+  const currentPage = pageIndex + 1;
+
+  const toggleSort = (key: SortKey) => {
+    if (!key) return;
+    if (sortKey === key) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+    setPageIndex(0);
+  };
+
+  const SortHeader = ({
+    label,
+    columnKey,
+  }: {
+    label: string;
+    columnKey: SortKey;
+  }) => (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="-ml-2 px-2 text-xs rounded-none font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
+      onClick={() => toggleSort(columnKey)}
+    >
+      <span className="flex items-center gap-1">
+        {label}
+        {sortKey === columnKey ? (
+          sortDir === "asc" ? (
+            <ArrowUp className="h-3 w-3" />
+          ) : (
+            <ArrowDown className="h-3 w-3" />
+          )
+        ) : (
+          <ArrowUpDown className="h-3 w-3 opacity-40" />
+        )}
+      </span>
+    </Button>
+  );
 
   if (isLoading) {
     return (
@@ -384,9 +253,6 @@ export function MembersList({ orgId }: MembersListProps) {
     );
   }
 
-  const page = table.getState().pagination.pageIndex + 1;
-  const pageCount = table.getPageCount();
-
   return (
     <>
       <div className="w-full overflow-x-hidden rounded-none border border-zinc-800 bg-zinc-950/60">
@@ -409,7 +275,8 @@ export function MembersList({ orgId }: MembersListProps) {
                           value={field.value ?? ""}
                           onChange={(e) => {
                             field.onChange(e);
-                            table.setGlobalFilter(e.target.value);
+                            setSearch(e.target.value);
+                            setPageIndex(0);
                           }}
                           placeholder="Search members (email, name, role)..."
                           autoComplete="off"
@@ -427,55 +294,107 @@ export function MembersList({ orgId }: MembersListProps) {
         {/* Desktop table (large screens) */}
         <Table className="table-fixed w-full hidden lg:table">
           <TableHeader className="bg-zinc-950/80">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="border-zinc-800/80 hover:bg-transparent"
-              >
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className="px-3 py-2.5 text-xs text-zinc-400"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
+            <TableRow className="border-zinc-800/80 hover:bg-transparent">
+              <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+                <SortHeader label="Email" columnKey="email" />
+              </TableHead>
+              <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+                <SortHeader label="Name" columnKey="name" />
+              </TableHead>
+              <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+                <SortHeader label="Role" columnKey="role" />
+              </TableHead>
+              <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+                <SortHeader label="Joined" columnKey="createdAt" />
+              </TableHead>
+              <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+                <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                  Actions
+                </span>
+              </TableHead>
+            </TableRow>
           </TableHeader>
-
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, idx) => (
+            {paginated.length ? (
+              paginated.map((member, idx) => (
                 <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  key={member.userId}
                   className={`border-zinc-900/80 transition-colors hover:bg-zinc-900/60 ${
                     idx % 2 === 1 ? "bg-zinc-950/60" : ""
                   }`}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200"
+                  <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                    <div className="font-medium text-zinc-100">
+                      {member.email}
+                    </div>
+                  </TableCell>
+                  <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                    <div className="text-sm text-zinc-300">
+                      {member.name || <span className="text-zinc-500">—</span>}
+                    </div>
+                  </TableCell>
+                  <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                    <div className="relative">
+                      <Select
+                        value={member.role}
+                        onValueChange={(value) =>
+                          handleRoleChange(member.userId, value)
+                        }
+                        disabled={
+                          isLastOwner(member) ||
+                          updatingMemberId === member.userId
+                        }
+                      >
+                        <SelectTrigger
+                          className={`h-8 w-32 border-zinc-700 text-xs text-zinc-200 ${isLastOwner(member) || updatingMemberId === member.userId ? "bg-zinc-900/30 cursor-not-allowed opacity-60 hover:bg-zinc-900/30" : "bg-zinc-900/50 hover:bg-zinc-800/50"}`}
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-zinc-950 border-zinc-800">
+                          {roleOptions.map((option) => (
+                            <SelectItem
+                              key={option.value}
+                              value={option.value}
+                              className="text-xs text-zinc-200 focus:bg-zinc-800 focus:text-zinc-100"
+                            >
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </TableCell>
+                  <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                    <div className="text-xs text-zinc-400">
+                      {formatDistanceToNow(new Date(member.createdAt), {
+                        addSuffix: true,
+                      })}
+                    </div>
+                  </TableCell>
+                  <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 rounded-full border border-rose-500/40 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 hover:text-rose-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                      onClick={() => handleRemoveClick(member)}
+                      disabled={
+                        removeMemberMutation.isPending || isLastOwner(member)
+                      }
+                      title={
+                        isLastOwner(member)
+                          ? "Cannot remove last owner"
+                          : "Remove member"
+                      }
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+                      <UserX className="h-3.5 w-3.5" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={5}
                   className="h-24 text-center text-sm text-zinc-500"
                 >
                   No results.
@@ -487,9 +406,8 @@ export function MembersList({ orgId }: MembersListProps) {
 
         {/* Cards layout for small & medium screens */}
         <div className="lg:hidden divide-y divide-zinc-900">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => {
-              const member = row.original as MemberResponse;
+          {paginated.length ? (
+            paginated.map((member) => {
               const joinedLabel = member.createdAt
                 ? formatDistanceToNow(new Date(member.createdAt), {
                     addSuffix: true,
@@ -498,7 +416,7 @@ export function MembersList({ orgId }: MembersListProps) {
 
               return (
                 <div
-                  key={row.id}
+                  key={member.userId}
                   className="px-3 py-3 flex flex-col gap-2.5 bg-zinc-950/60"
                 >
                   <div className="flex items-start justify-between gap-2">
@@ -566,7 +484,10 @@ export function MembersList({ orgId }: MembersListProps) {
                         size="icon"
                         className="h-7 w-7 rounded-full border border-rose-500/40 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20"
                         onClick={() => handleRemoveClick(member)}
-                        disabled={removeMemberMutation.isPending}
+                        disabled={
+                          removeMemberMutation.isPending ||
+                          isLastOwner(member)
+                        }
                         title="Remove member"
                       >
                         <UserX className="h-3.5 w-3.5" />
@@ -591,11 +512,11 @@ export function MembersList({ orgId }: MembersListProps) {
                 Page
               </span>
               <span className="text-xs font-semibold text-zinc-100">
-                {page}
+                {currentPage}
               </span>
               <span className="text-zinc-500">/</span>
               <span className="text-xs font-medium text-zinc-300">
-                {pageCount || 1}
+                {pageCount}
               </span>
             </div>
             <span className="hidden sm:inline text-zinc-500">
@@ -606,8 +527,8 @@ export function MembersList({ orgId }: MembersListProps) {
             <Button
               size="sm"
               className="group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-none border-none bg-[#ff9D4D] px-0 text-[10px] font-semibold text-zinc-950 shadow-sm transition-all hover:bg-[#ea9753] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed"
-              onClick={() => table.firstPage()}
-              disabled={!table.getCanPreviousPage()}
+              onClick={() => setPageIndex(0)}
+              disabled={pageIndex === 0}
             >
               <ChevronsLeft className="h-3 w-3" />
               <span className="sr-only">First page</span>
@@ -615,8 +536,8 @@ export function MembersList({ orgId }: MembersListProps) {
             <Button
               size="sm"
               className="group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-none border-none bg-[#ff9D4D] px-0 text-[10px] font-semibold text-zinc-950 shadow-sm transition-all hover:bg-[#ea9753] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
+              disabled={pageIndex === 0}
             >
               <ChevronLeft className="h-3 w-3" />
               <span className="sr-only">Previous page</span>
@@ -624,8 +545,8 @@ export function MembersList({ orgId }: MembersListProps) {
             <Button
               size="sm"
               className="group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-none border-none bg-[#ff9D4D] px-0 text-[10px] font-semibold text-zinc-950 shadow-sm transition-all hover:bg-[#ea9753] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              onClick={() => setPageIndex((p) => Math.min(pageCount - 1, p + 1))}
+              disabled={pageIndex >= pageCount - 1}
             >
               <ChevronRight className="h-3 w-3" />
               <span className="sr-only">Next page</span>
@@ -633,8 +554,8 @@ export function MembersList({ orgId }: MembersListProps) {
             <Button
               size="sm"
               className="group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-none border-none bg-[#ff9D4D] px-0 text-[10px] font-semibold text-zinc-950 shadow-sm transition-all hover:bg-[#ea9753] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed"
-              onClick={() => table.lastPage()}
-              disabled={!table.getCanNextPage()}
+              onClick={() => setPageIndex(pageCount - 1)}
+              disabled={pageIndex >= pageCount - 1}
             >
               <ChevronsRight className="h-3 w-3" />
               <span className="sr-only">Last page</span>

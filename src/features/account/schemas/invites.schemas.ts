@@ -10,13 +10,14 @@ export const memberRoleEnum = z.enum([
 ]);
 
 // Match server createInviteSchema exactly
+// role and expiresInDays use defaultValues in form, not .default(), for zodResolver type compatibility
 export const createInviteFormSchema = z.object({
   email: z
     .string()
     .email("Invalid email format")
     .transform((val) => val.toLowerCase()),
-  role: memberRoleEnum.default("lawyer"),
-  expiresInDays: z.number().int().min(1).max(30).optional().default(7),
+  role: memberRoleEnum,
+  expiresInDays: z.number().int().min(1).max(30),
 });
 
 // Match server acceptInviteSchema exactly
@@ -30,8 +31,8 @@ export const createInviteLinkFormSchema = z.object({
     .string()
     .email("Invalid email format")
     .transform((val) => val.toLowerCase()),
-  role: memberRoleEnum.default("lawyer"),
-  expiresInDays: z.number().int().min(1).max(30).optional().default(7),
+  role: memberRoleEnum,
+  expiresInDays: z.number().int().min(1).max(30),
 });
 
 export type CreateInviteFormData = z.infer<typeof createInviteFormSchema>;

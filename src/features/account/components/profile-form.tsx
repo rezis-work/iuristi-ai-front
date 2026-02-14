@@ -47,8 +47,6 @@ import {
 
 export function ProfileForm() {
   const { data: profile, isLoading: isLoadingProfile } = useProfile();
-  console.log(profile);
-
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
 
   const form = useForm<UpdateProfileSchema>({
@@ -208,7 +206,7 @@ export function ProfileForm() {
                 <FormField
                   control={form.control}
                   name="language"
-                  render={({ field, fieldState }) => (
+                  render={({ field, }) => (
                     <FormItem className="space-y-2">
                       <FormLabel className="text-gray-200 text-[15px] font-medium flex items-center gap-2">
                         <Globe className="h-4 w-4" />

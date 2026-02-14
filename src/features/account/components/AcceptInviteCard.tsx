@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAcceptInvite, usePreviewInvite } from "../hooks/use-invites";
 import { Button } from "@/src/components/ui/button";
@@ -8,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/ca
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/src/components/ui/alert";
 import { AlertCircle, CheckCircle, Building2 } from "lucide-react";
+import Image from "next/image";
 
 interface AcceptInviteCardProps {
   token?: string;
@@ -16,14 +16,7 @@ interface AcceptInviteCardProps {
 export function AcceptInviteCard({ token: initialToken }: AcceptInviteCardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [token, setToken] = useState<string | null>(initialToken || null);
-
-  useEffect(() => {
-    if (!token) {
-      const tokenFromParams = searchParams.get("token");
-      setToken(tokenFromParams);
-    }
-  }, [token, searchParams]);
+  const token = initialToken ?? searchParams.get("token");
 
   const { data: preview, isLoading: isLoadingPreview } = usePreviewInvite(token);
   const acceptInviteMutation = useAcceptInvite();
@@ -95,7 +88,7 @@ export function AcceptInviteCard({ token: initialToken }: AcceptInviteCardProps)
           <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-lg">
             <div className="shrink-0">
               {preview.org.logoUrl ? (
-                <img
+                <Image
                   src={preview.org.logoUrl}
                   alt={preview.org.name}
                   className="h-12 w-12 rounded object-cover"

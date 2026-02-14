@@ -1,17 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formatDistanceToNow } from "date-fns";
-import {
-  ColumnDef,
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  getFilteredRowModel,
-  flexRender,
-} from "@tanstack/react-table";
 import {
   ArrowUpDown,
   ArrowUp,
@@ -34,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import type { InviteStatus, InviteListItem } from "../api/invites";
+import type { InviteStatus } from "../api/invites";
 import { Input } from "@/src/components/ui/input";
 import {
   Form,
@@ -46,6 +37,47 @@ import { UnderlinedFieldWrapper } from "@/src/components/shared/UnderlinedFieldW
 
 interface InvitesListProps {
   orgId: string | null;
+}
+
+const PAGE_SIZE = 4;
+
+type SortKey = "email" | "role" | "createdAt" | "expiresAt" | null;
+type SortDir = "asc" | "desc";
+
+function SortHeaderButton({
+  label,
+  columnKey,
+  sortKey,
+  sortDir,
+  onToggle,
+}: {
+  label: string;
+  columnKey: SortKey;
+  sortKey: SortKey;
+  sortDir: SortDir;
+  onToggle: (key: SortKey) => void;
+}) {
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="-ml-2 px-2 text-xs rounded-none font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
+      onClick={() => onToggle(columnKey)}
+    >
+      <span className="flex items-center gap-1">
+        {label}
+        {sortKey === columnKey ? (
+          sortDir === "asc" ? (
+            <ArrowUp className="h-3 w-3" />
+          ) : (
+            <ArrowDown className="h-3 w-3" />
+          )
+        ) : (
+          <ArrowUpDown className="h-3 w-3 opacity-40" />
+        )}
+      </span>
+    </Button>
+  );
 }
 
 const getStatusColor = (status: InviteStatus) => {
@@ -67,249 +99,72 @@ export function InvitesList({ orgId }: InvitesListProps) {
   const { data: invites, isLoading, error } = useListInvites(orgId);
   const revokeInviteMutation = useRevokeInvite(orgId);
 
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [search, setSearch] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>(null);
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
+  const [pageIndex, setPageIndex] = useState(0);
+
   const form = useForm<{ search: string }>({
-    defaultValues: {
-      search: "",
-    },
+    defaultValues: { search: "" },
   });
 
   useEffect(() => {
-    form.setValue("search", globalFilter);
-  }, [globalFilter, form]);
+    form.setValue("search", search);
+  }, [search, form]);
 
-  const handleRevoke = (inviteId: string) => {
-    if (confirm("Are you sure you want to revoke this invite?")) {
-      revokeInviteMutation.mutate(inviteId);
-    }
-  };
-
-  const columns = useMemo<ColumnDef<InviteListItem>[]>(
-    () => [
-      {
-        accessorKey: "email",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 px-2 text-xs rounded-none font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="flex items-center gap-1">
-              Email
-              {column.getIsSorted() === "asc" ? (
-                <ArrowUp className="h-3 w-3" />
-              ) : column.getIsSorted() === "desc" ? (
-                <ArrowDown className="h-3 w-3" />
-              ) : (
-                <ArrowUpDown className="h-3 w-3 opacity-40" />
-              )}
-            </span>
-          </Button>
-        ),
-        cell: ({ row }) => (
-          <div className="font-medium text-zinc-100">
-            {row.getValue("email")}
-          </div>
-        ),
-      },
-      {
-        accessorKey: "role",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 px-2 text-xs font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="flex items-center gap-1">
-              Role
-              {column.getIsSorted() === "asc" ? (
-                <ArrowUp className="h-3 w-3" />
-              ) : column.getIsSorted() === "desc" ? (
-                <ArrowDown className="h-3 w-3" />
-              ) : (
-                <ArrowUpDown className="h-3 w-3 opacity-40" />
-              )}
-            </span>
-          </Button>
-        ),
-        cell: ({ row }) => (
-          <div className="capitalize text-sm text-zinc-200">
-            {row.getValue("role")}
-          </div>
-        ),
-      },
-      {
-        accessorKey: "status",
-        header: () => (
-          <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-            Status
-          </span>
-        ),
-        cell: ({ row }) => {
-          const status = row.getValue("status") as InviteStatus;
-          return (
-            <Badge
-              variant="outline"
-              className={`rounded-none px-2.5 py-1 text-[11px] font-medium leading-none ${getStatusColor(
-                status,
-              )}`}
-            >
-              {status}
-            </Badge>
-          );
-        },
-      },
-      {
-        accessorKey: "createdAt",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 px-2 text-xs font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="flex items-center gap-1">
-              Created
-              {column.getIsSorted() === "asc" ? (
-                <ArrowUp className="h-3 w-3" />
-              ) : column.getIsSorted() === "desc" ? (
-                <ArrowDown className="h-3 w-3" />
-              ) : (
-                <ArrowUpDown className="h-3 w-3 opacity-40" />
-              )}
-            </span>
-          </Button>
-        ),
-        cell: ({ row }) => {
-          const date = new Date(row.getValue("createdAt"));
-          return (
-            <div className="text-xs text-zinc-400">
-              {formatDistanceToNow(date, { addSuffix: true })}
-            </div>
-          );
-        },
-      },
-      {
-        accessorKey: "expiresAt",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-2 px-2 text-xs font-medium uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="flex items-center gap-1">
-              Expires
-              {column.getIsSorted() === "asc" ? (
-                <ArrowUp className="h-3 w-3" />
-              ) : column.getIsSorted() === "desc" ? (
-                <ArrowDown className="h-3 w-3" />
-              ) : (
-                <ArrowUpDown className="h-3 w-3 opacity-40" />
-              )}
-            </span>
-          </Button>
-        ),
-        cell: ({ row }) => {
-          const date = new Date(row.getValue("expiresAt"));
-          return (
-            <div className="text-xs text-zinc-400">
-              {formatDistanceToNow(date, { addSuffix: true })}
-            </div>
-          );
-        },
-      },
-      {
-        accessorKey: "acceptedAt",
-        header: () => (
-          <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-            Accepted
-          </span>
-        ),
-        cell: ({ row }) => {
-          const acceptedAt = row.getValue("acceptedAt") as string | null;
-          return (
-            <div className="text-xs text-zinc-300">
-              {acceptedAt ? (
-                formatDistanceToNow(new Date(acceptedAt), { addSuffix: true })
-              ) : (
-                <span className="text-zinc-500">—</span>
-              )}
-            </div>
-          );
-        },
-      },
-      {
-        accessorKey: "revokedAt",
-        header: () => (
-          <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-            Revoked
-          </span>
-        ),
-        cell: ({ row }) => {
-          const revokedAt = row.getValue("revokedAt") as string | null;
-          return (
-            <div className="text-xs text-zinc-300">
-              {revokedAt ? (
-                formatDistanceToNow(new Date(revokedAt), { addSuffix: true })
-              ) : (
-                <span className="text-zinc-500">—</span>
-              )}
-            </div>
-          );
-        },
-      },
-      {
-        id: "actions",
-        header: () => (
-          <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-            Actions
-          </span>
-        ),
-        cell: ({ row }) => {
-          const invite = row.original;
-          if (invite.status !== "pending") {
-            return null;
-          }
-          return (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-7 w-7 rounded-full border border-rose-500/40 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 hover:text-rose-100"
-              onClick={() => handleRevoke(invite.id)}
-              disabled={revokeInviteMutation.isPending}
-              title="Revoke invite"
-            >
-              <XCircle className="h-3.5 w-3.5" />
-            </Button>
-          );
-        },
-      },
-    ],
-    [revokeInviteMutation.isPending],
+  const handleRevoke = useCallback(
+    (inviteId: string) => {
+      if (confirm("Are you sure you want to revoke this invite?")) {
+        revokeInviteMutation.mutate(inviteId);
+      }
+    },
+    [revokeInviteMutation],
   );
 
-  const table = useReactTable({
-    data: invites || [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(), // enables filtering pipeline[web:80]
-    state: {
-      globalFilter,
-    },
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: "auto", // text-style includes filter[web:87]
-    initialState: {
-      pagination: {
-        pageIndex: 0,
-        pageSize: 4,
-      },
-    },
-  });
+  const filtered = useMemo(() => {
+    const list = invites || [];
+    if (!search.trim()) return list;
+    const q = search.toLowerCase();
+    return list.filter(
+      (inv) =>
+        inv.email.toLowerCase().includes(q) ||
+        inv.role.toLowerCase().includes(q) ||
+        inv.status.toLowerCase().includes(q),
+    );
+  }, [invites, search]);
+
+  const sorted = useMemo(() => {
+    if (!sortKey) return filtered;
+    return [...filtered].sort((a, b) => {
+      const aVal = a[sortKey];
+      const bVal = b[sortKey];
+      if (aVal == null || bVal == null) return 0;
+      const cmp =
+        typeof aVal === "string" && typeof bVal === "string"
+          ? aVal.localeCompare(bVal)
+          : new Date(aVal).getTime() - new Date(bVal).getTime();
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+  }, [filtered, sortKey, sortDir]);
+
+  const paginated = useMemo(() => {
+    const start = pageIndex * PAGE_SIZE;
+    return sorted.slice(start, start + PAGE_SIZE);
+  }, [sorted, pageIndex]);
+
+  const pageCount = Math.ceil(sorted.length / PAGE_SIZE) || 1;
+  const currentPage = pageIndex + 1;
+
+  const toggleSort = (key: SortKey) => {
+    if (!key) return;
+    if (sortKey === key) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+    setPageIndex(0);
+  };
 
   if (isLoading) {
     return (
@@ -342,9 +197,6 @@ export function InvitesList({ orgId }: InvitesListProps) {
     );
   }
 
-  const page = table.getState().pagination.pageIndex + 1;
-  const pageCount = table.getPageCount();
-
   return (
     <div className="w-full overflow-x-hidden rounded-none border border-zinc-800 bg-zinc-950/60">
       {/* Search bar */}
@@ -366,7 +218,8 @@ export function InvitesList({ orgId }: InvitesListProps) {
                         value={field.value ?? ""}
                         onChange={(e) => {
                           field.onChange(e);
-                          table.setGlobalFilter(e.target.value);
+                          setSearch(e.target.value);
+                          setPageIndex(0);
                         }}
                         placeholder="Search invites (email, role, status)..."
                         autoComplete="given-name"
@@ -384,52 +237,124 @@ export function InvitesList({ orgId }: InvitesListProps) {
       {/* Desktop table (large screens) */}
       <Table className="table-fixed w-full hidden lg:table">
         <TableHeader className="bg-zinc-950/80">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className="border-zinc-800/80 hover:bg-transparent"
-            >
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className="px-3 py-2.5 text-xs text-zinc-400"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
+          <TableRow className="border-zinc-800/80 hover:bg-transparent">
+            <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+              <SortHeaderButton label="Email" columnKey="email" sortKey={sortKey} sortDir={sortDir} onToggle={toggleSort} />
+            </TableHead>
+            <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+              <SortHeaderButton label="Role" columnKey="role" sortKey={sortKey} sortDir={sortDir} onToggle={toggleSort} />
+            </TableHead>
+            <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+              <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                Status
+              </span>
+            </TableHead>
+            <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+              <SortHeaderButton label="Created" columnKey="createdAt" sortKey={sortKey} sortDir={sortDir} onToggle={toggleSort} />
+            </TableHead>
+            <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+              <SortHeaderButton label="Expires" columnKey="expiresAt" sortKey={sortKey} sortDir={sortDir} onToggle={toggleSort} />
+            </TableHead>
+            <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+              <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                Accepted
+              </span>
+            </TableHead>
+            <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+              <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                Revoked
+              </span>
+            </TableHead>
+            <TableHead className="px-3 py-2.5 text-xs text-zinc-400">
+              <span className="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                Actions
+              </span>
+            </TableHead>
+          </TableRow>
         </TableHeader>
-
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row, idx) => (
+          {paginated.length ? (
+            paginated.map((invite, idx) => (
               <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                key={invite.id}
                 className={`border-zinc-900/80 transition-colors hover:bg-zinc-900/60 ${
                   idx % 2 === 1 ? "bg-zinc-950/60" : ""
                 }`}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200"
+                <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                  <div className="font-medium text-zinc-100">{invite.email}</div>
+                </TableCell>
+                <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                  <div className="capitalize text-sm text-zinc-200">
+                    {invite.role}
+                  </div>
+                </TableCell>
+                <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                  <Badge
+                    variant="outline"
+                    className={`rounded-none px-2.5 py-1 text-[11px] font-medium leading-none ${getStatusColor(
+                      invite.status,
+                    )}`}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                    {invite.status}
+                  </Badge>
+                </TableCell>
+                <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                  <div className="text-xs text-zinc-400">
+                    {formatDistanceToNow(new Date(invite.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </div>
+                </TableCell>
+                <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                  <div className="text-xs text-zinc-400">
+                    {formatDistanceToNow(new Date(invite.expiresAt), {
+                      addSuffix: true,
+                    })}
+                  </div>
+                </TableCell>
+                <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                  <div className="text-xs text-zinc-300">
+                    {invite.acceptedAt ? (
+                      formatDistanceToNow(new Date(invite.acceptedAt), {
+                        addSuffix: true,
+                      })
+                    ) : (
+                      <span className="text-zinc-500">—</span>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                  <div className="text-xs text-zinc-300">
+                    {invite.revokedAt ? (
+                      formatDistanceToNow(new Date(invite.revokedAt), {
+                        addSuffix: true,
+                      })
+                    ) : (
+                      <span className="text-zinc-500">—</span>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell className="max-w-55 truncate px-3 py-2.5 align-middle text-sm text-zinc-200">
+                  {invite.status === "pending" ? (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 rounded-full border border-rose-500/40 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 hover:text-rose-100"
+                      onClick={() => handleRevoke(invite.id)}
+                      disabled={revokeInviteMutation.isPending}
+                      title="Revoke invite"
+                    >
+                      <XCircle className="h-3.5 w-3.5" />
+                    </Button>
+                  ) : null}
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
               <TableCell
-                colSpan={columns.length}
+                colSpan={8}
                 className="h-24 text-center text-sm text-zinc-500"
               >
                 No results.
@@ -441,9 +366,8 @@ export function InvitesList({ orgId }: InvitesListProps) {
 
       {/* Cards layout for small & medium screens */}
       <div className="lg:hidden divide-y divide-zinc-900">
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => {
-            const invite = row.original as InviteListItem;
+        {paginated.length ? (
+          paginated.map((invite) => {
             const createdLabel = invite.createdAt
               ? formatDistanceToNow(new Date(invite.createdAt), {
                   addSuffix: true,
@@ -467,7 +391,7 @@ export function InvitesList({ orgId }: InvitesListProps) {
 
             return (
               <div
-                key={row.id}
+                key={invite.id}
                 className="px-3 py-3 flex flex-col gap-2.5 bg-zinc-950/60"
               >
                 <div className="flex items-start justify-between gap-2">
@@ -547,10 +471,12 @@ export function InvitesList({ orgId }: InvitesListProps) {
             <span className="uppercase tracking-wide text-[10px] text-zinc-500">
               Page
             </span>
-            <span className="text-xs font-semibold text-zinc-100">{page}</span>
+            <span className="text-xs font-semibold text-zinc-100">
+              {currentPage}
+            </span>
             <span className="text-zinc-500">/</span>
             <span className="text-xs font-medium text-zinc-300">
-              {pageCount || 1}
+              {pageCount}
             </span>
           </div>
           <span className="hidden sm:inline text-zinc-500">
@@ -561,8 +487,8 @@ export function InvitesList({ orgId }: InvitesListProps) {
           <Button
             size="sm"
             className="group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-none border-none bg-[#ff9D4D] px-0 text-[10px] font-semibold text-zinc-950 shadow-sm transition-all hover:bg-[#ea9753] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed"
-            onClick={() => table.firstPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => setPageIndex(0)}
+            disabled={pageIndex === 0}
           >
             <ChevronsLeft className="h-3 w-3" />
             <span className="sr-only">First page</span>
@@ -570,8 +496,8 @@ export function InvitesList({ orgId }: InvitesListProps) {
           <Button
             size="sm"
             className="group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-none border-none bg-[#ff9D4D] px-0 text-[10px] font-semibold text-zinc-950 shadow-sm transition-all hover:bg-[#ea9753] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
+            disabled={pageIndex === 0}
           >
             <ChevronLeft className="h-3 w-3" />
             <span className="sr-only">Previous page</span>
@@ -579,8 +505,8 @@ export function InvitesList({ orgId }: InvitesListProps) {
           <Button
             size="sm"
             className="group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-none border-none bg-[#ff9D4D] px-0 text-[10px] font-semibold text-zinc-950 shadow-sm transition-all hover:bg-[#ea9753] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => setPageIndex((p) => Math.min(pageCount - 1, p + 1))}
+            disabled={pageIndex >= pageCount - 1}
           >
             <ChevronRight className="h-3 w-3" />
             <span className="sr-only">Next page</span>
@@ -588,8 +514,8 @@ export function InvitesList({ orgId }: InvitesListProps) {
           <Button
             size="sm"
             className="group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-none border-none bg-[#ff9D4D] px-0 text-[10px] font-semibold text-zinc-950 shadow-sm transition-all hover:bg-[#ea9753] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed"
-            onClick={() => table.lastPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => setPageIndex(pageCount - 1)}
+            disabled={pageIndex >= pageCount - 1}
           >
             <ChevronsRight className="h-3 w-3" />
             <span className="sr-only">Last page</span>
