@@ -22,8 +22,8 @@ export function useRequestPasswordReset() {
     },
     onSuccess: (data, variables) => {
       if (data?.sent) {
-        toast.success("Password reset email sent!", {
-          description: `We've sent a reset link to ${variables.email}. Please check your inbox and spam folder.`,
+        toast.success("✉️ Email sent!", {
+          description: `Check your inbox at ${variables.email} for the reset link. It expires in 30 minutes.`,
         });
       }
     },
@@ -48,29 +48,29 @@ export function useRequestPasswordReset() {
 
       // Handle specific error codes from the backend
       if (errorCode === "RATE_LIMITED") {
-        toast.error("Too many requests", {
+        toast.error("🔒 Too many requests", {
           description: "Please wait a few moments and try again.",
         });
       } else if (errorCode === "PASSWORD_RESET_COOLDOWN") {
-        toast.error("Please wait", {
-          description: errorMessage || "Before requesting another reset email.",
+        toast.error("⏳ Please wait", {
+          description: "You can request another reset email in a moment.",
         });
       } else if (errorCode === "PASSWORD_RESET_DAILY_LIMIT") {
-        toast.error("Daily limit reached", {
-          description: errorMessage || "Please try again tomorrow.",
+        toast.error("📅 Daily limit reached", {
+          description: "You've reached the limit for today. Please try again tomorrow.",
         });
       } else if (
         errorMessage?.includes("user doesn't exist") ||
         errorMessage?.includes("not found")
       ) {
         // Security: Don't reveal if email exists or not
-        toast.error("Email not found", {
+        toast.success("✓ Check your email", {
           description:
             "If this email is registered, you'll receive a reset link shortly.",
         });
       } else {
-        toast.error("Failed to send reset email", {
-          description: errorMessage || "Please try again later.",
+        toast.error("❌ Couldn't send reset email", {
+          description: "Please check your email and try again later.",
         });
       }
     },
@@ -93,7 +93,7 @@ export function useConfirmPasswordReset() {
       return response;
     },
     onSuccess: () => {
-      toast.success("Password reset successful!", {
+      toast.success("🎉 Password reset successfully!", {
         description: "You can now log in with your new password.",
       });
 
@@ -122,29 +122,29 @@ export function useConfirmPasswordReset() {
 
       // Handle specific error codes from the backend
       if (errorCode === "RATE_LIMITED") {
-        toast.error("Too many requests", {
+        toast.error("🔒 Too many requests", {
           description: "Please wait a few moments and try again.",
         });
       } else if (errorCode === "INVALID_TOKEN") {
-        toast.error("Invalid or expired reset link", {
-          description: "Please request a new password reset.",
+        toast.error("🔗 Invalid reset link", {
+          description: "This link has expired. Please request a new password reset.",
         });
       } else if (
         errorMessage?.includes("password") &&
         errorMessage?.includes("match")
       ) {
-        toast.error("Passwords don't match", {
-          description: "Please ensure both password fields match.",
+        toast.error("🔐 Passwords don't match", {
+          description: "Please make sure both passwords are identical.",
         });
       } else if (errorMessage?.includes("ValidationError")) {
-        toast.error("Invalid password", {
+        toast.error("⚠️ Invalid password", {
           description:
-            "Password must be at least 8 characters with a letter and number.",
+            "Password must be 8+ characters with at least one letter and number.",
         });
       } else {
-        toast.error("Failed to reset password", {
+        toast.error("❌ Couldn't reset password", {
           description:
-            errorMessage || "Please try again or request a new reset link.",
+            "Something went wrong. Please try again or request a new reset link.",
         });
       }
     },
