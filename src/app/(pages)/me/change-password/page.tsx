@@ -1,4 +1,5 @@
-import { ChangePasswordForm } from "@/src/features/account/components/change-password";
+import { ChangePasswordForm } from "@/src/features/auth/components/ChangePasswordForm";
+
 
 function page() {
   return (

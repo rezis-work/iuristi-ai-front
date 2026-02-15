@@ -1,60 +1,33 @@
 "use client";
 
-import { LawyerProfileForm } from "@/src/features/account/components/LawyerProfileForm";
+import { LawyerProfile } from "@/src/features/user-account/lawyer-profile/components/lawyer-profile";
 import { Suspense } from "react";
-import { useMyOrgs } from "@/src/features/account/hooks/use-orgs";
 
 export default function LawyerProfilePage() {
   return (
     <Suspense
       fallback={
-        <div className="space-y-6 select-none">
-          <p className="text-sm text-zinc-400">Loading lawyer profile...</p>
+        <div className="space-y-6">
+          <div className="h-8 w-32 animate-pulse rounded bg-neutral-800" />
+          <div className="h-48 animate-pulse rounded-lg bg-neutral-900/50" />
         </div>
       }
     >
-      <LawyerProfilePageContent />
-    </Suspense>
-  );
-}
-
-function LawyerProfilePageContent() {
-  const { data: orgs, isLoading: isLoadingOrgs } = useMyOrgs();
-  const orgId = orgs?.[0]?.id ?? null;
-
-  return (
-    <div className="space-y-6 select-none">
-      <section className="w-full mb-2">
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <h1 className="text-xl sm:text-2xl font-semibold text-white">
-              Lawyer Profile
-            </h1>
-            <p className="text-sm text-zinc-400 max-w-xl">
-              Manage your practice areas and professional information.
-            </p>
-          </div>
-
-          {isLoadingOrgs ? (
-            <div className="space-y-2" />
-          ) : !orgs || orgs.length === 0 ? (
-            <div className="text-sm text-zinc-500">
-              You are not a member of any organizations yet.
+      <div className="space-y-6">
+        <section className="mb-2 w-full">
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <h1 className="text-xl font-semibold text-white sm:text-2xl">
+                Lawyer Profile
+              </h1>
+              <p className="max-w-xl text-sm text-zinc-400">
+                Manage your practice areas and professional information.
+              </p>
             </div>
-          ) : null}
-        </div>
-      </section>
-
-      {orgId ? (
-        <div className="space-y-4">
-          <LawyerProfileForm orgId={orgId} />
-        </div>
-      ) : !isLoadingOrgs && (!orgs || orgs.length === 0) ? null : !isLoadingOrgs ? (
-        <p className="text-sm text-zinc-500">
-          You are not a member of any organizations yet. Create one from the
-          Organization page.
-        </p>
-      ) : null}
-    </div>
+          </div>
+        </section>
+        <LawyerProfile />
+      </div>
+    </Suspense>
   );
 }

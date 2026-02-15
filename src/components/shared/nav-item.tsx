@@ -13,5 +13,5 @@ export const menuItems: MenuItem[] = [
   { path: "/me/organization", label: "Organization", icon: Building },
   { path: "/me/members", label: "Members", icon: Scale },
   { path: "/me/settings", label: "Settings", icon: Settings },
-  { path: "/me/change-password", label: "Change password", icon: Lock },
+  { path: "/me/change-password", label: "Change Password", icon: Lock },
 ];

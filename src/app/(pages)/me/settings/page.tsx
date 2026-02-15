@@ -1,9 +1,10 @@
-import { SettingsForm } from "@/src/features/account/components/settings-form";
+
+import Seetings from "@/src/features/user-account/profile/components/seetings";
 
 export default function SettingsPage() {
   return (
     <div className="w-full">
-      <SettingsForm />
+      <Seetings/>
     </div>
   );
 }

@@ -84,5 +84,8 @@ export async function uploadImage(
     throw new Error(finalize.error || "Upload validation failed");
   }
 
-  return fileUrl;
+  // Backend შეიძლება დააბრუნოს presigned URL (X-Amz- params) - ეს არის PUT-ისთვის,
+  // img src-ში არ იმუშავებს. ვიყენებთ მხოლოდ base URL-ს (მუდმივი S3 object URL).
+  const permanentUrl = fileUrl.includes("X-Amz-") ? fileUrl.split("?")[0] : fileUrl;
+  return permanentUrl;
 }

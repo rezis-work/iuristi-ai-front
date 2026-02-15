@@ -1,7 +1,7 @@
 import React from "react";
 import Wrapper from "@/src/components/shared/wrapper";
-import { AccountSidebar } from "@/src/features/account/components/account-sidebar";
-import { LawyerProfileMenu } from "../../../features/lawer-proile/components/lawyer-profile-menu";
+import { AccountSidebar } from "@/src/features/user-account/components/account-sidebar";
+import { LawyerProfileMenu } from "../../../features/user-account/components/lawyer-profile-menu";
 
 
 function Layout({

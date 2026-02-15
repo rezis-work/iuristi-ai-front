@@ -1,5 +1,5 @@
 
-import OrgsCreatePage from "@/src/features/lawer-proile/orgs/components/orgs-create";
+import OrgsCreatePage from "@/src/features/user-account/orgs/components/orgs-create";
 
 function ContactPage() {
   return (
