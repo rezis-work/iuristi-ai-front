@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { createInviteSchema, type CreateInviteInput } from "../schemas/invite-schema";
+import { z } from "zod";
 import { useCreateInvite } from "../hooks/invite";
 import { Loader2 } from "lucide-react";
 
@@ -33,7 +34,7 @@ const ROLE_OPTIONS = [
 export function CreateInviteForm({ orgId }: { orgId: string }) {
   const createInvite = useCreateInvite(orgId);
 
-  const form = useForm<CreateInviteInput>({
+  const form = useForm<z.input<typeof createInviteSchema>>({
     resolver: zodResolver(createInviteSchema),
     defaultValues: {
       email: "",
@@ -42,8 +43,13 @@ export function CreateInviteForm({ orgId }: { orgId: string }) {
     },
   });
 
-  function onSubmit(data: CreateInviteInput) {
-    createInvite.mutate(data, {
+  function onSubmit(data: z.input<typeof createInviteSchema>) {
+    const payload: CreateInviteInput = {
+      email: data.email,
+      role: data.role ?? "lawyer",
+      expiresInDays: data.expiresInDays ?? 7,
+    };
+    createInvite.mutate(payload, {
       onSuccess: () => form.reset(),
     });
   }

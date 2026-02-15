@@ -20,8 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
-import { createInviteLinkSchema } from "../../members/schemas/memebers-schema";
-import type { CreateInviteLinkInput } from "../../members/schemas/memebers-schema";
+import {
+  createInviteLinkSchema,
+  type CreateInviteLinkInput,
+} from "../../members/schemas/memebers-schema";
+import { z } from "zod";
 import { useCreateInviteLink } from "../hooks/invite";
 import { Loader2, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
@@ -38,7 +41,7 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
   const [copied, setCopied] = useState(false);
   const createLink = useCreateInviteLink(orgId);
 
-  const form = useForm<CreateInviteLinkInput>({
+  const form = useForm<z.input<typeof createInviteLinkSchema>>({
     resolver: zodResolver(createInviteLinkSchema),
     defaultValues: {
       email: "",
@@ -47,9 +50,14 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
     },
   });
 
-  function onSubmit(data: CreateInviteLinkInput) {
+  function onSubmit(data: z.input<typeof createInviteLinkSchema>) {
     setGeneratedUrl(null);
-    createLink.mutate(data, {
+    const payload: CreateInviteLinkInput = {
+      email: data.email,
+      role: data.role ?? "lawyer",
+      expiresInDays: data.expiresInDays ?? 7,
+    };
+    createLink.mutate(payload, {
       onSuccess: (result) => {
         if (result?.inviteUrl) {
           setGeneratedUrl(result.inviteUrl);

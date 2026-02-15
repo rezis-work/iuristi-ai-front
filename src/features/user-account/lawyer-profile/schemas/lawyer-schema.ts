@@ -50,5 +50,5 @@ export function normalizeProfileFields(fields: string[]): LawyerField[] {
   const keys = lawyerFieldEnum.options as LawyerField[];
   return fields
     .map((f) => (keys.includes(f as LawyerField) ? f : displayNameToKey[f]))
-    .filter((f): f is LawyerField => !!f && keys.includes(f));
+    .filter((f): f is LawyerField => !!f && keys.includes(f as LawyerField));
 }

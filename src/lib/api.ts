@@ -96,6 +96,15 @@ export async function api<T>(
       if (options.disableRedirect) {
         throw new Error("Not authenticated");
       }
+      // Redirect to login with current path as next (client-side only)
+      if (typeof window !== "undefined") {
+        const pathname = window.location?.pathname || "/";
+        const isAlreadyOnLogin = pathname.includes("/login");
+        if (!isAlreadyOnLogin) {
+          const nextParam = encodeURIComponent(pathname);
+          window.location.replace(`/login?next=${nextParam}`);
+        }
+      }
       throw new Error("Authentication required. Please log in.");
     }
     (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
@@ -179,13 +188,10 @@ export async function api<T>(
         const hadToken = getToken();
         removeToken();
         const pathname = window.location?.pathname || "/";
-        const segments = pathname.split("/").filter(Boolean);
-        const localeFromPath = segments[0] || "en";
-        const isAlreadyOnLogin =
-          segments[1] === "login" || pathname.includes("/login");
+        const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
           const nextParam = encodeURIComponent(pathname);
-          window.location.replace(`/${localeFromPath}/login?next=${nextParam}`);
+          window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}
     }
@@ -254,13 +260,10 @@ export async function apiForm<T>(
         const hadToken = getToken();
         removeToken();
         const pathname = window.location?.pathname || "/";
-        const segments = pathname.split("/").filter(Boolean);
-        const localeFromPath = segments[0] || "en";
-        const isAlreadyOnLogin =
-          segments[1] === "login" || pathname.includes("/login");
+        const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
           const nextParam = encodeURIComponent(pathname);
-          window.location.replace(`/${localeFromPath}/login?next=${nextParam}`);
+          window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}
     }
@@ -325,13 +328,10 @@ export async function apiBlob(
         const hadToken = getToken();
         removeToken();
         const pathname = window.location?.pathname || "/";
-        const segments = pathname.split("/").filter(Boolean);
-        const localeFromPath = segments[0] || "en";
-        const isAlreadyOnLogin =
-          segments[1] === "login" || pathname.includes("/login");
+        const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
           const nextParam = encodeURIComponent(pathname);
-          window.location.replace(`/${localeFromPath}/login?next=${nextParam}`);
+          window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}
     }

@@ -1,10 +1,5 @@
-
-import Seetings from "@/src/features/user-account/profile/components/seetings";
+import { redirect } from "next/navigation";
 
 export default function SettingsPage() {
-  return (
-    <div className="w-full">
-      <Seetings/>
-    </div>
-  );
+  redirect("/me/profile");
 }

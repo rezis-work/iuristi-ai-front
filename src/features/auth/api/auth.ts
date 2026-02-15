@@ -87,6 +87,7 @@ export async function GetMe() {
   try {
     const response = await api<Account>("/me/profile", {
       auth: true,
+      disableRedirect: true, // don't redirect to login - let unauthenticated users stay on main page
     });
     return response;
   } catch (error) {

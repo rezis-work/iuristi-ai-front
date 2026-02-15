@@ -1,10 +1,10 @@
-import { ChangePasswordForm } from "@/src/features/auth/components/ChangePasswordForm";
+import { PasswordChnage } from "@/src/features/user-account/change-password/components/password-chnage";
 
 
 function page() {
   return (
     <div>
-      <ChangePasswordForm />
+    <PasswordChnage/>
     </div>
   );
 }

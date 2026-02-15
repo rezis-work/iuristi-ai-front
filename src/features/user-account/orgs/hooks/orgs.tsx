@@ -4,12 +4,14 @@ import type { CreateOrgSchema } from "../schemas/orgs-schema";
 import { toast } from "sonner";
 
 export function useCreateOrgs() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["create-org"],
     mutationFn: (data: CreateOrgSchema) => orgsCreate(data),
 
-    onSuccess:() => {
-        toast.success("your organisation created successully")
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-orgs"] });
+      toast.success("your organisation created successully");
     },
     onError:() => {
         toast.error("failed to create organisation")

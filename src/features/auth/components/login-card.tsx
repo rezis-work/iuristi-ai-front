@@ -74,7 +74,8 @@ export function LoginCard({ className }: UserMenuProps) {
 
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     stop(e);
-    router.push("/login");
+    const nextParam = pathname ? encodeURIComponent(pathname) : "";
+    router.push(nextParam ? `/login?next=${nextParam}` : "/login");
   };
 
   const handleToggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
