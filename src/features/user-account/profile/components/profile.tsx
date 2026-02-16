@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useGetMe, useDeleteAvatar, useUpdateProfile } from "../hooks/profile-api";
+import { useGetMe } from "../hooks/profile-api";
 import {
   Avatar,
   AvatarFallback,
@@ -10,18 +9,7 @@ import {
 } from "@/src/components/ui/avatar";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/src/components/ui/form";
-import { Mail, Phone, User, Loader2, Pencil, Trash2, ImagePlus } from "lucide-react";
-import { cn } from "@/src/lib/utils";
-import { uploadImage } from "@/src/components/upload/api/upload-image";
-import { toast } from "sonner";
+import { Mail, Phone, User, Pencil, CheckCircle2 } from "lucide-react";
 import ProfileEditForm from "./profile-edit-form";
 
 function getInitials(name: string | null, email: string) {
@@ -38,31 +26,7 @@ function getInitials(name: string | null, email: string) {
 
 export default function ProfileMe() {
   const [isEditing, setIsEditing] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
   const { data: profileMe, isLoading } = useGetMe();
-  const deleteAvatar = useDeleteAvatar();
-  const updateProfile = useUpdateProfile();
-
-  const avatarForm = useForm<{ avatar: FileList | null }>({
-    defaultValues: { avatar: null },
-  });
-
-  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setIsUploading(true);
-    try {
-      const fileUrl = await uploadImage(file, "avatar");
-      await updateProfile.mutateAsync({ avatarUrl: fileUrl });
-      toast.success("პროფილის სურათი წარმატებით აიტვირთა");
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "ატვირთვა ვერ მოხერხდა");
-    } finally {
-      setIsUploading(false);
-      avatarForm.setValue("avatar", null);
-      e.target.value = "";
-    }
-  }
 
   if (isLoading)
     return (
@@ -91,7 +55,7 @@ export default function ProfileMe() {
 
   if (isEditing) {
     return (
-      <div className="rounded-xl border border-neutral-700 bg-neutral-800/50 p-6 shadow-sm">
+      <div className="rounded-xl border border-neutral-700 bg-neutral-800/50 p-6 shadow-sm overflow-x-hidden">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-neutral-100">
             Edit Profile
@@ -113,64 +77,12 @@ export default function ProfileMe() {
   return (
     <div className="rounded-xl border border-neutral-700 bg-neutral-800/50 p-6 shadow-sm">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
-        <div className="relative group">
-          <Form {...avatarForm}>
-            <FormField
-              control={avatarForm.control}
-              name="avatar"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/png,image/jpeg,image/webp"
-                      className="sr-only"
-                      onChange={(e) => {
-                        handleAvatarUpload(e);
-                        field.onChange(e.target.files);
-                      }}
-                    />
-                  </FormControl>
-                  <FormLabel
-                    className={cn(
-                      "absolute -right-1 -bottom-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-neutral-600 bg-neutral-800 shadow-md transition-all hover:scale-110 hover:border-[#ff9D4D]/50 hover:bg-neutral-700",
-                      (isUploading || updateProfile.isPending) && "pointer-events-none"
-                    )}
-                    title="ატვირთვა"
-                  >
-                    {isUploading || updateProfile.isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <ImagePlus className="h-4 w-4" />
-                    )}
-                  </FormLabel>
-                </FormItem>
-              )}
-            />
-          </Form>
-          <Avatar className="h-16 w-16 border-2 border-neutral-600">
-            <AvatarImage src={profileMe.avatarUrl ?? undefined} alt={profileMe.name ?? "Profile"} />
-            <AvatarFallback className="bg-[#ff9D4D]/10 text-lg font-medium text-[#ff9D4D]">
-              {getInitials(profileMe.name, profileMe.email)}
-            </AvatarFallback>
-          </Avatar>
-          {profileMe.avatarUrl && (
-            <Button
-              variant="destructive"
-              size="icon"
-              className="absolute -right-1 -top-1 h-8 w-8 rounded-full shadow-md transition-all hover:scale-110"
-              onClick={() => deleteAvatar.mutate()}
-              disabled={deleteAvatar.isPending}
-              title="წაშლა"
-            >
-              {deleteAvatar.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Trash2 className="h-4 w-4" />
-              )}
-            </Button>
-          )}
-        </div>
+        <Avatar className="h-16 w-16 shrink-0 border-2 border-neutral-600">
+          <AvatarImage src={profileMe.avatarUrl ?? undefined} alt={profileMe.name ?? "Profile"} />
+          <AvatarFallback className="bg-[#ff9D4D]/10 text-lg font-medium text-[#ff9D4D]">
+            {getInitials(profileMe.name, profileMe.email)}
+          </AvatarFallback>
+        </Avatar>
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <h2 className="text-xl font-semibold text-neutral-100">
@@ -197,7 +109,15 @@ export default function ProfileMe() {
           </div>
           <div>
             <p className="text-neutral-500">Email</p>
-            <p className="text-neutral-200">{profileMe.email}</p>
+            <p className="text-neutral-200 flex items-center gap-2">
+              {profileMe.email}
+              {profileMe.emailVerified && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  verified
+                </span>
+              )}
+            </p>
           </div>
         </div>
         {profileMe.phone && (

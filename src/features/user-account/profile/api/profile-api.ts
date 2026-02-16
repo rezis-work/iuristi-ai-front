@@ -6,7 +6,7 @@ export type Profile = {
   name: string | null;
   phone: string | null;
   avatarUrl: string | null;
- 
+  emailVerified?: boolean;
   timezone: string;
   accountType: "person" | "lawyer" | "business_owner";
   createdAt: string;
@@ -16,15 +16,18 @@ export type UpdateProfileData = {
   name?: string;
   phone?: string;
   avatarUrl?: string;
- 
+  avatarKey?: string;
   timezone?: string;
   accountType?: "person" | "lawyer" | "business_owner";
 };
 
-export async function getProfile(): Promise<Profile> {
+export async function getProfile(options?: {
+  disableRedirect?: boolean;
+}): Promise<Profile> {
   try {
     const response = await api<Profile>("/me/profile", {
       auth: true,
+      disableRedirect: options?.disableRedirect,
     });
     return response;
   } catch (error) {

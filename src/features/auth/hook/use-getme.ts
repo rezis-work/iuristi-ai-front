@@ -1,19 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { GetMe } from "../api/auth";
+import { useGetMe } from "@/src/features/user-account/profile/hooks/profile-api";
 
+/** Re-export useGetMe - same cache for profile/avatar across the app (LoginCard, sidebar, profile page) */
 export function useMe() {
-  return useQuery({
-    queryKey: ["me"],
-    queryFn: async () => {
-      try {
-        const response = await GetMe();
-        return response;
-      } catch (error) {
-        console.log("failed to fetch me", error);
-        return null;
-      }
-    },
-    staleTime: 0, // Always stale, refetch on invalidation
-    gcTime: 5 * 60 * 1000, // 5 minutes cache time
-  });
+  return useGetMe();
 }
