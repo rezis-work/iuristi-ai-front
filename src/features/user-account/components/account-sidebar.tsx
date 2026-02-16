@@ -87,7 +87,9 @@ export function AccountSidebar() {
             <span className="font-medium text-neutral-200 text-right truncate max-w-[60%] flex items-center justify-end gap-1.5">
               {profile.email}
               {profile.emailVerified && (
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" title="Verified" />
+                <span title="Verified" className="inline-flex">
+                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" aria-hidden />
+                </span>
               )}
             </span>
           </div>

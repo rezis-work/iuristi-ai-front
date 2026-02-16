@@ -126,7 +126,7 @@ export function LoginCard({ className }: UserMenuProps) {
   const avatarNode = user.avatarUrl ? (
     <Avatar className="w-9 h-9 sm:w-11 sm:h-11 ring-2 ring-[#ff9D4D]/60 ring-offset-2 ring-offset-black bg-zinc-800 text-white shrink-0 transition-all duration-300 hover:ring-[#ff9D4D] hover:scale-105 cursor-pointer">
       <AvatarImage
-        src={user.avatarUrl}
+        src={user.avatarUrl ?? undefined}
         alt={user?.name || "User avatar"}
         className="object-cover"
       />
@@ -169,7 +169,7 @@ export function LoginCard({ className }: UserMenuProps) {
                 <div className="flex items-center gap-4">
                   <Avatar className="h-14 w-14 ring-2 ring-[#ff9D4D]/40 ring-offset-2 ring-offset-zinc-900 shrink-0">
                     <AvatarImage
-                      src={user.avatarUrl}
+                      src={user.avatarUrl ?? undefined}
                       alt={user?.name || "User"}
                       className="object-cover"
                     />
