@@ -28,6 +28,7 @@ import {
   type RequestPasswordResetSchema,
 } from "@/src/features/auth/schemas/password-reset-schemas";
 import { CheckCircle2, Mail } from "lucide-react";
+import { motion } from "motion/react";
 
 export function ResetPasswordForm() {
   const { mutate: requestReset, isPending } = useRequestPasswordReset();
@@ -55,7 +56,12 @@ export function ResetPasswordForm() {
   if (submitted) {
     return (
       <Wrapper className="mx-auto">
-        <div className="w-full md:max-w-xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="w-full md:max-w-xl mx-auto"
+        >
           <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
             <CardHeader className="text-center pb-4">
               <div className="flex justify-center mb-4">
@@ -67,7 +73,7 @@ export function ResetPasswordForm() {
                 Check Your Email
               </CardTitle>
               <CardDescription className="text-gray-400 text-base">
-                We've sent a password reset link to{" "}
+                We&apos;ve sent a password reset link to{" "}
                 <span className="text-gray-300 font-medium">
                   {submittedEmail}
                 </span>
@@ -86,7 +92,7 @@ export function ResetPasswordForm() {
                 <p className="flex items-start gap-3">
                   <span className="text-[#FF9D4D] shrink-0">📁</span>
                   <span>
-                    Check your spam or junk folder if you don't see it in your
+                    Check your spam or junk folder if you don&apos;t see it in your
                     inbox.
                   </span>
                 </p>
@@ -119,7 +125,8 @@ export function ResetPasswordForm() {
                 </Button>
                 <Link href="/login" className="block">
                   <Button
-                    variant={"secondary"}
+                    type="button"
+                    variant="secondary"
                     className="w-full h-13 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
                   >
                     Back to Login
@@ -128,14 +135,19 @@ export function ResetPasswordForm() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
       </Wrapper>
     );
   }
 
   return (
     <Wrapper className="mx-auto">
-      <div className="w-full md:max-w-xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full md:max-w-xl mx-auto"
+      >
         <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-3xl font-bold text-white mb-2">
@@ -184,7 +196,7 @@ export function ResetPasswordForm() {
                   <Link href="/login">
                     <Button
                       type="button"
-                      variant={"secondary"}
+                      variant="secondary"
                       className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                     >
                       Back to Login
@@ -202,7 +214,7 @@ export function ResetPasswordForm() {
             </Form>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
     </Wrapper>
   );
 }

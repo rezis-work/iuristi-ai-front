@@ -1,9 +1,5 @@
-import { SettingsForm } from "@/src/features/account/components/settings-form";
+import { redirect } from "next/navigation";
 
 export default function SettingsPage() {
-  return (
-    <div className="w-full">
-      <SettingsForm />
-    </div>
-  );
+  redirect("/me/profile");
 }

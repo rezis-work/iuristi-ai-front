@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -25,14 +26,19 @@ import {
 import { Checkbox } from "@/src/components/ui/checkbox";
 import Wrapper from "@/src/components/shared/wrapper";
 import { useLogin } from "@/src/features/auth/hook/auth";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useLocalStorage } from "../hook/useLocalStorage";
 
 interface LoginFormProps {
   onClose?: () => void;
 }
 
 export function LoginForm({ onClose }: LoginFormProps) {
-  const { mutate: Login } = useLogin({ disableAutoRedirect: true });
+  const searchParams = useSearchParams();
+  const nextParam = searchParams.get("next");
+  const { mutate: Login } = useLogin({
+    disableAutoRedirect: true,
+    redirectTo: nextParam || undefined,
+  });
   const [savedEmail, setSavedEmail, clearSavedEmail, isLoading] =
     useLocalStorage<string>("login_email", "");
 
@@ -48,10 +54,13 @@ export function LoginForm({ onClose }: LoginFormProps) {
   // Load saved email after localStorage is ready
   useEffect(() => {
     if (!isLoading && savedEmail) {
-      form.setValue("email", savedEmail);
-      form.setValue("rememberMe", true);
+      form.reset({
+        email: savedEmail,
+        password: "",
+        rememberMe: true,
+      });
     }
-  }, [isLoading, savedEmail]); // Removed form from dependency array to prevent infinite loops
+  }, [isLoading, savedEmail, form]);
 
   function onSubmit(data: LoginSchema) {
     // Handle remember me functionality
@@ -185,7 +194,7 @@ export function LoginForm({ onClose }: LoginFormProps) {
                 {/* Submit Button */}
                 <div className="grid grid-cols-2 gap-3 sm:gap-7 items-center">
                   <Link
-                    href="/register"
+                    href={nextParam ? `/register?next=${encodeURIComponent(nextParam)}` : "/register"}
                     className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
                     onClick={onClose}
                   >

@@ -77,7 +77,11 @@ const BASE_URL = (
 
 export async function api<T>(
   path: string,
-  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {},
+  options: RequestInit & {
+    auth?: boolean;
+    disableRedirect?: boolean;
+    _skipRefresh?: boolean;
+  } = {},
 ) {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -91,6 +95,15 @@ export async function api<T>(
       // This is useful for queries that should fail silently when not authenticated
       if (options.disableRedirect) {
         throw new Error("Not authenticated");
+      }
+      // Redirect to login with current path as next (client-side only)
+      if (typeof window !== "undefined") {
+        const pathname = window.location?.pathname || "/";
+        const isAlreadyOnLogin = pathname.includes("/login");
+        if (!isAlreadyOnLogin) {
+          const nextParam = encodeURIComponent(pathname);
+          window.location.replace(`/login?next=${nextParam}`);
+        }
       }
       throw new Error("Authentication required. Please log in.");
     }
@@ -109,18 +122,29 @@ export async function api<T>(
     const contentType = res.headers.get("content-type");
     let errorMessage: string = "";
     let errorCode: string = "";
-    let errorData: any = null;
+    type ApiError = {
+      error?: { code?: string } | string;
+      code?: string;
+      message?: string;
+    };
+    let errorData: ApiError | null = null;
 
     if (contentType && contentType.includes("application/json")) {
       try {
-        errorData = await res.json();
-        errorCode = errorData?.error?.code || errorData?.code || "";
-        // NestJS error format: { message, error, statusCode }
-        const message = errorData?.message || errorData?.error;
+        errorData = (await res.json()) as ApiError;
+        const err = errorData?.error;
+        errorCode =
+          (typeof err === "object" && err?.code) ||
+          (typeof err === "string" ? err : "") ||
+          errorData?.code ||
+          "";
+        const message =
+          errorData?.message ??
+          (typeof err === "string" ? err : undefined);
         errorMessage =
           typeof message === "string"
             ? message
-            : JSON.stringify(errorData || {});
+            : JSON.stringify(errorData ?? {});
       } catch {
         const text = await res.text();
         errorMessage = text || "";
@@ -146,18 +170,28 @@ export async function api<T>(
       !options.disableRedirect
     ) {
       try {
-        // Only force a redirect to login if there WAS a token (session expired).
-        // During explicit logout, the token is already cleared, so skip hard reload.
+        // Try refresh token first if this was an auth request and we haven't retried
+        if (options.auth && !options._skipRefresh) {
+          const { refreshAccessToken } = await import(
+            "@/src/features/auth/api/refreshtocken"
+          );
+          const newToken = await refreshAccessToken();
+          if (newToken) {
+            // Retry the original request with new token (skip refresh to avoid loop)
+            return api<T>(path, {
+              ...options,
+              _skipRefresh: true,
+            });
+          }
+        }
+        // Refresh failed or not applicable: redirect to login if there was a token
         const hadToken = getToken();
         removeToken();
         const pathname = window.location?.pathname || "/";
-        const segments = pathname.split("/").filter(Boolean);
-        const localeFromPath = segments[0] || "en";
-        const isAlreadyOnLogin =
-          segments[1] === "login" || pathname.includes("/login");
+        const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
           const nextParam = encodeURIComponent(pathname);
-          window.location.replace(`/${localeFromPath}/login?next=${nextParam}`);
+          window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}
     }
@@ -179,7 +213,11 @@ export async function api<T>(
 // Form/multipart-friendly API helper (does not set Content-Type)
 export async function apiForm<T>(
   path: string,
-  options: RequestInit & { auth?: boolean; disableRedirect?: boolean } = {},
+  options: RequestInit & {
+    auth?: boolean;
+    disableRedirect?: boolean;
+    _skipRefresh?: boolean;
+  } = {},
 ): Promise<T> {
   // Do NOT set Content-Type so the browser can set proper multipart boundary
   const headers: HeadersInit = {
@@ -203,23 +241,29 @@ export async function apiForm<T>(
     const text = await res.text();
     const message = text || "";
 
-    // Only redirect on 401 if disableRedirect is not set and there was a token (session expired)
+    // Try refresh on 401, then redirect if refresh fails
     if (
       typeof window !== "undefined" &&
       (res as Response).status === 401 &&
       !options.disableRedirect
     ) {
       try {
+        if (options.auth && !options._skipRefresh) {
+          const { refreshAccessToken } = await import(
+            "@/src/features/auth/api/refreshtocken"
+          );
+          const newToken = await refreshAccessToken();
+          if (newToken) {
+            return apiForm<T>(path, { ...options, _skipRefresh: true });
+          }
+        }
         const hadToken = getToken();
         removeToken();
         const pathname = window.location?.pathname || "/";
-        const segments = pathname.split("/").filter(Boolean);
-        const localeFromPath = segments[0] || "en";
-        const isAlreadyOnLogin =
-          segments[1] === "login" || pathname.includes("/login");
+        const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
           const nextParam = encodeURIComponent(pathname);
-          window.location.replace(`/${localeFromPath}/login?next=${nextParam}`);
+          window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}
     }
@@ -248,7 +292,7 @@ export async function apiForm<T>(
 // Blob-ის მისაღებად API helper (PDF, images, etc.)
 export async function apiBlob(
   path: string,
-  options: RequestInit & { auth?: boolean } = {},
+  options: RequestInit & { auth?: boolean; _skipRefresh?: boolean } = {},
 ): Promise<Blob | null> {
   const headers: HeadersInit = {
     ...(options.headers || {}),
@@ -272,16 +316,22 @@ export async function apiBlob(
   if (!res.ok) {
     if (typeof window !== "undefined" && res.status === 401) {
       try {
+        if (options.auth && !options._skipRefresh) {
+          const { refreshAccessToken } = await import(
+            "@/src/features/auth/api/refreshtocken"
+          );
+          const newToken = await refreshAccessToken();
+          if (newToken) {
+            return apiBlob(path, { ...options, _skipRefresh: true });
+          }
+        }
         const hadToken = getToken();
         removeToken();
         const pathname = window.location?.pathname || "/";
-        const segments = pathname.split("/").filter(Boolean);
-        const localeFromPath = segments[0] || "en";
-        const isAlreadyOnLogin =
-          segments[1] === "login" || pathname.includes("/login");
+        const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
           const nextParam = encodeURIComponent(pathname);
-          window.location.replace(`/${localeFromPath}/login?next=${nextParam}`);
+          window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}
     }

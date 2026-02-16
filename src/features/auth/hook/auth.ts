@@ -4,15 +4,18 @@ import { LoginSchema, RegisterSchema } from "./../schemas/auth-schemas";
 import { changePassword } from "../api/auth";
 import { ChangePasswordSchema } from "../schemas/auth-schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { removeToken } from "@/src/lib/api";
 
 type UseLoginOptions = {
   disableAutoRedirect?: boolean;
+  /** Override redirect URL (e.g. from "next" query param). If not set, uses next param from URL or /me/profile */
+  redirectTo?: string;
 };
 
 export function useLogin(options?: UseLoginOptions) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (data: LoginSchema) => {
@@ -37,12 +40,27 @@ export function useLogin(options?: UseLoginOptions) {
       }
 
       toast.success("login successful");
-      router.push("/me/profile");
-      if (!options?.disableAutoRedirect) {
-        // Use window.location instead of router.push to ensure cookie is set before navigation
-        // This gives the cookie time to be available for middleware on the next request
+
+      // Determine redirect: explicit redirectTo > next query param > default
+      let nextParam = options?.redirectTo ?? searchParams.get("next");
+      // Handle URL-encoded next param (e.g. %2Fme%2Fchange-password)
+      if (nextParam && !nextParam.startsWith("/")) {
+        try {
+          nextParam = decodeURIComponent(nextParam);
+        } catch {
+          nextParam = null;
+        }
+      }
+      const targetPath =
+        nextParam && typeof nextParam === "string" && nextParam.startsWith("/") && !nextParam.includes("//")
+          ? nextParam
+          : "/me/profile";
+
+      if (options?.disableAutoRedirect) {
+        router.push(targetPath);
+      } else {
         setTimeout(() => {
-          window.location.href = `/`;
+          window.location.href = targetPath;
         }, 100);
       }
     },
@@ -52,8 +70,9 @@ export function useLogin(options?: UseLoginOptions) {
   });
 }
 
-export function useRegister() {
+export function useRegister(options?: { redirectTo?: string }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (data: RegisterSchema) => {
@@ -69,7 +88,12 @@ export function useRegister() {
       // Invalidate the "me" query to refetch user data
       qc.invalidateQueries({ queryKey: ["me"] });
       toast.success("register successful");
-      router.push("/login");
+      const nextParam = options?.redirectTo ?? searchParams.get("next");
+      const targetPath =
+        nextParam && typeof nextParam === "string" && nextParam.startsWith("/") && !nextParam.includes("//")
+          ? nextParam
+          : "/me/profile";
+      router.push(targetPath);
     },
     onError: () => {
       toast.error("register failed");

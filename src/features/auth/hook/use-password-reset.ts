@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import {
   requestPasswordReset,
   confirmPasswordReset,
+  type ConfirmPasswordResetData,
 } from "../api/password-reset";
 import {
   RequestPasswordResetSchema,
@@ -89,8 +90,10 @@ export function useConfirmPasswordReset() {
     mutationFn: async (data: ConfirmPasswordResetSchema) => {
       // Remove confirmPassword field before sending to API
       // The backend only expects token and newPassword
-      const { confirmPassword, ...resetData } = data;
-      const response = await confirmPasswordReset(resetData as any);
+      const { confirmPassword: _confirmPassword, ...resetData } = data;
+      const response = await confirmPasswordReset(
+        resetData as ConfirmPasswordResetData,
+      );
       return response;
     },
     onSuccess: () => {
