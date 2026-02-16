@@ -90,7 +90,8 @@ export function useConfirmPasswordReset() {
     mutationFn: async (data: ConfirmPasswordResetSchema) => {
       // Remove confirmPassword field before sending to API
       // The backend only expects token and newPassword
-      const { confirmPassword: _confirmPassword, ...resetData } = data;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentionally excluded from API payload
+      const { confirmPassword, ...resetData } = data;
       const response = await confirmPasswordReset(
         resetData as ConfirmPasswordResetData,
       );

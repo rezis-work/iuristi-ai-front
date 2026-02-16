@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -60,7 +60,7 @@ export function LawyerProfileEditForm({
   }
 
   const allFields = lawyerFieldEnum.options as LawyerField[];
-  const selectedFields = form.watch("fields");
+  const selectedFields = useWatch({ control: form.control, name: "fields", defaultValue: [] }) ?? [];
   const isDisabled = updateMutation.isPending || isRefetching;
 
   return (

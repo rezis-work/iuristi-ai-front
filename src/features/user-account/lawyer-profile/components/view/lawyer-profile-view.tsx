@@ -4,7 +4,6 @@ import type { LawyerProfileResponce } from "../../api/layer-profile";
 import {
   lawyerFieldDisplayNames,
   normalizeProfileFields,
-  type LawyerField,
 } from "../../schemas/lawyer-schema";
 import { Briefcase, Loader2 } from "lucide-react";
 
