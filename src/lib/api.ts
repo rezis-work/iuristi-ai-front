@@ -96,12 +96,13 @@ export async function api<T>(
       if (options.disableRedirect) {
         throw new Error("Not authenticated");
       }
-      // Redirect to login with current path as next (client-side only)
+      // Redirect to login with current path + query as next (client-side only)
       if (typeof window !== "undefined") {
         const pathname = window.location?.pathname || "/";
         const isAlreadyOnLogin = pathname.includes("/login");
         if (!isAlreadyOnLogin) {
-          const nextParam = encodeURIComponent(pathname);
+          const nextPath = pathname + (window.location?.search || "");
+          const nextParam = encodeURIComponent(nextPath);
           window.location.replace(`/login?next=${nextParam}`);
         }
       }
@@ -190,7 +191,8 @@ export async function api<T>(
         const pathname = window.location?.pathname || "/";
         const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
-          const nextParam = encodeURIComponent(pathname);
+          const nextPath = pathname + (window.location?.search || "");
+          const nextParam = encodeURIComponent(nextPath);
           window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}
@@ -262,7 +264,8 @@ export async function apiForm<T>(
         const pathname = window.location?.pathname || "/";
         const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
-          const nextParam = encodeURIComponent(pathname);
+          const nextPath = pathname + (window.location?.search || "");
+          const nextParam = encodeURIComponent(nextPath);
           window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}
@@ -330,7 +333,8 @@ export async function apiBlob(
         const pathname = window.location?.pathname || "/";
         const isAlreadyOnLogin = pathname.includes("/login");
         if (hadToken && !isAlreadyOnLogin) {
-          const nextParam = encodeURIComponent(pathname);
+          const nextPath = pathname + (window.location?.search || "");
+          const nextParam = encodeURIComponent(nextPath);
           window.location.replace(`/login?next=${nextParam}`);
         }
       } catch {}

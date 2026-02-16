@@ -28,17 +28,9 @@ export function useLogin(options?: UseLoginOptions) {
         throw error;
       }
     },
-    onSuccess: (data) => {
-      // Invalidate the "me" query to refetch user data
-      qc.invalidateQueries({ queryKey: ["me"] });
-
-      // Log user information if available
-      if (data?.user) {
-        console.log("✅ Login successful - User logged in:");
-        console.log("   Name:", data.user.name);
-        console.log("   Email:", data.user.email);
-      }
-
+    onSuccess: async () => {
+      // Refetch profile so it's ready when we navigate (fixes profile not loading after login)
+      await qc.refetchQueries({ queryKey: ["profile", "me"] });
       toast.success("login successful");
 
       // Determine redirect: explicit redirectTo > next query param > default
@@ -59,9 +51,7 @@ export function useLogin(options?: UseLoginOptions) {
       if (options?.disableAutoRedirect) {
         router.push(targetPath);
       } else {
-        setTimeout(() => {
-          window.location.href = targetPath;
-        }, 100);
+        window.location.href = targetPath;
       }
     },
     onError: () => {
@@ -84,9 +74,9 @@ export function useRegister(options?: { redirectTo?: string }) {
         throw error;
       }
     },
-    onSuccess: () => {
-      // Invalidate the "me" query to refetch user data
-      qc.invalidateQueries({ queryKey: ["me"] });
+    onSuccess: async () => {
+      // Refetch profile so it's ready when we navigate
+      await qc.refetchQueries({ queryKey: ["profile", "me"] });
       toast.success("register successful");
       const nextParam = options?.redirectTo ?? searchParams.get("next");
       const targetPath =
@@ -118,10 +108,9 @@ export function useLogOut() {
     onSuccess: () => {
       // Remove token from storage
       removeToken();
-      // Set the "me" query data to null
-      qc.setQueryData(["me"], null);
-      // Invalidate all queries
-      qc.invalidateQueries();
+      // Clear profile cache so UI shows logged-out state
+      qc.setQueryData(["profile", "me"], null);
+      qc.invalidateQueries({ queryKey: ["profile", "me"] });
       toast.success("logout successful");
       router.push("/login");
     },
@@ -142,8 +131,7 @@ export function useChangePassword() {
       return await changePassword(data);
     },
     onSuccess: () => {
-      // სურვილის მიხედვით: refresh me, logout, redirect და ა.შ.
-      qc.invalidateQueries({ queryKey: ["me"] });
+      qc.invalidateQueries({ queryKey: ["profile", "me"] });
       toast.success("Password changed successfully");
       router.push("/login");
     },
