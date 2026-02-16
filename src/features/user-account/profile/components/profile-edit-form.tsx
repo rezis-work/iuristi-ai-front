@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -20,13 +21,28 @@ import {
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { UnderlinedFieldWrapper } from "@/src/components/shared/UnderlinedFieldWrapper";
-import { useGetMe, useUpdateProfile } from "../hooks/profile-api";
+import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar";
+import { useGetMe, useUpdateProfile, useDeleteAvatar } from "../hooks/profile-api";
+import { uploadImage } from "@/src/components/upload/api/upload-image";
+import { toast } from "sonner";
 import {
   updateProfileSchema,
   type UpdateProfileSchema,
 } from "../schemas/profile-schema";
-import { User, Phone, Clock, Briefcase, Mail, Loader2 } from "lucide-react";
+import { User, Phone, Clock, Briefcase, Mail, Loader2, ImagePlus, Trash2 } from "lucide-react";
 import type { Profile } from "../api/profile-api";
+
+function getInitials(name: string | null, email: string) {
+  if (name?.trim()) {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  }
+  return email.slice(0, 2).toUpperCase();
+}
 
 const PROFILE_TYPE_OPTIONS: { value: Profile["accountType"]; label: string }[] = [
   { value: "person", label: "Person" },
@@ -39,8 +55,27 @@ interface ProfileEditFormProps {
 }
 
 export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { data: profile, isLoading: isLoadingProfile } = useGetMe();
   const updateProfileMutation = useUpdateProfile();
+  const deleteAvatar = useDeleteAvatar();
+
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploading(true);
+    try {
+      const { fileUrl, key } = await uploadImage(file, "avatar");
+      await updateProfileMutation.mutateAsync({ avatarUrl: fileUrl, avatarKey: key });
+      toast.success("პროფილის სურათი წარმატებით აიტვირთა");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "ატვირთვა ვერ მოხერხდა");
+    } finally {
+      setIsUploading(false);
+      e.target.value = "";
+    }
+  }
 
   const form = useForm<UpdateProfileSchema>({
     resolver: zodResolver(updateProfileSchema),
@@ -98,8 +133,69 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 gap-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 overflow-x-hidden">
+        <div className="grid grid-cols-1 gap-5">
+          {/* Avatar upload / delete */}
+          <div className="space-y-4">
+            <label className="block font-medium text-neutral-200">
+              Profile Photo
+            </label>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-4 rounded-xl bg-neutral-800/50 border border-neutral-700/50 min-w-0">
+              <div className="relative shrink-0">
+                <Avatar className="h-24 w-24 sm:h-28 sm:w-28 border-2 border-[#ff9D4D]/50 ring-2 ring-neutral-700/50">
+                  <AvatarImage src={profile?.avatarUrl ?? undefined} alt={profile?.name ?? "Profile"} className="object-cover" />
+                  <AvatarFallback className="bg-[#ff9D4D]/15 text-2xl font-semibold text-[#ff9D4D]">
+                    {getInitials(profile?.name ?? null, profile?.email ?? "")}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="flex flex-col gap-3 w-full sm:w-auto sm:min-w-[200px]">
+                <Input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  className="sr-only"
+                  onChange={handleAvatarUpload}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-full sm:w-auto gap-2 border-[#ff9D4D]/50 bg-neutral-800 hover:bg-[#ff9D4D]/10 hover:border-[#ff9D4D] text-neutral-200"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading || updateProfileMutation.isPending}
+                >
+                  {isUploading || updateProfileMutation.isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <ImagePlus className="h-4 w-4" />
+                  )}
+                  ატვირთვა
+                </Button>
+                {profile?.avatarUrl && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:w-auto gap-2 border-red-500/50 bg-neutral-800 hover:bg-red-500/10 hover:border-red-500 text-red-400 hover:text-red-300"
+                    onClick={() => deleteAvatar.mutate()}
+                    disabled={deleteAvatar.isPending}
+                  >
+                    {deleteAvatar.isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                    წაშლა
+                  </Button>
+                )}
+                <p className="text-xs text-neutral-500">
+                  PNG, JPEG ან WebP. მაქს 5MB
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Email (Display only) */}
           <div className="space-y-2">
             <label className="flex items-center gap-2 font-medium text-neutral-200">

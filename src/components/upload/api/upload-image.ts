@@ -22,13 +22,13 @@ type FinalizeUploadResponse = {
  * 1. POST /files/upload-url - get presigned URL
  * 2. PUT file directly to uploadUrl (S3)
  * 3. POST /files/finalize - validate the upload
- * @returns fileUrl - public URL of the image to save in profile/org
+ * @returns { fileUrl, key } - public URL and S3 key for PATCH /me/profile
  */
 export async function uploadImage(
   file: File,
   kind: UploadKind,
   orgId?: string
-): Promise<string> {
+): Promise<{ fileUrl: string; key: string }> {
   const mimeType = file.type;
   const allowedMimes = ["image/png", "image/jpeg", "image/webp"];
   if (!allowedMimes.includes(mimeType)) {
@@ -87,5 +87,5 @@ export async function uploadImage(
   // Backend შეიძლება დააბრუნოს presigned URL (X-Amz- params) - ეს არის PUT-ისთვის,
   // img src-ში არ იმუშავებს. ვიყენებთ მხოლოდ base URL-ს (მუდმივი S3 object URL).
   const permanentUrl = fileUrl.includes("X-Amz-") ? fileUrl.split("?")[0] : fileUrl;
-  return permanentUrl;
+  return { fileUrl: permanentUrl, key };
 }

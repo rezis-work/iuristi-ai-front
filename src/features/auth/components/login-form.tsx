@@ -30,11 +30,14 @@ import { useLocalStorage } from "../hook/useLocalStorage";
 
 interface LoginFormProps {
   onClose?: () => void;
+  next?: string;
+  compact?: boolean;
 }
 
-export function LoginForm({ onClose }: LoginFormProps) {
+export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) {
   const searchParams = useSearchParams();
-  const nextParam = searchParams.get("next");
+  const nextFromUrl = searchParams.get("next");
+  const nextParam = nextProp ?? nextFromUrl;
   const { mutate: Login } = useLogin({
     disableAutoRedirect: true,
     redirectTo: nextParam || undefined,
@@ -88,12 +91,11 @@ export function LoginForm({ onClose }: LoginFormProps) {
     });
   }
 
-  return (
-    <Wrapper className="mx-auto">
-      <div className="w-full md:max-w-xl mx-auto">
-        <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="text-3xl font-bold text-white mb-2">
+  const content = (
+    <div className={compact ? "w-full" : "w-full md:max-w-xl mx-auto"}>
+      <Card className={`bg-transparent rounded-none md:rounded-md shadow-2xl border-none ${compact ? "pt-12 pb-4 px-6" : "py-20"}`}>
+          <CardHeader className={`text-center ${compact ? "pb-3" : "pb-4"}`}>
+            <CardTitle className={`font-bold text-white mb-2 ${compact ? "text-2xl" : "text-3xl"}`}>
               Welcome Back
             </CardTitle>
             <CardDescription className="text-gray-400 text-base">
@@ -196,7 +198,7 @@ export function LoginForm({ onClose }: LoginFormProps) {
                   <Link
                     href={nextParam ? `/register?next=${encodeURIComponent(nextParam)}` : "/register"}
                     className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
-                    onClick={onClose}
+                    onClick={() => onClose?.()}
                   >
                     <Button
                       variant={"secondary"}
@@ -218,6 +220,7 @@ export function LoginForm({ onClose }: LoginFormProps) {
           </CardContent>
         </Card>
       </div>
-    </Wrapper>
   );
+
+  return compact ? content : <Wrapper className="mx-auto">{content}</Wrapper>;
 }
