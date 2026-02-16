@@ -6,11 +6,15 @@ import { ChangePasswordSchema } from "../schemas/auth-schemas";
 
 export async function login(data: LoginSchema) {
   try {
+    // Remove rememberMe before sending to backend (client-side only)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { rememberMe: _, ...loginData } = data;
+
     const response = await api<{ accessToken?: string; user?: Account }>(
       "/auth/login",
       {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(loginData),
       },
     );
 
@@ -83,6 +87,7 @@ export async function GetMe() {
   try {
     const response = await api<Account>("/me/profile", {
       auth: true,
+      disableRedirect: true, // don't redirect to login - let unauthenticated users stay on main page
     });
     return response;
   } catch (error) {

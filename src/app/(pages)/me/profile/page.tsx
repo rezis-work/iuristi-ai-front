@@ -1,9 +1,9 @@
-import { ProfileForm } from "@/src/features/account/components/profile-form";
+import ProfileMe from "@/src/features/user-account/profile/components/profile";
 
 function ProfilePage() {
   return (
-    <div>
-      <ProfileForm />
+    <div className="space-y-6">
+      <ProfileMe />
     </div>
   );
 }

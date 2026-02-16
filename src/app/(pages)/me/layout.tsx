@@ -1,7 +1,8 @@
 import React from "react";
 import Wrapper from "@/src/components/shared/wrapper";
-import { AccountSidebar } from "@/src/features/account/components/account-sidebar";
-import Header from "@/src/features/account/components/Header";
+import { AccountSidebar } from "@/src/features/user-account/components/account-sidebar";
+import { LawyerProfileMenu } from "../../../features/user-account/components/lawyer-profile-menu";
+
 
 function Layout({
   children,
@@ -16,7 +17,7 @@ function Layout({
             <AccountSidebar />
           </div>
           <div className="w-full col-span-8 xl:col-span-6">
-            <Header />
+            <LawyerProfileMenu />
             {/* Content */}
             <div className="w-full rounded-sm bg-[#181818] px-4 py-5 sm:px-5 sm:py-6 2xl:px-6 flex-1">
               {children}

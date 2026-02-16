@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -25,7 +26,11 @@ import Wrapper from "@/src/components/shared/wrapper";
 import { useRegister } from "@/src/features/auth/hook/auth";
 
 export function RegisterForm() {
-  const { mutate: Register } = useRegister();
+  const searchParams = useSearchParams();
+  const nextParam = searchParams.get("next");
+  const { mutate: Register } = useRegister({
+    redirectTo: nextParam || undefined,
+  });
 
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -187,7 +192,7 @@ export function RegisterForm() {
             <div className="text-center text-gray-400 text-sm mt-6">
               Already have an account?{" "}
               <Link
-                href="/login"
+                href={nextParam ? `/login?next=${encodeURIComponent(nextParam)}` : "/login"}
                 className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
               >
                 Login
