@@ -39,6 +39,7 @@ import {
 } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { useGetOrgs } from "@/src/features/user-account/orgs/hooks/orgs";
+import { useORgs } from "@/src/features/user-account/orgs/lib/org-state";
 import {
   useGetMembers,
   useRemoveMember,
@@ -101,7 +102,7 @@ function MemberRow({
       <TableCell className="py-4">
         <div className="flex items-center gap-3">
           <Avatar className="size-9 border border-neutral-700">
-            <AvatarImage src={undefined} alt={member.name ?? member.email} />
+            <AvatarImage src={member.avatarUrl ?? undefined} alt={member.name ?? member.email} />
             <AvatarFallback className="bg-zinc-800 text-neutral-200 text-xs">
               {getInitials(member.name, member.email)}
             </AvatarFallback>
@@ -194,7 +195,11 @@ function MembersTableSkeleton() {
 
 export function Members() {
   const { data: orgs, isLoading: isOrgsLoading } = useGetOrgs();
-  const orgId = orgs?.[0]?.id ?? null;
+  const { orgs: selectedOrgId } = useORgs();
+  const orgList = orgs ?? [];
+  const isValidSelected =
+    selectedOrgId && selectedOrgId !== "default" && orgList.some((o) => o.id === selectedOrgId);
+  const orgId = isValidSelected ? selectedOrgId : orgList[0]?.id ?? null;
   const { data: members = [], isLoading: isMembersLoading } = useGetMembers(
     orgId ?? ""
   );

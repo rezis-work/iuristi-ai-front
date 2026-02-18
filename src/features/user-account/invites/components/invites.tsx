@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/src
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { useGetOrgs } from "@/src/features/user-account/orgs/hooks/orgs";
+import { useORgs } from "@/src/features/user-account/orgs/lib/org-state";
 import { useGetInviteList } from "../hooks/invite";
 import { InvitesList } from "./invites-list";
 import { CreateInviteForm } from "./create-invite-form";
@@ -23,7 +24,11 @@ function InvitesSkeleton() {
 
 export function Invites() {
   const { data: orgs, isLoading: isOrgsLoading } = useGetOrgs();
-  const orgId = orgs?.[0]?.id ?? null;
+  const { orgs: selectedOrgId } = useORgs();
+  const orgList = orgs ?? [];
+  const isValidSelected =
+    selectedOrgId && selectedOrgId !== "default" && orgList.some((o) => o.id === selectedOrgId);
+  const orgId = isValidSelected ? selectedOrgId : orgList[0]?.id ?? null;
   const { data: invites = [], isLoading: isInvitesLoading } = useGetInviteList(
     orgId ?? ""
   );
@@ -116,8 +121,7 @@ export function Invites() {
             <div className="max-w-md">
               <CreateInviteForm orgId={orgId} />
               <p className="text-sm text-neutral-500 mt-4">
-                The invite will be sent to the specified email. The user must
-                receive and click the link.
+                The invite will be sent to the specified email. Delivery typically takes 1–5 minutes; the recipient should also check their spam folder. The user must receive and click the link.
               </p>
             </div>
           </TabsContent>

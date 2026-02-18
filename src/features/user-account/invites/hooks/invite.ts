@@ -36,10 +36,11 @@ export function useCreateInvite(orgId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...INVITES_QUERY_KEY, orgId] });
       queryClient.invalidateQueries({ queryKey: ["members", orgId] });
-      toast.success("Invite created");
+      toast.success("Invite created. Email usually arrives within 1–5 minutes. Check spam folder if needed.");
     },
-    onError: () => {
-      toast.error("Failed to create invite");
+    onError: (error: Error) => {
+      const msg = error?.message?.trim();
+      toast.error(msg && msg.length < 120 ? msg : "Failed to create invite");
     },
   });
 }

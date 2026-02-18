@@ -9,7 +9,7 @@ export type Member = {
   role: string;
   email?: string;
   name?: string;
-  // დაამატე სხვა ველები რაც ბექენდი აბრუნებს
+  avatarUrl?: string | null;
 };
 
 export type ListMembersResponse = {
