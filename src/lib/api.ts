@@ -1,4 +1,5 @@
 const COOKIE_NAME = "token";
+const STORAGE_KEY = "accessToken";
 
 //cookie-ტოკენის წაკიტხვის helper function
 function getCookieToken() {
@@ -18,16 +19,18 @@ function getCookieToken() {
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;
 
-  //ჯერ ვიღებთ localStorage-დან token-ს "ვცდილობთ"
-  const token = localStorage.getItem("accsessToken") as string | null;
-
-  //თუ ვერ მივიღებთ ვიღებთ cookie-დან token-ს
-
+  let token = localStorage.getItem(STORAGE_KEY) as string | null;
+  if (!token) {
+    token = localStorage.getItem("accsessToken") as string | null;
+    if (token) {
+      localStorage.setItem(STORAGE_KEY, token);
+      localStorage.removeItem("accsessToken");
+    }
+  }
   if (!token) {
     const cookieToken = getCookieToken();
     if (cookieToken) {
-      // Cookie-დან token-ს localStorage-ში ვწერთ სინქრონიზაციისთვის
-      localStorage.setItem("accsessToken", cookieToken);
+      localStorage.setItem(STORAGE_KEY, cookieToken);
       return cookieToken;
     }
   }
@@ -35,26 +38,29 @@ export function getToken(): string | null {
 }
 
 //cookie-დამატება localStorage-დან
-export function setToken(token: string) {
+export function setToken(token: string, options?: { expiresInDays?: number }) {
   if (typeof window === "undefined") return;
-  localStorage.setItem("accsessToken", token);
-  setAuthCookie(token);
+  localStorage.setItem(STORAGE_KEY, token);
+  setAuthCookie(token, options?.expiresInDays);
 }
 //cookie-დამატება
-export function setAuthCookie(token: string) {
+export function setAuthCookie(token: string, expiresInDays = 7) {
   if (typeof window === "undefined") return;
 
   //პროტოკოპის დამატება https-ის შემთხვევაში
   const secure = window.location.protocol === "https:" ? "; Secure" : "";
 
-  const expires = 7 * 24 * 60 * 60; //7 days in second
+  const expiresDate = new Date();
+  expiresDate.setTime(expiresDate.getTime() + expiresInDays * 24 * 60 * 60 * 1000);
+  const expiresStr = expiresDate.toUTCString();
 
-  document.cookie = `${COOKIE_NAME}=${token}; Path=/; Expires=${expires}; SameSite=Lax${secure}`;
+  document.cookie = `${COOKIE_NAME}=${token}; Path=/; Expires=${expiresStr}; SameSite=Lax${secure}`;
 }
 
 // ამოშლა localStorage-დან და cookie-დან
 export function removeToken() {
   if (typeof window === "undefined") return;
+  localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem("accsessToken");
   ClearAuthCookie();
 }
@@ -72,8 +78,50 @@ export function ClearAuthCookie() {
 
 const BASE_URL = (
   process.env.NEXT_PUBLIC_API_URL ??
-  (process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3001")
+  "/api"
 ).trim();
+
+/** ტოკენის ვადის შემოწმება – JWT exp claim (წამები). ვადა ამოწურვამდე 5 წუთში refresh. */
+function getJwtExp(token: string): number | null {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+    return typeof payload.exp === "number" ? payload.exp : null;
+  } catch {
+    return null;
+  }
+}
+
+/** ტოკენი ვადაგასულა ან 5 წუთში ამოიწურება? */
+function tokenExpiresWithinMinutes(token: string, minutes = 5): boolean {
+  const exp = getJwtExp(token);
+  if (exp == null) return true;
+  const nowSec = Math.floor(Date.now() / 1000);
+  return exp <= nowSec + minutes * 60;
+}
+
+/** Refresh in-flight – ერთი refresh ერთდროულად. */
+let refreshPromise: Promise<string | null> | null = null;
+
+/** ტოკენის პროფილაქტიკური განახლება ვადის ამოწურვამდე. */
+async function ensureValidToken(): Promise<string | null> {
+  const token = getToken();
+  if (!token) return null;
+  if (!tokenExpiresWithinMinutes(token, 5)) return token;
+
+  if (refreshPromise) return refreshPromise;
+  refreshPromise = (async () => {
+    try {
+      const { refreshAccessToken } = await import("@/src/features/auth/api/refreshtocken");
+      const newToken = await refreshAccessToken();
+      return newToken;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+  return refreshPromise;
+}
 
 export async function api<T>(
   path: string,
@@ -89,14 +137,12 @@ export async function api<T>(
   };
 
   if (options.auth) {
-    const token = getToken();
+    let token = getToken();
     if (!token) {
       // If disableRedirect is set, return a more graceful error that can be handled
-      // This is useful for queries that should fail silently when not authenticated
       if (options.disableRedirect) {
         throw new Error("Not authenticated");
       }
-      // Redirect to login with current path + query as next (client-side only)
       if (typeof window !== "undefined") {
         const pathname = window.location?.pathname || "/";
         const isAlreadyOnLogin = pathname.includes("/login");
@@ -108,15 +154,18 @@ export async function api<T>(
       }
       throw new Error("Authentication required. Please log in.");
     }
+    if (!options._skipRefresh && typeof window !== "undefined") {
+      const freshToken = await ensureValidToken();
+      if (freshToken) token = freshToken;
+    }
     (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
   }
-
-  //Ensure path starts with /
 
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const res = await fetch(`${BASE_URL}${normalizedPath}`, {
     ...options,
     headers,
+    credentials: "include",
   });
   if (!res.ok) {
     //json parse ვცდილობთ და ვიღებთ error message-ს
@@ -227,7 +276,11 @@ export async function apiForm<T>(
   };
 
   if (options.auth) {
-    const token = getToken();
+    let token = getToken();
+    if (token && !options._skipRefresh && typeof window !== "undefined") {
+      const freshToken = await ensureValidToken();
+      if (freshToken) token = freshToken;
+    }
     if (token)
       (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
   }
@@ -237,6 +290,7 @@ export async function apiForm<T>(
   const res = await fetch(`${BASE_URL}${normalizedPath}`, {
     ...options,
     headers,
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -302,9 +356,13 @@ export async function apiBlob(
   };
 
   if (options.auth) {
-    const token = getToken();
+    let token = getToken();
     if (!token) {
       throw new Error("Authentication required. Please log in.");
+    }
+    if (!options._skipRefresh && typeof window !== "undefined") {
+      const freshToken = await ensureValidToken();
+      if (freshToken) token = freshToken;
     }
     (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
   }
@@ -314,6 +372,7 @@ export async function apiBlob(
   const res = await fetch(`${BASE_URL}${normalizedPath}`, {
     ...options,
     headers,
+    credentials: "include",
   });
 
   if (!res.ok) {

@@ -6,15 +6,11 @@ import { ChangePasswordSchema } from "../schemas/auth-schemas";
 
 export async function login(data: LoginSchema) {
   try {
-    // Remove rememberMe before sending to backend (client-side only)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { rememberMe: _, ...loginData } = data;
-
     const response = await api<{ accessToken?: string; user?: Account }>(
       "/auth/login",
       {
         method: "POST",
-        body: JSON.stringify(loginData),
+        body: JSON.stringify(data),
       },
     );
 

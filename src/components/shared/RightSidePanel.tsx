@@ -22,19 +22,19 @@ const panelButtons: PanelButton[] = [
     id: "services",
     icon: <Briefcase className="w-5 h-5" />,
     href: "/",
-    label: "სერვისები",
+    label: "Services",
   },
   {
     id: "message",
     icon: <MessageSquare className="w-5 h-5" />,
     href: "/contacts",
-    label: "კონტაქტი",
+    label: "Contact",
   },
   {
     id: "calendar",
     icon: <Calendar className="w-5 h-5" />,
-    href: "/contacts",
-    label: "შეხვედრა",
+    href: "/Meetings",
+    label: "Meetings",
   },
 ];
 

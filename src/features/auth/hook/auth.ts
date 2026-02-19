@@ -92,6 +92,12 @@ export function useRegister(options?: { redirectTo?: string }) {
   });
 }
 
+function clearAuthState(qc: ReturnType<typeof useQueryClient>) {
+  removeToken();
+  qc.setQueryData(["profile", "me"], null);
+  qc.invalidateQueries({ queryKey: ["profile", "me"] });
+}
+
 export function useLogOut() {
   const router = useRouter();
   const qc = useQueryClient();
@@ -106,16 +112,14 @@ export function useLogOut() {
       }
     },
     onSuccess: () => {
-      // Remove token from storage
-      removeToken();
-      // Clear profile cache so UI shows logged-out state
-      qc.setQueryData(["profile", "me"], null);
-      qc.invalidateQueries({ queryKey: ["profile", "me"] });
+      clearAuthState(qc);
       toast.success("logout successful");
       router.push("/login");
     },
     onError: () => {
+      clearAuthState(qc);
       toast.error("logout failed");
+      router.push("/login");
     },
   });
 }
