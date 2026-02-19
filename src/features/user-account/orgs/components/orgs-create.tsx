@@ -43,8 +43,8 @@ export default function OrgsCreatePage({ onSuccess, compact }: OrgsCreatePagePro
     resolver: zodResolver(createOrgSchema),
     defaultValues: {
       name: "",
-      type: "law_firm",
-    },
+      type: undefined,
+    } as { name: string; type: "law_firm" | "business" | "individual" | undefined },
   });
 
   const handleSubmit = (data: CreateOrgSchema) => {
@@ -89,7 +89,7 @@ export default function OrgsCreatePage({ onSuccess, compact }: OrgsCreatePagePro
                 <Briefcase className="h-4 w-4 text-[#ff9D4D]/80" />
                 Type
               </FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select onValueChange={field.onChange} value={field.value ?? ""}>
                 <FormControl>
                   <SelectTrigger className="h-11 w-full bg-neutral-900/60 border-neutral-700 text-neutral-100 data-placeholder:text-neutral-500 focus:border-[#ff9D4D] focus:ring-[#ff9D4D]/25 rounded-md">
                     <SelectValue placeholder="Select organization type" />

@@ -53,12 +53,20 @@ const ROLE_LABELS: Record<string, string> = {
   owner: "Owner",
   admin: "Admin",
   member: "Member",
+  lawyer: "Lawyer",
+  paralegal: "Paralegal",
+  staff: "Staff",
+  client: "Client",
 };
 
 const ROLE_BADGE_CLASSES: Record<string, string> = {
-  owner: "bg-[#ff9D4D]/20 text-[#ff9D4D] border-[#ff9D4D]/40",
-  admin: "bg-zinc-700/80 text-zinc-200 border-zinc-600",
-  member: "bg-zinc-800/50 text-neutral-300 border-neutral-600",
+  owner: "bg-[#ff9D4D]/30 text-[#ffb366] font-medium border-[#ff9D4D]/60 shadow-sm",
+  admin: "bg-indigo-500/30 text-indigo-300 font-medium border-indigo-400/50 shadow-sm",
+  member: "bg-sky-500/30 text-sky-300 font-medium border-sky-400/50 shadow-sm",
+  lawyer: "bg-emerald-500/35 text-emerald-300 font-medium border-emerald-400/60 shadow-sm",
+  paralegal: "bg-violet-500/35 text-violet-300 font-medium border-violet-400/60 shadow-sm",
+  staff: "bg-slate-500/35 text-slate-200 font-medium border-slate-400/50 shadow-sm",
+  client: "bg-amber-500/35 text-amber-200 font-medium border-amber-400/60 shadow-sm",
 };
 
 function getInitials(name?: string | null, email?: string) {
@@ -88,6 +96,10 @@ function MemberRow({
   const updateRole = useUpdateMemberRole(orgId, member.userId);
   const removeMember = useRemoveMember(orgId, member.userId);
   const isOwner = member.role === "owner";
+  const canChangeRole =
+    canManage &&
+    !isOwner &&
+    (member.role === "admin" || member.role === "member");
 
   const handleRoleChange = (value: string) => {
     updateRole.mutate({ role: value as UpdateMemberRoleInput["role"] });
@@ -114,7 +126,7 @@ function MemberRow({
         </div>
       </TableCell>
       <TableCell className="py-4">
-        {canManage && !isOwner ? (
+        {canChangeRole ? (
           <Select
             value={member.role}
             onValueChange={handleRoleChange}

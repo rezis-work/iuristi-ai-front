@@ -45,7 +45,7 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
     resolver: zodResolver(createInviteLinkSchema),
     defaultValues: {
       email: "",
-      role: "lawyer",
+      role: "staff",
       expiresInDays: 7,
     },
   });
@@ -54,7 +54,7 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
     setGeneratedUrl(null);
     const payload: CreateInviteLinkInput = {
       email: data.email,
-      role: data.role ?? "lawyer",
+      role: data.role ?? "staff",
       expiresInDays: data.expiresInDays ?? 7,
     };
     createLink.mutate(payload, {

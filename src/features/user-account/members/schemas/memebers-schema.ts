@@ -31,7 +31,7 @@ export type AcceptInviteInput = z.infer<typeof acceptInviteSchema>;
 
 export const createInviteLinkSchema = z.object({
   email: z.string().email("Invalid email format").transform((val) => val.toLowerCase()),
-  role: memberRoleEnum.default("lawyer"),
+  role: memberRoleEnum.default("staff"),
   expiresInDays: z.number().int().min(1).max(30).optional().default(7),
 });
 

@@ -10,16 +10,21 @@ const RESEND_COOLDOWN_SEC = 60;
 
 export function EmailVerificationSection() {
   const { data: profile, isLoading } = useGetMe();
-  const { mutate: requestVerification, isPending, isSuccess } = useRequestVerification();
+  const { mutate: requestVerification, isPending } = useRequestVerification();
   const [verificationSent, setVerificationSent] = useState(false);
   const [cooldownLeft, setCooldownLeft] = useState(0);
 
-  useEffect(() => {
-    if (isSuccess) {
-      setVerificationSent(true);
-      setCooldownLeft(RESEND_COOLDOWN_SEC);
-    }
-  }, [isSuccess]);
+  const handleRequestVerification = () => {
+    requestVerification(
+      {},
+      {
+        onSuccess: () => {
+          setVerificationSent(true);
+          setCooldownLeft(RESEND_COOLDOWN_SEC);
+        },
+      },
+    );
+  };
 
   useEffect(() => {
     if (cooldownLeft <= 0) return;
@@ -76,11 +81,11 @@ export function EmailVerificationSection() {
                   ხელახლა გაგზავნა: {cooldownLeft} წმ
                 </p>
               ) : (
-              <Button
+                <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => requestVerification({})}
+                onClick={handleRequestVerification}
                   className="h-9 rounded-lg border-neutral-600 bg-neutral-800/50 px-4 text-neutral-200 hover:bg-neutral-700/50 hover:text-white"
                 >
                   <Send className="mr-2 h-4 w-4" />
@@ -90,7 +95,7 @@ export function EmailVerificationSection() {
             ) : (
               <Button
                 type="button"
-                onClick={() => requestVerification({})}
+                onClick={handleRequestVerification}
                 className="h-9 rounded-lg bg-[#ff9D4D] px-4 font-medium text-white hover:bg-[#ff8D3D]"
               >
                 <Send className="mr-2 h-4 w-4" />
