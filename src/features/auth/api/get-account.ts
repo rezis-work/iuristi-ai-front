@@ -44,8 +44,8 @@ export type Account = {
 
 export async function fetchMe() {
   try {
-    const responce = await api<Account>("auth/me");
-    return responce;
+    const response = await api<Account>("/auth/me");
+    return response;
   } catch (error) {
     console.error(error);
     return null;

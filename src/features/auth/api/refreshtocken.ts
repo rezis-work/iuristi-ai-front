@@ -3,10 +3,7 @@ import { setToken } from "@/src/lib/api";
 type RefreshResponse = { accessToken: string };
 
 const getBaseUrl = () =>
-  (
-    process.env.NEXT_PUBLIC_API_URL ??
-    (process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3001")
-  ).trim();
+  (process.env.NEXT_PUBLIC_API_URL ?? "/api").trim();
 
 /**
  * Calls POST /auth/refresh with credentials (sends refreshToken cookie).
