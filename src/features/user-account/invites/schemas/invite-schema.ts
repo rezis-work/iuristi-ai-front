@@ -1,7 +1,7 @@
 import z from "zod";
 
 
-export const memberRoleEnum = z.enum(["owner", "lawyer", "paralegal", "staff", "client"]).default("lawyer");
+export const memberRoleEnum = z.enum(["owner", "lawyer", "paralegal", "staff", "client"]).default("staff");
 
 
 export const createInviteSchema = z.object({

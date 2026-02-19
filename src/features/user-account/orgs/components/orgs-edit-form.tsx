@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { createOrgSchema, type CreateOrgSchema } from "../schemas/orgs-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +21,7 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { useUpdateOrg } from "../hooks/orgs";
+import { useOrgType } from "../lib/orgs-type";
 import { Building2, Briefcase, Loader2 } from "lucide-react";
 
 const ORG_TYPES = [
@@ -42,6 +42,7 @@ export default function OrgsEditForm({
   onSuccess,
 }: OrgsEditFormProps) {
   const updateOrgMutation = useUpdateOrg();
+  const { setType } = useOrgType();
 
   const form = useForm<CreateOrgSchema>({
     resolver: zodResolver(createOrgSchema),
@@ -51,11 +52,12 @@ export default function OrgsEditForm({
 
 
   const handleSubmit = (data: CreateOrgSchema) => {
-    form.reset()
+    form.reset();
     updateOrgMutation.mutate(
       { id, data },
       {
-        onSuccess: () => {
+        onSuccess: (_result, variables) => {
+          setType(variables.data.type);
           onSuccess?.();
         },
         onError: (err) => console.error("Error:", err),
