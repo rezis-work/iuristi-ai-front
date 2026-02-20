@@ -108,7 +108,7 @@ export function AccountSidebar() {
           <button
             onClick={() => logout()}
             disabled={isPending}
-            className="inline-flex w-full items-center justify-center gap-2 px-4 py-4 text-[13px] sm:text-[14px] font-medium text-neutral-300 hover:bg-[#202020] rounded-b-sm hover:text-neutral-50 transition-colors duration-150 disabled:opacity-60 cursor-pointer"
+            className="inline-flex w-full cursor-pointer items-center justify-center gap-2 px-4 py-4 text-[13px] sm:text-[14px] font-medium text-neutral-300 hover:bg-[#202020] rounded-b-sm hover:text-neutral-50 transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <LogOut className="h-4 w-4" />
             Logout

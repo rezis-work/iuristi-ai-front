@@ -91,7 +91,7 @@ export default function Seetings() {
     }
 
     if (Object.keys(updateData).length === 0) {
-      toast.info("ცვლილებები არ მოიძებნა");
+      toast.info("No changes found");
       return;
     }
 
@@ -125,8 +125,8 @@ export default function Seetings() {
           <Settings2 className="h-5 w-5 text-[#ff9D4D]" />
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-neutral-100">პარამეტრები</h2>
-          <p className="text-sm text-neutral-500">მართეთ შეტყობინებების პრეფერენციები</p>
+          <h2 className="text-xl font-semibold text-neutral-100">Settings</h2>
+          <p className="text-sm text-neutral-500">Manage notification preferences</p>
         </div>
       </div>
 
@@ -135,10 +135,10 @@ export default function Seetings() {
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-neutral-300">
               <Bell className="h-4 w-4 text-[#ff9D4D]" />
-              <span className="text-sm font-medium">შეტყობინებები</span>
+              <span className="text-sm font-medium">Notifications</span>
             </div>
             <p className="text-xs text-neutral-500 pl-6">
-              აირჩიეთ როგორი შეტყობინებები გსურთ მიღება
+              Choose which notifications you want to receive
             </p>
           </div>
 
@@ -187,10 +187,10 @@ export default function Seetings() {
               {updateSettings.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ინახება...
+                  Saving...
                 </>
               ) : (
-                "პარამეტრების შენახვა"
+                "Save settings"
               )}
             </Button>
           </div>

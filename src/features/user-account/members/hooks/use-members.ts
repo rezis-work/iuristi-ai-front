@@ -39,7 +39,7 @@ export function useUpdateMemberRole(orgId: string, userId:string) {
         },
         onError: (error) => {
             console.log("Failed to update member role", error);
-            toast.error("წევრის როლის განახლება ვერ მოხერხდა");
+            toast.error("Failed to update member role");
         },
     });
 }
