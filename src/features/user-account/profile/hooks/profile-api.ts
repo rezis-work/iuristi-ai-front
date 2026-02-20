@@ -29,7 +29,17 @@ export function useUpdateProfile() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: UpdateProfileData) => updateProfile(data),
-    onSuccess: () => {
+    onSuccess: (updatedProfile, variables) => {
+      const previous = queryClient.getQueryData<Profile | null>(["profile", "me"]);
+      const merged: Profile = {
+        ...(previous || {}),
+        ...updatedProfile,
+        ...(variables.name !== undefined && { name: variables.name }),
+        ...(variables.phone !== undefined && { phone: variables.phone }),
+        ...(variables.timezone !== undefined && { timezone: variables.timezone }),
+        ...(variables.accountType !== undefined && { accountType: variables.accountType }),
+      } as Profile;
+      queryClient.setQueryData(["profile", "me"], merged);
       queryClient.invalidateQueries({ queryKey: ["profile", "me"] });
     },
   });

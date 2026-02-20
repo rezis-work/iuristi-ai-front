@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { parseAsBoolean, useQueryState } from "nuqs";
 import { useGetMe } from "../hooks/profile-api";
 import {
   Avatar,
@@ -9,7 +9,7 @@ import {
 } from "@/src/components/ui/avatar";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Button } from "@/src/components/ui/button";
-import { Mail, Phone, User, Pencil, CheckCircle2 } from "lucide-react";
+import { Mail, Phone, User, Pencil, CheckCircle2, Briefcase } from "lucide-react";
 import ProfileEditForm from "./profile-edit-form";
 
 function getInitials(name: string | null, email: string) {
@@ -25,7 +25,10 @@ function getInitials(name: string | null, email: string) {
 }
 
 export default function ProfileMe() {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useQueryState(
+    "edit",
+    parseAsBoolean.withDefault(false)
+  );
   const { data: profileMe, isLoading } = useGetMe();
 
   if (isLoading)
@@ -63,13 +66,13 @@ export default function ProfileMe() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setIsEditing(false)}
-            className="rounded-lg text-neutral-400 transition-colors hover:bg-neutral-700/50 hover:text-neutral-100"
+            onClick={() => setIsEditing(null)}
+            className="cursor-pointer rounded-lg text-neutral-400 transition-colors hover:bg-neutral-700/50 hover:text-neutral-100"
           >
             Cancel
           </Button>
         </div>
-        <ProfileEditForm onSuccess={() => setIsEditing(false)} />
+        <ProfileEditForm onSuccess={() => setIsEditing(null)} />
       </div>
     );
   }
@@ -94,7 +97,7 @@ export default function ProfileMe() {
             variant="outline"
             size="sm"
             onClick={() => setIsEditing(true)}
-            className="rounded-lg border-neutral-600 bg-neutral-800/30 px-4 py-2 text-neutral-200 shadow-sm transition-all hover:border-[#ff9D4D]/50 hover:bg-neutral-700/50 hover:text-[#ff9D4D]"
+            className="cursor-pointer rounded-lg border-neutral-600 bg-neutral-800/30 px-4 py-2 text-neutral-200 shadow-sm transition-all hover:border-[#ff9D4D]/50 hover:bg-neutral-700/50 hover:text-[#ff9D4D]"
           >
             <Pencil className="mr-2 h-4 w-4" />
             Edit
@@ -131,6 +134,21 @@ export default function ProfileMe() {
             </div>
           </div>
         )}
+        <div className="flex items-center gap-3 text-sm">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-neutral-700/50">
+            <Briefcase className="h-4 w-4 text-[#ff9D4D]" />
+          </div>
+          <div>
+            <p className="text-neutral-500">Account Type</p>
+            <p className="text-neutral-200">
+              {(!profileMe.accountType || profileMe.accountType === "person")
+                ? "Person"
+                : profileMe.accountType === "lawyer"
+                  ? "Lawyer"
+                  : "Business Owner"}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

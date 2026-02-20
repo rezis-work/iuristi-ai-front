@@ -18,11 +18,18 @@ export type InviteListResponse = {
     invites: InviteListItem[];
 };
 
+export type CreateInviteResponse = {
+    inviteId: string;
+    email: string;
+    role: string;
+    expiresAt: string;
+    inviteToken: string;
+};
 
-export async function getInvites(orgId: string, data: CreateInviteInput) {
+export async function getInvites(orgId: string, data: CreateInviteInput): Promise<CreateInviteResponse> {
     try {
         assertValidOrgId(orgId);
-        const response = await api<CreateInviteInput>(
+        const response = await api<CreateInviteResponse>(
             `/orgs/${orgId}/invites`,
             withOrgContext(orgId, {
                 method: "POST",

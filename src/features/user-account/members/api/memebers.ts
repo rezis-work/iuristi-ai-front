@@ -34,7 +34,7 @@ export async function getMembers(orgId: string): Promise<Member[]> {
 
 export async function updateMemberRole(orgId: string, userId: string, data:UpdateMemberRoleInput ){
  try {
-    const response = await api<Member>(`/members/${orgId}/members/${userId}`, {
+    const response = await api<Member>(`/orgs/${orgId}/members/${userId}`, {
         method: 'PATCH',
         body: JSON.stringify(data),
         auth: true,
@@ -50,7 +50,7 @@ export async function updateMemberRole(orgId: string, userId: string, data:Updat
 
 export async function removeMember(orgId: string, userId: string): Promise<void> {
   try {
-    await api<void>(`/members/${orgId}/members/${userId}`, {
+    await api<void>(`/orgs/${orgId}/members/${userId}`, {
       method: 'DELETE',
       auth: true,
     });

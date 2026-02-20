@@ -21,15 +21,37 @@ export type UpdateProfileData = {
   accountType?: "person" | "lawyer" | "business_owner";
 };
 
+type ProfileAccountType = Profile["accountType"];
+
+/** Normalize accountType from API (handles "Person", snake_case, etc.) */
+function normalizeAccountType(val: unknown): ProfileAccountType {
+  if (!val || typeof val !== "string") return "person";
+  const v = String(val).toLowerCase().replace(/\s+/g, "_");
+  if (v === "lawyer") return "lawyer";
+  if (v === "business_owner" || v === "businessowner") return "business_owner";
+  return "person";
+}
+
+/** Backend may return account_type (snake_case); ensure Profile has accountType (camelCase) */
+function normalizeProfileResponse(raw: Record<string, unknown>): Profile {
+  const accountType = normalizeAccountType(
+    raw.accountType ?? raw.account_type
+  );
+  return {
+    ...raw,
+    accountType,
+  } as Profile;
+}
+
 export async function getProfile(options?: {
   disableRedirect?: boolean;
 }): Promise<Profile> {
   try {
-    const response = await api<Profile>("/me/profile", {
+    const response = await api<Record<string, unknown>>("/me/profile", {
       auth: true,
       disableRedirect: options?.disableRedirect,
     });
-    return response;
+    return normalizeProfileResponse(response);
   } catch (error) {
     console.log("Failed to fetch profile", error);
     throw error;
@@ -38,12 +60,16 @@ export async function getProfile(options?: {
 
 export async function updateProfile(data: UpdateProfileData): Promise<Profile> {
   try {
-    const response = await api<Profile>("/me/profile", {
+    const body: Record<string, unknown> = { ...data };
+    if (data.accountType !== undefined) {
+      body.account_type = data.accountType;
+    }
+    const response = await api<Record<string, unknown>>("/me/profile", {
       method: "PATCH",
-      body: JSON.stringify(data),
+      body: JSON.stringify(body),
       auth: true,
     });
-    return response;
+    return normalizeProfileResponse(response);
   } catch (error) {
     console.log("Failed to update profile", error);
     throw error;
