@@ -90,10 +90,11 @@ export function useConfirmPasswordReset() {
     mutationFn: async (data: ConfirmPasswordResetSchema) => {
       // Remove confirmPassword field before sending to API
       // The backend only expects token and newPassword
-      const { confirmPassword: _confirmPassword, ...resetData } = data;
-      const response = await confirmPasswordReset(
-        resetData as ConfirmPasswordResetData,
-      );
+      const resetData: ConfirmPasswordResetData = {
+        token: data.token,
+        newPassword: data.newPassword,
+      };
+      const response = await confirmPasswordReset(resetData);
       return response;
     },
     onSuccess: () => {

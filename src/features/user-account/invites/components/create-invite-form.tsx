@@ -38,7 +38,7 @@ export function CreateInviteForm({ orgId }: { orgId: string }) {
     resolver: zodResolver(createInviteSchema),
     defaultValues: {
       email: "",
-      role: "lawyer",
+      role: "staff",
       expiresInDays: 7,
     },
   });
@@ -46,7 +46,7 @@ export function CreateInviteForm({ orgId }: { orgId: string }) {
   function onSubmit(data: z.input<typeof createInviteSchema>) {
     const payload: CreateInviteInput = {
       email: data.email,
-      role: data.role ?? "lawyer",
+      role: data.role ?? "staff",
       expiresInDays: data.expiresInDays ?? 7,
     };
     createInvite.mutate(payload, {
