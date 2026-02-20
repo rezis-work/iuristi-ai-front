@@ -3,8 +3,17 @@ import { memberRoleEnum } from "../../invites/schemas/invite-schema";
 
 
 
+export const editableMemberRoleEnum = z.enum([
+  "lawyer",
+  "paralegal",
+  "staff",
+  "client",
+  "admin",
+  "member",
+]);
+
 export const updateMemberRoleSchema = z.object({
-  role: z.enum(["owner", "admin", "member"]),
+  role: editableMemberRoleEnum,
 });
 
 export const memberResponseSchema = z.object({

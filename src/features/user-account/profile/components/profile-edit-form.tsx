@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -12,12 +12,11 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/src/components/ui/dropdown-menu";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { UnderlinedFieldWrapper } from "@/src/components/shared/UnderlinedFieldWrapper";
@@ -29,7 +28,7 @@ import {
   updateProfileSchema,
   type UpdateProfileSchema,
 } from "../schemas/profile-schema";
-import { User, Phone, Clock, Briefcase, Mail, Loader2, ImagePlus, Trash2 } from "lucide-react";
+import { User, Phone, Clock, Briefcase, Mail, Loader2, ImagePlus, Trash2, ChevronDown } from "lucide-react";
 import type { Profile } from "../api/profile-api";
 
 function getInitials(name: string | null, email: string) {
@@ -50,6 +49,15 @@ const PROFILE_TYPE_OPTIONS: { value: Profile["accountType"]; label: string }[] =
   { value: "business_owner", label: "Business Owner" },
 ];
 
+/** Normalize accountType from API (may return "Person" etc.) to our expected values */
+function normalizeAccountType(val: unknown): Profile["accountType"] {
+  if (!val || typeof val !== "string") return "person";
+  const v = String(val).toLowerCase().replace(/\s+/g, "_");
+  if (v === "lawyer") return "lawyer";
+  if (v === "business_owner" || v === "businessowner") return "business_owner";
+  return "person";
+}
+
 interface ProfileEditFormProps {
   onSuccess?: () => void;
 }
@@ -68,9 +76,9 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
     try {
       const { fileUrl, key } = await uploadImage(file, "avatar");
       await updateProfileMutation.mutateAsync({ avatarUrl: fileUrl, avatarKey: key });
-      toast.success("პროფილის სურათი წარმატებით აიტვირთა");
+      toast.success("Profile picture uploaded successfully");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "ატვირთვა ვერ მოხერხდა");
+      toast.error(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setIsUploading(false);
       e.target.value = "";
@@ -85,15 +93,18 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
       timezone: "Asia/Tbilisi",
       accountType: "person",
     },
-    values: profile
-      ? {
-          name: profile.name || "",
-          phone: profile.phone || "",
-          timezone: profile.timezone,
-          accountType: profile.accountType,
-        }
-      : undefined,
   });
+
+  useEffect(() => {
+    if (profile) {
+      form.reset({
+        name: profile.name || "",
+        phone: profile.phone || "",
+        timezone: profile.timezone,
+        accountType: normalizeAccountType(profile.accountType),
+      });
+    }
+  }, [profile, form]);
 
   function onSubmit(data: UpdateProfileSchema) {
     const updateData: UpdateProfileSchema = {};
@@ -116,7 +127,10 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
 
     if (Object.keys(updateData).length > 0) {
       updateProfileMutation.mutate(updateData, {
-        onSuccess: () => onSuccess?.(),
+        onSuccess: () => {
+          toast.success("Profile updated successfully");
+          onSuccess?.();
+        },
       });
     } else {
       onSuccess?.();
@@ -161,7 +175,7 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="w-full sm:w-auto gap-2 border-[#ff9D4D]/50 bg-neutral-800 hover:bg-[#ff9D4D]/10 hover:border-[#ff9D4D] text-neutral-200"
+                  className="w-full sm:w-auto cursor-pointer gap-2 border-[#ff9D4D]/50 bg-neutral-800 hover:bg-[#ff9D4D]/10 hover:border-[#ff9D4D] text-neutral-200 disabled:cursor-not-allowed"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isUploading || updateProfileMutation.isPending}
                 >
@@ -170,14 +184,14 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
                   ) : (
                     <ImagePlus className="h-4 w-4" />
                   )}
-                  ატვირთვა
+                  Upload
                 </Button>
                 {profile?.avatarUrl && (
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="w-full sm:w-auto gap-2 border-red-500/50 bg-neutral-800 hover:bg-red-500/10 hover:border-red-500 text-red-400 hover:text-red-300"
+                    className="w-full sm:w-auto cursor-pointer gap-2 border-red-500/50 bg-neutral-800 hover:bg-red-500/10 hover:border-red-500 text-red-400 hover:text-red-300 disabled:cursor-not-allowed"
                     onClick={() => deleteAvatar.mutate()}
                     disabled={deleteAvatar.isPending}
                   >
@@ -186,11 +200,11 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
                     ) : (
                       <Trash2 className="h-4 w-4" />
                     )}
-                    წაშლა
+                    Delete
                   </Button>
                 )}
                 <p className="text-xs text-neutral-500">
-                  PNG, JPEG ან WebP. მაქს 5MB
+                  PNG, JPEG or WebP. Max 5MB
                 </p>
               </div>
             </div>
@@ -302,44 +316,67 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
           <FormField
             control={form.control}
             name="accountType"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel className="flex items-center gap-2 font-medium text-neutral-200">
-                  <Briefcase className="h-4 w-4" />
-                  Account Type
-                </FormLabel>
-                <FormControl>
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    disabled={updateProfileMutation.isPending}
-                  >
-                    <SelectTrigger className="h-10 w-full border-0 bg-transparent px-0 pr-7 text-sm font-medium text-neutral-100 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none shadow-none">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent className="border-neutral-800 bg-[#1A1A1A]">
-                      {PROFILE_TYPE_OPTIONS.map((opt) => (
-                        <SelectItem
-                          key={opt.value}
-                          value={opt.value}
-                          className="text-neutral-100 data-highlighted:bg-[#2B2925] data-highlighted:text-[#ff9D4D]"
+            render={({ field, fieldState }) => {
+              const currentValue = field.value ?? "person";
+              const currentLabel =
+                PROFILE_TYPE_OPTIONS.find((o) => o.value === currentValue)?.label ?? "Select type";
+              return (
+                <FormItem className="space-y-2">
+                  <FormLabel className="flex items-center gap-2 font-medium text-neutral-200">
+                    <Briefcase className="h-4 w-4" />
+                    Account Type
+                  </FormLabel>
+                  <FormControl>
+                    <UnderlinedFieldWrapper error={!!fieldState.error}>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger
+                          asChild
+                          disabled={updateProfileMutation.isPending}
                         >
-                          {opt.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage className="text-sm text-red-400" />
-              </FormItem>
-            )}
+                          <button
+                            type="button"
+                            className="flex h-10 w-full min-w-0 cursor-pointer items-center justify-between border-0 bg-transparent px-0 pr-7 text-left text-sm font-medium text-neutral-100 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none shadow-none disabled:cursor-not-allowed disabled:opacity-50"
+                            style={{
+                              boxShadow: "inset 0 0 0 1000px #181818",
+                            }}
+                          >
+                            <span className={currentValue ? "text-neutral-100" : "text-neutral-600"}>
+                              {currentLabel}
+                            </span>
+                            <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="start"
+                          className="min-w-32 border-neutral-800 bg-[#1A1A1A]"
+                        >
+                          {PROFILE_TYPE_OPTIONS.map((opt) => (
+                            <DropdownMenuItem
+                              key={opt.value}
+                              className="cursor-pointer text-neutral-100 focus:bg-[#2B2925] focus:text-[#ff9D4D]"
+                              onSelect={() => field.onChange(opt.value)}
+                            >
+                              {opt.label}
+                              {opt.value === currentValue && (
+                                <span className="ml-auto text-[#ff9D4D]">✓</span>
+                              )}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </UnderlinedFieldWrapper>
+                  </FormControl>
+                  <FormMessage className="text-sm text-red-400" />
+                </FormItem>
+              );
+            }}
           />
         </div>
 
         <Button
           type="submit"
           disabled={updateProfileMutation.isPending || form.formState.isSubmitting}
-          className="h-11 w-full rounded-lg bg-[#FF9D4D] px-5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.01] hover:bg-[#FF8D3D] hover:shadow-lg active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-11 w-full cursor-pointer rounded-lg bg-[#FF9D4D] px-5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.01] hover:bg-[#FF8D3D] hover:shadow-lg active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {updateProfileMutation.isPending || form.formState.isSubmitting ? (
             <>

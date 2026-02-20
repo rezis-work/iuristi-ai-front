@@ -53,7 +53,7 @@ const ROLE_LABELS: Record<string, string> = {
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
   if (Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("ka-GE", {
+  return d.toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -117,6 +117,7 @@ function InviteRow({
                 size="icon-sm"
                 className="text-red-400 hover:text-red-300 hover:bg-red-950/30 cursor-pointer"
                 disabled={deleteInvite.isPending}
+                aria-label="Revoke invite"
               >
                 <Trash2 className="size-4" />
               </Button>

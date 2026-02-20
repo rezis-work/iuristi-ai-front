@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -23,6 +23,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/src/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -47,7 +55,7 @@ import {
 } from "../hooks/use-members";
 import type { Member } from "../api/memebers";
 import type { UpdateMemberRoleInput } from "../schemas/memebers-schema";
-import { UserMinus, Users, Loader2 } from "lucide-react";
+import { UserMinus, Users, Loader2, Pencil, Trash2 } from "lucide-react";
 
 const ROLE_LABELS: Record<string, string> = {
   owner: "Owner",
@@ -69,6 +77,13 @@ const ROLE_BADGE_CLASSES: Record<string, string> = {
   client: "bg-amber-500/35 text-amber-200 font-medium border-amber-400/60 shadow-sm",
 };
 
+const EDITABLE_ROLES: { value: UpdateMemberRoleInput["role"]; label: string }[] = [
+  { value: "lawyer", label: ROLE_LABELS.lawyer },
+  { value: "paralegal", label: ROLE_LABELS.paralegal },
+  { value: "staff", label: ROLE_LABELS.staff },
+  { value: "client", label: ROLE_LABELS.client },
+];
+
 function getInitials(name?: string | null, email?: string) {
   if (name?.trim()) {
     return name
@@ -84,86 +99,103 @@ function getInitials(name?: string | null, email?: string) {
   return "?";
 }
 
-function MemberRow({
+function EditMemberModal({
   member,
   orgId,
-  canManage,
+  open,
+  onOpenChange,
 }: {
   member: Member;
   orgId: string;
-  canManage: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) {
   const updateRole = useUpdateMemberRole(orgId, member.userId);
   const removeMember = useRemoveMember(orgId, member.userId);
-  const isOwner = member.role === "owner";
-  const canChangeRole =
-    canManage &&
-    !isOwner &&
-    (member.role === "admin" || member.role === "member");
+  const [selectedRole, setSelectedRole] = useState<string>(member.role);
 
-  const handleRoleChange = (value: string) => {
-    updateRole.mutate({ role: value as UpdateMemberRoleInput["role"] });
+  React.useEffect(() => {
+    if (open) setSelectedRole(member.role);
+  }, [open, member.role]);
+
+  const handleSave = () => {
+    const role = selectedRole as UpdateMemberRoleInput["role"];
+    const isValidRole = EDITABLE_ROLES.some((r) => r.value === role);
+    if (role && isValidRole && role !== member.role) {
+      updateRole.mutate(
+        { role },
+        {
+          onSuccess: () => onOpenChange(false),
+        }
+      );
+    } else {
+      onOpenChange(false);
+    }
   };
 
   const handleRemove = () => {
-    removeMember.mutate();
+    removeMember.mutate(undefined, {
+      onSuccess: () => onOpenChange(false),
+    });
   };
 
   return (
-    <TableRow className="border-neutral-800 hover:bg-neutral-900/50 transition-colors">
-      <TableCell className="py-4">
-        <div className="flex items-center gap-3">
-          <Avatar className="size-9 border border-neutral-700">
-            <AvatarImage src={member.avatarUrl ?? undefined} alt={member.name ?? member.email} />
-            <AvatarFallback className="bg-zinc-800 text-neutral-200 text-xs">
-              {getInitials(member.name, member.email)}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-medium text-neutral-100">{member.name ?? "—"}</p>
-            <p className="text-neutral-400 text-sm">{member.email ?? "—"}</p>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="bg-zinc-900 border-neutral-700 sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-neutral-100">Edit Member</DialogTitle>
+          <DialogDescription className="text-neutral-400">
+            Change role or remove {member.name ?? member.email} from the organization.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-2">
+          <div className="flex items-center gap-3">
+            <Avatar className="size-10 border border-neutral-700">
+              <AvatarImage src={member.avatarUrl ?? undefined} alt={member.name ?? member.email} />
+              <AvatarFallback className="bg-zinc-800 text-neutral-200 text-sm">
+                {getInitials(member.name, member.email)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-medium text-neutral-100">{member.name ?? "—"}</p>
+              <p className="text-neutral-400 text-sm">{member.email ?? "—"}</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-neutral-200">Role</label>
+            <Select
+              value={selectedRole}
+              onValueChange={setSelectedRole}
+              disabled={updateRole.isPending}
+            >
+              <SelectTrigger className="w-full bg-zinc-800/80 border-neutral-700 text-neutral-200 cursor-pointer">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-zinc-900 border-neutral-700">
+                {EDITABLE_ROLES.map((r) => (
+                  <SelectItem
+                    key={r.value}
+                    value={r.value}
+                    className="text-neutral-200 data-highlighted:bg-zinc-700 data-highlighted:text-white data-[state=checked]:bg-[#ff9D4D]/20 data-[state=checked]:text-[#ffb366]"
+                  >
+                    {r.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
-      </TableCell>
-      <TableCell className="py-4">
-        {canChangeRole ? (
-          <Select
-            value={member.role}
-            onValueChange={handleRoleChange}
-            disabled={updateRole.isPending}
-          >
-            <SelectTrigger className="w-[130px] bg-zinc-800/80 border-neutral-700 text-neutral-200 hover:bg-zinc-700/80 cursor-pointer">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="bg-zinc-900 border-neutral-700">
-              <SelectItem value="admin" className="text-neutral-200 focus:bg-neutral-800">
-                {ROLE_LABELS.admin}
-              </SelectItem>
-              <SelectItem value="member" className="text-neutral-200 focus:bg-neutral-800">
-                {ROLE_LABELS.member}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        ) : (
-          <Badge
-            variant="outline"
-            className={ROLE_BADGE_CLASSES[member.role] ?? ROLE_BADGE_CLASSES.member}
-          >
-            {ROLE_LABELS[member.role] ?? member.role}
-          </Badge>
-        )}
-      </TableCell>
-      <TableCell className="py-4 text-right">
-        {canManage && !isOwner && (
+        <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
-                variant="ghost"
-                size="icon-sm"
-                className="text-red-400 hover:text-red-300 hover:bg-red-950/30 cursor-pointer"
+                variant="outline"
+                size="sm"
+                className="border-red-500/50 text-red-400 hover:bg-red-950/30 hover:text-red-300 order-2 sm:order-1 cursor-pointer"
                 disabled={removeMember.isPending}
               >
-                <UserMinus className="size-4" />
+                <Trash2 className="mr-2 size-4" />
+                Remove Member
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-zinc-900 border-neutral-700">
@@ -172,8 +204,8 @@ function MemberRow({
                   Remove Member
                 </AlertDialogTitle>
                 <AlertDialogDescription className="text-neutral-400">
-                  Are you sure you want to remove {member.name ?? member.email} from
-                  the organization? This action cannot be undone.
+                  Are you sure you want to remove {member.name ?? member.email} from the
+                  organization? This action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -189,9 +221,134 @@ function MemberRow({
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        )}
-      </TableCell>
-    </TableRow>
+          <div className="flex gap-2 order-1 sm:order-2">
+            <Button
+              variant="ghost"
+              onClick={() => onOpenChange(false)}
+              className="cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSave}
+              disabled={updateRole.isPending || selectedRole === member.role}
+              className="bg-[#ff9D4D] hover:bg-[#ffa95d] text-white cursor-pointer"
+            >
+              {updateRole.isPending ? (
+                <Loader2 className="mr-2 size-4 animate-spin" />
+              ) : null}
+              Save Changes
+            </Button>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function MemberRow({
+  member,
+  orgId,
+  canManage,
+}: {
+  member: Member;
+  orgId: string;
+  canManage: boolean;
+}) {
+  const removeMember = useRemoveMember(orgId, member.userId);
+  const [editOpen, setEditOpen] = useState(false);
+  const isOwner = member.role === "owner";
+  const canEdit = canManage && !isOwner;
+
+  const handleRemove = () => {
+    removeMember.mutate();
+  };
+
+  return (
+    <>
+      <TableRow className="border-neutral-800 hover:bg-neutral-900/50 transition-colors">
+        <TableCell className="py-4">
+          <div className="flex items-center gap-3">
+            <Avatar className="size-9 border border-neutral-700">
+              <AvatarImage src={member.avatarUrl ?? undefined} alt={member.name ?? member.email} />
+              <AvatarFallback className="bg-zinc-800 text-neutral-200 text-xs">
+                {getInitials(member.name, member.email)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-medium text-neutral-100">{member.name ?? "—"}</p>
+              <p className="text-neutral-400 text-sm">{member.email ?? "—"}</p>
+            </div>
+          </div>
+        </TableCell>
+        <TableCell className="py-4">
+          <Badge
+            variant="outline"
+            className={ROLE_BADGE_CLASSES[member.role] ?? ROLE_BADGE_CLASSES.member}
+          >
+            {ROLE_LABELS[member.role] ?? member.role}
+          </Badge>
+        </TableCell>
+        <TableCell className="py-4 text-right">
+          {canEdit && (
+            <div className="flex items-center justify-end gap-1">
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => setEditOpen(true)}
+                className="text-neutral-400 hover:text-[#ff9D4D] hover:bg-[#ff9D4D]/10 cursor-pointer"
+                aria-label="Edit member"
+              >
+                <Pencil className="size-4" />
+              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="text-red-400 hover:text-red-300 hover:bg-red-950/30 cursor-pointer"
+                    disabled={removeMember.isPending}
+                    aria-label="Remove member"
+                  >
+                    <UserMinus className="size-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-zinc-900 border-neutral-700">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-neutral-100">
+                      Remove Member
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-neutral-400">
+                      Are you sure you want to remove {member.name ?? member.email} from the
+                      organization? This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-zinc-800 border-neutral-700 text-neutral-200 hover:bg-zinc-700 cursor-pointer">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleRemove}
+                      className="bg-red-600 text-white hover:bg-red-500 cursor-pointer"
+                    >
+                      Remove
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          )}
+        </TableCell>
+      </TableRow>
+      {canEdit && (
+        <EditMemberModal
+          member={member}
+          orgId={orgId}
+          open={editOpen}
+          onOpenChange={setEditOpen}
+        />
+      )}
+    </>
   );
 }
 

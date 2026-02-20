@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -22,7 +23,8 @@ import {
 import { createInviteSchema, type CreateInviteInput } from "../schemas/invite-schema";
 import { z } from "zod";
 import { useCreateInvite } from "../hooks/invite";
-import { Loader2 } from "lucide-react";
+import { Loader2, Copy, Check } from "lucide-react";
+import { toast } from "sonner";
 
 const ROLE_OPTIONS = [
   { value: "lawyer", label: "Lawyer" },
@@ -31,8 +33,15 @@ const ROLE_OPTIONS = [
   { value: "client", label: "Client" },
 ];
 
+function buildInviteUrl(token: string): string {
+  if (typeof window === "undefined") return "";
+  return `${window.location.origin}/invite?token=${encodeURIComponent(token)}`;
+}
+
 export function CreateInviteForm({ orgId }: { orgId: string }) {
   const createInvite = useCreateInvite(orgId);
+  const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const form = useForm<z.input<typeof createInviteSchema>>({
     resolver: zodResolver(createInviteSchema),
@@ -44,17 +53,36 @@ export function CreateInviteForm({ orgId }: { orgId: string }) {
   });
 
   function onSubmit(data: z.input<typeof createInviteSchema>) {
+    setGeneratedUrl(null);
     const payload: CreateInviteInput = {
       email: data.email,
       role: data.role ?? "staff",
       expiresInDays: data.expiresInDays ?? 7,
     };
     createInvite.mutate(payload, {
-      onSuccess: () => form.reset(),
+      onSuccess: (result) => {
+        if (result?.inviteToken) {
+          setGeneratedUrl(buildInviteUrl(result.inviteToken));
+        }
+        form.reset();
+      },
     });
   }
 
+  async function handleCopy() {
+    if (!generatedUrl) return;
+    try {
+      await navigator.clipboard.writeText(generatedUrl);
+      setCopied(true);
+      toast.success("Link copied");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Copy failed");
+    }
+  }
+
   return (
+    <div className="space-y-4">
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
@@ -149,5 +177,34 @@ export function CreateInviteForm({ orgId }: { orgId: string }) {
         </Button>
       </form>
     </Form>
+
+      {generatedUrl && (
+        <div className="rounded-lg border border-[#ff9D4D]/30 bg-zinc-900/60 p-4 space-y-2">
+          <p className="text-sm text-neutral-400 font-medium">
+            Invite link (share with the invited person):
+          </p>
+          <div className="flex gap-2">
+            <Input
+              readOnly
+              value={generatedUrl}
+              className="bg-zinc-800 border-neutral-700 text-neutral-200 text-sm font-mono"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={handleCopy}
+              className="shrink-0 border-neutral-600 hover:bg-zinc-800 cursor-pointer"
+            >
+              {copied ? (
+                <Check className="size-4 text-emerald-400" />
+              ) : (
+                <Copy className="size-4" />
+              )}
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

@@ -45,14 +45,14 @@ export function EmailVerificationSection() {
         </div>
         <div>
           <h2 className="text-lg font-semibold text-neutral-100">
-            ელფოსტის დადასტურება
+            Email Verification
           </h2>
           <p className="text-sm text-neutral-500">
             {isVerified
-              ? "თქვენი ელფოსტა დადასტურებულია"
+              ? "Your email is verified"
               : verificationSent
-                ? "შეამოწმეთ თქვენი ელფოსტა"
-                : "დაამთავრეთ ელფოსტის დადასტურება"}
+                ? "Check your email"
+                : "Complete email verification"}
           </p>
         </div>
       </div>
@@ -63,7 +63,7 @@ export function EmailVerificationSection() {
           {isVerified && (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
               <CheckCircle2 className="h-3.5 w-3.5" />
-              დადასტურებული
+              Verified
             </span>
           )}
         </div>
@@ -73,12 +73,12 @@ export function EmailVerificationSection() {
             {isPending ? (
               <div className="flex items-center gap-2 text-sm text-neutral-400">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                იგზავნება...
+                Sending...
               </div>
             ) : verificationSent ? (
               cooldownLeft > 0 ? (
                 <p className="text-sm text-amber-500/90">
-                  ხელახლა გაგზავნა: {cooldownLeft} წმ
+                  Resend in: {cooldownLeft} sec
                 </p>
               ) : (
                 <Button
@@ -89,7 +89,7 @@ export function EmailVerificationSection() {
                   className="h-9 rounded-lg border-neutral-600 bg-neutral-800/50 px-4 text-neutral-200 hover:bg-neutral-700/50 hover:text-white"
                 >
                   <Send className="mr-2 h-4 w-4" />
-                  ხელახლა გაგზავნა
+                  Resend
                 </Button>
               )
             ) : (
@@ -99,7 +99,7 @@ export function EmailVerificationSection() {
                 className="h-9 rounded-lg bg-[#ff9D4D] px-4 font-medium text-white hover:bg-[#ff8D3D]"
               >
                 <Send className="mr-2 h-4 w-4" />
-                გაგზავნა
+                Send
               </Button>
             )}
           </>
@@ -111,10 +111,10 @@ export function EmailVerificationSection() {
           {verificationSent ? (
             <span className="inline-flex items-center gap-1.5">
               <Inbox className="h-3.5 w-3.5" />
-              დადასტურების ბმული გაგზავნილია. შეამოწმეთ შემოსულები და სპამი.
+              Verification link sent. Check your inbox and spam.
             </span>
           ) : (
-            "გააგზავნეთ დადასტურების ბმული თქვენს ელფოსტაზე."
+            "Send verification link to your email."
           )}
         </p>
       )}
