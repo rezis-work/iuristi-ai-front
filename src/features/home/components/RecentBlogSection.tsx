@@ -20,25 +20,25 @@ interface BlogPost {
 const blogPosts: BlogPost[] = [
   {
     id: "1",
-    category: "LAW OFFICE",
-    date: "March 13, 2023",
-    title: "The best ways to protect your family and business in 2023",
+    category: "სამართლის ოფისი",
+    date: "2023 წლის 13 მარტი",
+    title: "ოჯახისა და ბიზნესის დაცვის საუკეთესო გზები 2023 წელს",
     image: "/images/404.webp",
     link: "/blog/protect-family-business",
   },
   {
     id: "2",
-    category: "LAW OFFICE",
-    date: "March 13, 2023",
-    title: "4 officers charged in a pursuit crash that paralyzed a teen",
+    category: "სამართლის ოფისი",
+    date: "2023 წლის 13 მარტი",
+    title: "4 ოფიცერზე წაყენებულია ბრალი დევნის დროს ავარიაში, რამაც მოზარდი დასახიჩრა",
     image: "/images/bg-2.jpg",
     link: "/blog/officers-charged-pursuit",
   },
   {
     id: "3",
-    category: "LAW OFFICE",
-    date: "March 13, 2023",
-    title: "Ten myths about lawyers and criminal defence attorneys",
+    category: "სამართლის ოფისი",
+    date: "2023 წლის 13 მარტი",
+    title: "ათი მითი იურისტებისა და სისხლის სამართლის ადვოკატების შესახებ",
     image: "/images/bg1.jpg",
     link: "/blog/myths-lawyers-attorneys",
   },
@@ -53,11 +53,11 @@ function RecentBlogSection() {
           <div className="flex items-center gap-3 mb-4 pl-0.5">
             <div className="h-px w-12 bg-orange-500" />
             <span className="text-xs font-semibold tracking-[0.2em] text-gray-300 uppercase">
-              Recent News
+              სამართლის სიახლეები
             </span>
           </div>
           <h2 className="text-4xl md:text-3xl lg:text-5xl font-bold">
-            From our blog
+            იურიდიული ბლოგიდან
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8 mb-14">
@@ -91,7 +91,7 @@ function RecentBlogSection() {
                     <div className="px-7">
                       <div className="flex items-center">
                         <span className="text-md font-light whitespace-nowrap text-white overflow-hidden transition-all duration-500 ease-out max-w-0 group-hover:max-w-28">
-                          Read more
+                          დეტალურად
                         </span>
                         <div className="transform transition-transform duration-500 group-hover:translate-x-2">
                           <ArrowRight
@@ -112,7 +112,7 @@ function RecentBlogSection() {
             onClick={() => router.push("/about-us")}
             className="uppercase text-black text-xs lg:text-sm px-4 py-5 sm:px-12 sm:py-7"
           >
-            more news
+            მეტი სიახლე
           </SheardButton>
         </div>
       </Wrapper>

@@ -20,14 +20,14 @@ import { Button } from "@/src/components/ui/button";
 import { Send, Phone, Mail, User } from "lucide-react";
 
 const formSchema = z.object({
-  name: z.string().min(2, "The field is required."),
-  lastName: z.string().min(2, "The field is required."),
-  email: z.string().email("The field is required."),
+  name: z.string().min(2, "ველი აუცილებელია."),
+  lastName: z.string().min(2, "ველი აუცილებელია."),
+  email: z.string().email("ველი აუცილებელია."),
   phone: z
     .string()
-    .min(10, "The field is required.")
-    .regex(/^\+?[\d\s-()]{10,}$/, "Please enter a valid phone number."),
-  message: z.string().min(10, "Message must be at least 10 characters."),
+    .min(10, "ველი აუცილებელია.")
+    .regex(/^\+?[\d\s-()]{10,}$/, "გთხოვთ შეიყვანოთ სწორი ტელეფონის ნომერი."),
+  message: z.string().min(10, "შეტყობინება უნდა შეიცავდეს მინიმუმ 10 სიმბოლოს."),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -97,15 +97,15 @@ export default function ContactMapSection() {
 
       console.log("Contact form submitted:", data);
 
-      toast.success("Message sent successfully!", {
-        description: "We will get back to you shortly.",
+      toast.success("შეტყობინება წარმატებით გაიგზავნა!", {
+        description: "მალე დაგიკავშირდებით.",
       });
 
       setSubmitted(true);
       form.reset();
     } catch {
-      toast.error("Failed to send message.", {
-        description: "Please try again later.",
+      toast.error("შეტყობინების გაგზავნა ვერ მოხერხდა.", {
+        description: "გთხოვთ სცადოთ მოგვიანებით.",
       });
     } finally {
       setIsSubmitting(false);
@@ -128,13 +128,13 @@ export default function ContactMapSection() {
               <div className="flex items-center gap-3 mb-3">
                 <div className="h-px w-11 bg-yellow-500" />
                 <span className="text-[11px] md:text-xs font-semibold tracking-[0.28em] uppercase text-neutral-400">
-                  Contact us
+                  იურიდიული კონსულტაცია
                 </span>
               </div>
               <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-zinc-300">
-                Have questions?
+                გაქვთ სამართლებრივი შეკითხვა
                 <br />
-                <span>Get in touch!</span>
+                <span>ან მოუსი? — დაგვიკავშირდით!</span>
               </h2>
             </div>
 
@@ -158,7 +158,7 @@ export default function ContactMapSection() {
                           render={({ field, fieldState }) => (
                             <FormItem className="space-y-0">
                               <FormLabel className="sr-only">
-                                First name
+                                სახელი
                               </FormLabel>
                               <FormControl>
                                 <UnderlinedFieldWrapper
@@ -167,7 +167,7 @@ export default function ContactMapSection() {
                                 >
                                   <Input
                                     {...field}
-                                    placeholder="First name *"
+                                    placeholder="სახელი *"
                                     autoComplete="given-name"
                                     className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                                   />
@@ -186,7 +186,7 @@ export default function ContactMapSection() {
                           render={({ field, fieldState }) => (
                             <FormItem className="space-y-0">
                               <FormLabel className="sr-only">
-                                Last name
+                                გვარი
                               </FormLabel>
                               <FormControl>
                                 <UnderlinedFieldWrapper
@@ -194,7 +194,7 @@ export default function ContactMapSection() {
                                 >
                                   <Input
                                     {...field}
-                                    placeholder="Last name *"
+                                    placeholder="გვარი *"
                                     autoComplete="family-name"
                                     className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                                   />
@@ -214,7 +214,7 @@ export default function ContactMapSection() {
                           name="email"
                           render={({ field, fieldState }) => (
                             <FormItem className="space-y-0">
-                              <FormLabel className="sr-only">Email</FormLabel>
+                              <FormLabel className="sr-only">ელფოსტა</FormLabel>
                               <FormControl>
                                 <UnderlinedFieldWrapper
                                   icon={<Mail className="w-4 h-4" />}
@@ -223,7 +223,7 @@ export default function ContactMapSection() {
                                   <Input
                                     {...field}
                                     type="email"
-                                    placeholder="Email *"
+                                    placeholder="ელფოსტა *"
                                     autoComplete="email"
                                     className="h-10 w-full bg-transparent border-none rounded-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                                   />
@@ -241,7 +241,7 @@ export default function ContactMapSection() {
                           name="phone"
                           render={({ field, fieldState }) => (
                             <FormItem className="space-y-0">
-                              <FormLabel className="sr-only">Phone</FormLabel>
+                              <FormLabel className="sr-only">ტელეფონი</FormLabel>
                               <FormControl>
                                 <UnderlinedFieldWrapper
                                   icon={<Phone className="w-4 h-4" />}
@@ -250,7 +250,7 @@ export default function ContactMapSection() {
                                   <Input
                                     {...field}
                                     type="tel"
-                                    placeholder="Phone *"
+                                    placeholder="ტელეფონი *"
                                     autoComplete="tel"
                                     className="h-10 w-full bg-transparent border-none px-0 pr-7 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                                   />
@@ -270,14 +270,14 @@ export default function ContactMapSection() {
                         name="message"
                         render={({ field, fieldState }) => (
                           <FormItem className="space-y-0">
-                            <FormLabel className="sr-only">Message</FormLabel>
+                            <FormLabel className="sr-only">შეტყობინება</FormLabel>
                             <FormControl>
                               <UnderlinedFieldWrapper
                                 error={!!fieldState.error}
                               >
                                 <textarea
                                   {...field}
-                                  placeholder="Your message *"
+                                  placeholder="თქვენი შეტყობინება *"
                                   rows={3}
                                   className="bg-transparent border-none rounded-none px-0 pt-2 text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none resize-none w-full"
                                   style={{
@@ -302,7 +302,7 @@ export default function ContactMapSection() {
                         >
                           <span className="relative flex items-center justify-center gap-2 text-[11px] md:text-xs">
                             <Send className="w-4 h-4" />
-                            {isSubmitting ? "Sending..." : "Send message"}
+                            {isSubmitting ? "იგზავნება..." : "შეტყობინების გაგზავნა"}
                           </span>
                         </Button>
                       </div>
@@ -322,18 +322,17 @@ export default function ContactMapSection() {
                     </div>
                   </div>
                   <h3 className="text-lg md:text-xl font-bold mb-1">
-                    Message sent successfully!
+                    შეტყობინება წარმატებით გაიგზავნა!
                   </h3>
                   <p className="text-[11px] md:text-sm text-neutral-300 max-w-md mx-auto">
-                    Thank you for reaching out. We will contact you as soon as
-                    possible.
+                    მადლობა, რომ დაგვიკავშირდით. მალე დაგიკავშირდებით.
                   </p>
                   <button
                     type="button"
                     onClick={() => setSubmitted(false)}
                     className="mt-5 px-5 py-2 rounded-none border select-none border-neutral-700 text-[11px] md:text-sm text-neutral-100 transition-colors"
                   >
-                    Send another message
+                    სხვა შეტყობინების გაგზავნა
                   </button>
                 </motion.div>
               )}

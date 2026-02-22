@@ -10,26 +10,25 @@ export default function TopServices() {
             <div className="flex items-center gap-3">
               <div className="h-0.5 w-12 bg-yellow-500"></div>
               <span className="text-sm font-medium tracking-wider text-zinc-300 uppercase">
-                Top Services
+                მთავარი სერვისები
               </span>
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <h2 className="text-4xl md:text-5xl lg:text-5xl text-zinc-300 font-bold leading-tight">
-                Our job is to provide the best legal help
-                <span className="text-zinc-200">.</span>
+                ყოველ საქმეში —
+                <span className="text-zinc-200"> სამართლიანი შედეგი</span>
               </h2>
             </div>
             <div className="space-y-8 text-gray-400">
               <p className="text-base md:text-lg leading-relaxed">
-                Adipiscing elit, sed do euismod tempor incidunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco.
+                როცა გჭირდებათ იურიდიული დახმარება — სანდო და კვალიფიცირებული იურისტები
+                მზად არიან დაგეხმარონ ნებისმიერ სამართლებრივ საკითხში.
               </p>
               <p className="text-base md:text-lg leading-relaxed">
-                Adipiscing elit, sed do euismod tempor incidunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam.
+                რთულ სამართლებრივ სიტუაციაში ხართ? ჩვენ ვუზრუნველყოფთ უფლებების დაცვას,
+                დავების მოგვარებასა და სამართლიანი შედეგის მიღებას.
               </p>
             </div>
           </div>
