@@ -60,6 +60,53 @@ export function ConfirmPasswordResetForm() {
     });
   }
 
+  // No token in URL - show helpful message
+  if (!token) {
+    return (
+      <Wrapper className="mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="w-full md:max-w-xl mx-auto"
+        >
+          <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
+            <CardHeader className="text-center pb-4">
+              <CardTitle className="text-3xl font-bold text-white mb-2">
+                Invalid Reset Link
+              </CardTitle>
+              <CardDescription className="text-gray-400 text-base">
+                This password reset link is invalid or has expired. Please
+                request a new one.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="sm:px-30 md:px-4 space-y-4">
+              <div className="flex flex-col gap-3">
+                <Link href="/reset-password">
+                  <Button
+                    type="button"
+                    className="w-full h-13 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    Request New Reset Link
+                  </Button>
+                </Link>
+                <Link href="/login" className="block">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="w-full h-13 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    Back to Login
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper className="mx-auto">
       <motion.div
@@ -100,7 +147,7 @@ export function ConfirmPasswordResetForm() {
                           <Input
                             type="password"
                             placeholder="Enter new password"
-                            disabled={form.formState.isSubmitting}
+                            disabled={isPending || form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
                             style={{
@@ -156,8 +203,9 @@ export function ConfirmPasswordResetForm() {
                 <div className="grid grid-cols-2 gap-3 sm:gap-7 items-center">
                   <Link href="/login">
                     <Button
+                      type="button"
                       disabled={isPending || form.formState.isSubmitting}
-                      variant={"secondary"}
+                      variant="secondary"
                       className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                     >
                       Back to Login
@@ -165,7 +213,9 @@ export function ConfirmPasswordResetForm() {
                   </Link>
                   <Button
                     type="submit"
-                    disabled={isPending || form.formState.isSubmitting || !token}
+                    disabled={
+                      isPending || form.formState.isSubmitting || !token
+                    }
                     className="w-full h-13 mt-4 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {isPending || form.formState.isSubmitting

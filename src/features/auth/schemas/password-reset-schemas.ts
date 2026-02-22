@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Password schema with validation rules (matching backend requirements)
-const passwordSchema = z
+export const passwordSchema = z
   .string()
   .min(8, "Password must be at least 8 characters")
   .max(72, "Password must not exceed 72 characters")

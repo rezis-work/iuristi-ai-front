@@ -116,11 +116,43 @@
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
+/* Reserve space for scrollbar so layout doesn't shift when Radix Select/Dropdown/etc. open */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Radix adds data-scroll-locked + margin-right/padding-right when modals/dropdowns open.
+   With scrollbar-gutter: stable we already reserve scrollbar space - disable Radix's
+   extra compensation to prevent the ~15–17px horizontal shift. */
+body[data-scroll-locked] {
+  --removed-body-scroll-bar-size: 0 !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0px;
   padding: 0px;
   background-color: var(--main-bacgroudn-col);
   color: var(--main-text-color);
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE and Edge */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;              /* Chrome, Safari, Opera */
+  }
 }
 
 /* WebKit ბრაუზერებისთვის (Chrome, Safari, Edge) */
@@ -147,7 +179,6 @@ select.keep-bg:-webkit-autofill:focus {
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(#e94c09);
   z-index: 50px;
-  cursor: pointer;
 }
 .mobile-menu-overlay::-webkit-scrollbar {
   width: 0px;
@@ -160,5 +191,4 @@ select.keep-bg:-webkit-autofill:focus {
 
 .mobile-menu-overlay::-webkit-scrollbar-thumb {
   background: transparent;
-  cursor: pointer;
 }

@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -21,16 +22,24 @@ import {
   CardDescription,
   CardContent,
 } from "@/src/components/ui/card";
-import { Checkbox } from "@/src/components/ui/checkbox";
 import Wrapper from "@/src/components/shared/wrapper";
 import { useLogin } from "@/src/features/auth/hook/auth";
 
 interface LoginFormProps {
   onClose?: () => void;
+  next?: string;
+  compact?: boolean;
 }
 
-export function LoginForm({ onClose }: LoginFormProps) {
-  const { mutate: Login } = useLogin({ disableAutoRedirect: true });
+export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) {
+  const searchParams = useSearchParams();
+  const nextFromUrl = searchParams.get("next");
+  const nextParam = nextProp ?? nextFromUrl;
+  const { mutate: Login } = useLogin({
+    disableAutoRedirect: true,
+    redirectTo: nextParam || undefined,
+  });
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -42,23 +51,19 @@ export function LoginForm({ onClose }: LoginFormProps) {
   function onSubmit(data: LoginSchema) {
     Login(data, {
       onSuccess: () => {
-        form.reset();
-        // Close the dropdown after successful login
+        form.reset({ email: "", password: "" });
         if (onClose) {
-          setTimeout(() => {
-            onClose();
-          }, 100);
+          setTimeout(onClose, 100);
         }
       },
     });
   }
 
-  return (
-    <Wrapper className="mx-auto">
-      <div className="w-full md:max-w-xl mx-auto">
-        <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="text-3xl font-bold text-white mb-2">
+  const content = (
+    <div className={compact ? "w-full" : "w-full md:max-w-xl mx-auto"}>
+      <Card className={`bg-transparent rounded-none md:rounded-md shadow-2xl border-none ${compact ? "pt-12 pb-4 px-6" : "py-20"}`}>
+          <CardHeader className={`text-center ${compact ? "pb-3" : "pb-4"}`}>
+            <CardTitle className={`font-bold text-white mb-2 ${compact ? "text-2xl" : "text-3xl"}`}>
               Welcome Back
             </CardTitle>
             <CardDescription className="text-gray-400 text-base">
@@ -126,39 +131,16 @@ export function LoginForm({ onClose }: LoginFormProps) {
                     );
                   }}
                 />
-                <div className="text-gray-200 flex items-center justify-between">
-                  <label
-                    htmlFor="remember"
-                    className="flex items-center text-[15px] gap-2 cursor-pointer select-none"
-                  >
-                    <Checkbox
-                      id="remember"
-                      className="w-5 h-5 min-h-5 max-h-5 shrink-0 border-none cursor-pointer rounded-none bg-gray-700 data-[state=checked]:bg-[#FF9D4D] p-0 flex items-center justify-center"
-                    />
-                    Remember me
-                  </label>
+                <div className="text-gray-200 flex justify-end">
                   <Link
-                    // href={"/change-password"}
-                    href={"/reset-password"}
-                    className="cursor-pointer text-[15px]"
+                    href="/reset-password"
+                    className="cursor-pointer text-[15px] hover:text-[#FF9D4D] transition-colors"
                   >
                     Forgot password?
                   </Link>
                 </div>
                 {/* Submit Button */}
                 <div className="grid grid-cols-2 gap-3 sm:gap-7 items-center">
-                  <Link
-                    href="/register"
-                    className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
-                    onClick={onClose}
-                  >
-                    <Button
-                      variant={"secondary"}
-                      className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      Sign up
-                    </Button>
-                  </Link>
                   <Button
                     type="submit"
                     disabled={form.formState.isSubmitting}
@@ -166,12 +148,26 @@ export function LoginForm({ onClose }: LoginFormProps) {
                   >
                     {form.formState.isSubmitting ? "Signing in..." : "Login"}
                   </Button>
+                  <Link
+                    href={nextParam ? `/register?next=${encodeURIComponent(nextParam)}` : "/register"}
+                    className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
+                    onClick={() => onClose?.()}
+                  >
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      Sign up
+                    </Button>
+                  </Link>
                 </div>
               </form>
             </Form>
           </CardContent>
         </Card>
       </div>
-    </Wrapper>
   );
+
+  return compact ? content : <Wrapper className="mx-auto">{content}</Wrapper>;
 }

@@ -1,62 +1,9 @@
-// "use client";
-
-// import { useState, useRef, useEffect } from "react";
-// import { useRouter } from "next/navigation";
-// import { User } from "lucide-react";
-
-// interface DesktopRightProps {
-//   className?: string;
-// }
-
-// export function LoginCard({ className }: DesktopRightProps) {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const router = useRouter();
-//   const dropdownRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     function handleClickOutside(event: MouseEvent) {
-//       if (
-//         dropdownRef.current &&
-//         !dropdownRef.current.contains(event.target as Node)
-//       ) {
-//         setIsOpen(false);
-//       }
-//     }
-
-//     if (isOpen) {
-//       document.addEventListener("mousedown", handleClickOutside);
-//     }
-
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, [isOpen]);
-
-//   const handleRegister = () => {
-//     router.push("/register");
-//   };
-
-//   return (
-//     <div className={`flex items-center gap-6 ml-auto select-none ${className}`}>
-//       <button
-//         onClick={handleRegister}
-//         className="p-2 rounded-full border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200 cursor-pointer"
-//         aria-label="Register"
-//       >
-//         <User className="w-5 h-5" />
-//       </button>
-//     </div>
-//   );
-// }
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { LogOut, User as UserIcon } from "lucide-react";
-
+import { motion, AnimatePresence } from "motion/react";
 import { useLogOut } from "@/src/features/auth/hook/auth";
 import { useMe } from "@/src/features/auth/hook/use-getme";
 import {
@@ -64,158 +11,229 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "@/src/components/ui/avatar";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/src/components/ui/dialog";
+import { LoginForm } from "@/src/features/auth/components/login-form";
+import { menuItems } from "@/src/components/shared/nav-item";
 
 interface UserMenuProps {
   className?: string;
 }
 
+const getInitials = (name?: string | null) =>
+  name
+    ? name
+        .split(" ")
+        .filter(Boolean)
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+    : "U";
+
 export function LoginCard({ className }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
   const router = useRouter();
+  const pathname = usePathname();
 
   const { data: user } = useMe();
   const { mutate: logout } = useLogOut();
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      const target = event.target as Node;
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(target) &&
-        !dropdownRef.current.querySelector('button')?.contains(target)
-      ) {
-        setIsOpen(false);
-      }
-    }
+  const initials = getInitials(user?.name);
 
-    if (isOpen) {
-      // Use click event with a small delay to allow button click to complete first
-      const timeoutId = setTimeout(() => {
-        document.addEventListener("click", handleClickOutside, true);
-      }, 10);
+  const stop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
-      return () => {
-        clearTimeout(timeoutId);
-        document.removeEventListener("click", handleClickOutside, true);
-      };
-    }
-  }, [isOpen]);
+  const [loginOpen, setLoginOpen] = useState(false);
 
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    router.push("/login");
+    stop(e);
+    setLoginOpen(true);
   };
-  const handleProfile = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    router.push("/me/profile");
-    setIsOpen(false);
-  };
-  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    logout();
-    setIsOpen(false);
-  };
+
   const handleToggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+    stop(e);
     setIsOpen((prev) => !prev);
   };
 
+  const handleNavigate = (path: string) => (e: React.MouseEvent) => {
+    stop(e);
+    router.push(path);
+    setIsOpen(false);
+  };
+
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    stop(e);
+    logout();
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
+        setIsOpen(false);
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      document.addEventListener("click", handleClickOutside, true);
+    }, 10);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [isOpen]);
+
   if (!user) {
     return (
-      <div className={`flex items-center ml-auto select-none ${className}`}>
-        <button
-          type="button"
-          onClick={handleLogin}
-          className="p-2 rounded-full border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200 cursor-pointer"
-          aria-label="Sign in"
+      <>
+        <div
+          className={`flex items-center ml-auto select-none ${className || ""}`}
         >
-          <UserIcon className="w-5 h-5" />
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={handleLogin}
+            className="p-1.5 sm:p-2 md:p-2.5 rounded-full border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200 cursor-pointer"
+            aria-label="Sign in"
+          >
+            <UserIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5" />
+          </button>
+        </div>
+        <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
+          <DialogContent className="max-w-md bg-zinc-950 border-zinc-800 p-0 overflow-hidden [&>button]:text-zinc-400 [&>button]:hover:text-white">
+            <DialogTitle className="sr-only">Sign in</DialogTitle>
+            <LoginForm
+              onClose={() => setLoginOpen(false)}
+              next={pathname || undefined}
+              compact
+            />
+          </DialogContent>
+        </Dialog>
+      </>
     );
   }
 
-  // ✅ ავტორიზებული → ავატარი + dropdown
-  const initials =
-    user.name
-      ?.split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase() || "U";
+  const avatarNode = user.avatarUrl ? (
+    <Avatar className="w-9 h-9 sm:w-11 sm:h-11 ring-2 ring-[#ff9D4D]/60 ring-offset-2 ring-offset-black bg-zinc-800 text-white shrink-0 transition-all duration-300 hover:ring-[#ff9D4D] hover:scale-105 cursor-pointer">
+      <AvatarImage
+        src={user.avatarUrl ?? undefined}
+        alt={user?.name || "User avatar"}
+        className="object-cover"
+      />
+      <AvatarFallback className="bg-linear-to-br from-[#ff9D4D] to-[#ff7D2D] text-white text-xs font-semibold">
+        {initials}
+      </AvatarFallback>
+    </Avatar>
+  ) : (
+    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full ring-2 ring-[#ff9D4D]/60 ring-offset-2 ring-offset-black bg-linear-to-br from-[#ff9D4D] to-[#ff7D2D] text-white shrink-0 flex items-center justify-center transition-all duration-300 hover:ring-[#ff9D4D] hover:scale-105 cursor-pointer">
+      <UserIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+    </div>
+  );
 
   return (
     <div
-      className={`relative flex items-center gap-6 ml-auto select-none ${className}`}
       ref={dropdownRef}
+      className={`relative flex items-center ml-auto select-none ${className || ""}`}
     >
       <button
         type="button"
         onClick={handleToggleMenu}
-        className="flex items-center gap-2 py-1.5 bg-black/60 text-white hover:bg-black cursor-pointer transition-colors duration-200"
+        className="flex items-center gap-2 rounded-full p-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff9D4D] focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-transform duration-200 hover:scale-105 active:scale-95 cursor-pointer"
         aria-label="Open user menu"
       >
-        <Avatar className="w-9 h-9 border border-[#ff9D4D]/70 bg-[#ff9D4D] text-black">
-          <AvatarImage
-            // src={user.imageUrl || undefined}
-            alt={user.name || "User avatar"}
-            className="object-cover"
-          />
-          <AvatarFallback className="bg-[#ff9D4D] text-black text-xs font-semibold">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
+        {avatarNode}
       </button>
 
-      {isOpen && (
-        <div className="absolute right-0 top-22 min-w-55 rounded-tl-[37px] rounded-br-[30px] bg-black z-[70] shadow-2xl">
-          <div className="pl-3 pr-4 py-3 border-b border-neutral-800 flex items-center gap-3 mb-5 bg-zinc-900 rounded-l-[36px] rounded-br-[37px]">
-            <Avatar className="w-12 h-12 border border-[#ff9D4D]/70 bg-[#ff9D4D] text-black">
-              <AvatarImage
-                // src={user.imageUrl || undefined}
-                alt={user.name || "User avatar"}
-                className="object-cover"
-              />
-              <AvatarFallback className="bg-[#ff9D4D] text-black text-xs font-semibold">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-xs font-medium">{user.name}</span>
-              <span className="text-[11px] text-gray-400 line-clamp-1">
-                {user.email}
-              </span>
-            </div>
-          </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.96 }}
+            transition={{ type: "spring", damping: 25, stiffness: 400 }}
+            className="absolute right-0 top-full mt-3 w-[320px] min-w-[320px] z-50 origin-top-right"
+          >
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950/95 shadow-2xl shadow-black/50 backdrop-blur-xl overflow-hidden">
+              {/* User info section */}
+              <div className="px-5 py-4 border-b border-zinc-800/80 bg-zinc-900/50">
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-14 w-14 ring-2 ring-[#ff9D4D]/40 ring-offset-2 ring-offset-zinc-900 shrink-0">
+                    <AvatarImage
+                      src={user.avatarUrl ?? undefined}
+                      alt={user?.name || "User"}
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="bg-linear-to-br from-[#ff9D4D] to-[#ff7D2D] text-white text-sm font-semibold">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[15px] font-semibold text-white truncate">
+                      {user?.name || "User"}
+                    </p>
+                    <p className="text-[13px] text-zinc-400 truncate mt-0.5">
+                      {user?.email}
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="text-xs text-gray-200">
-            <div className="bg-zinc-900 mx-2 rounded-tl-2xl rounded-br-2xl mb-5">
-              <button
-                type="button"
-                onClick={handleProfile}
-                className="w-full flex items-center cursor-pointer gap-3 px-4 py-3 transition-colors text-left"
-              >
-                <UserIcon className="w-4 h-4 text-gray-400" />
-                <span>Profile</span>
-              </button>
+              {/* Menu items */}
+              <div className="py-2">
+                {menuItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.path;
+                  return (
+                    <motion.button
+                      key={item.path}
+                      type="button"
+                      onClick={handleNavigate(item.path)}
+                      whileHover={{ x: 2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`group w-full flex items-center gap-3 px-5 py-3 text-left transition-colors duration-200 cursor-pointer ${
+                        isActive
+                          ? "bg-[#ff9D4D]/15 text-[#ff9D4D]"
+                          : "text-zinc-300 hover:bg-zinc-800/80 hover:text-white"
+                      }`}
+                    >
+                      <Icon
+                        className={`w-5 h-5 shrink-0 transition-colors ${
+                          isActive ? "text-[#ff9D4D]" : "text-zinc-500 group-hover:text-zinc-300"
+                        }`}
+                      />
+                      <span className="text-[14px] font-medium">{item.label}</span>
+                    </motion.button>
+                  );
+                })}
+              </div>
+
+              {/* Logout */}
+              <div className="p-3 border-t border-zinc-800/80 bg-zinc-900/30">
+                <motion.button
+                  type="button"
+                  onClick={handleLogout}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full flex items-center justify-center gap-2.5 py-3.5 px-5 rounded-xl bg-linear-to-r from-[#ff9D4D] to-[#ff8D3D] text-white font-semibold text-[15px] shadow-lg shadow-[#ff9D4D]/20 hover:shadow-[#ff9D4D]/30 transition-all duration-200 cursor-pointer"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Log out
+                </motion.button>
+              </div>
             </div>
-            <div className="bg-[#ff9D4D] rounded-br-[30px] cursor-pointer">
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-5 transition-colors text-left text-white"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Log out</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

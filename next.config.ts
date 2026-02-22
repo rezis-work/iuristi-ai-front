@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone", // Required for Docker deployment
+  output: "standalone",
+  async rewrites() {
+    if (process.env.NODE_ENV === "development") {
+      return [{ source: "/api/:path*", destination: "http://localhost:3001/:path*" }];
+    }
+    return [];
+  }, // Required for Docker deployment
   images: {
     // Device sizes for responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -24,6 +30,9 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
     ],
+  },
+  experimental: {
+    webpackMemoryOptimizations: false,
   },
 };
 
