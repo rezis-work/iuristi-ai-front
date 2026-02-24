@@ -44,9 +44,9 @@ function getInitials(name: string | null, email: string) {
 }
 
 const PROFILE_TYPE_OPTIONS: { value: Profile["accountType"]; label: string }[] = [
-  { value: "person", label: "Person" },
-  { value: "lawyer", label: "Lawyer" },
-  { value: "business_owner", label: "Business Owner" },
+  { value: "person", label: "პიროვნება" },
+  { value: "lawyer", label: "იურისტი" },
+  { value: "business_owner", label: "ბიზნესის მფლობელი" },
 ];
 
 /** Normalize accountType from API (may return "Person" etc.) to our expected values */
@@ -76,9 +76,9 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
     try {
       const { fileUrl, key } = await uploadImage(file, "avatar");
       await updateProfileMutation.mutateAsync({ avatarUrl: fileUrl, avatarKey: key });
-      toast.success("Profile picture uploaded successfully");
+      toast.success("პროფილის ფოტო წარმატებით ატვირთულია");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Upload failed");
+      toast.error(err instanceof Error ? err.message : "ატვირთვა ვერ მოხერხდა");
     } finally {
       setIsUploading(false);
       e.target.value = "";
@@ -128,7 +128,7 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
     if (Object.keys(updateData).length > 0) {
       updateProfileMutation.mutate(updateData, {
         onSuccess: () => {
-          toast.success("Profile updated successfully");
+          toast.success("პროფილი წარმატებით განახლდა");
           onSuccess?.();
         },
       });
@@ -152,12 +152,12 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
           {/* Avatar upload / delete */}
           <div className="space-y-4">
             <label className="block font-medium text-neutral-200">
-              Profile Photo
+              პროფილის ფოტო
             </label>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-4 rounded-xl bg-neutral-800/50 border border-neutral-700/50 min-w-0">
               <div className="relative shrink-0">
                 <Avatar className="h-24 w-24 sm:h-28 sm:w-28 border-2 border-[#ff9D4D]/50 ring-2 ring-neutral-700/50">
-                  <AvatarImage src={profile?.avatarUrl ?? undefined} alt={profile?.name ?? "Profile"} className="object-cover" />
+                  <AvatarImage src={profile?.avatarUrl ?? undefined} alt={profile?.name ?? "პროფილი"} className="object-cover" />
                   <AvatarFallback className="bg-[#ff9D4D]/15 text-2xl font-semibold text-[#ff9D4D]">
                     {getInitials(profile?.name ?? null, profile?.email ?? "")}
                   </AvatarFallback>
@@ -184,7 +184,7 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
                   ) : (
                     <ImagePlus className="h-4 w-4" />
                   )}
-                  Upload
+                  ატვირთვა
                 </Button>
                 {profile?.avatarUrl && (
                   <Button
@@ -200,11 +200,11 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
                     ) : (
                       <Trash2 className="h-4 w-4" />
                     )}
-                    Delete
+                    წაშლა
                   </Button>
                 )}
                 <p className="text-xs text-neutral-500">
-                  PNG, JPEG or WebP. Max 5MB
+                  PNG, JPEG ან WebP. მაქს 5MB
                 </p>
               </div>
             </div>
@@ -214,10 +214,10 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
           <div className="space-y-2">
             <label className="flex items-center gap-2 font-medium text-neutral-200">
               <Mail className="h-4 w-4" />
-              Email
+              ელფოსტა
             </label>
             <p className="text-sm text-neutral-400">{profile?.email || "-"}</p>
-            <p className="text-xs text-neutral-500">Email cannot be changed</p>
+            <p className="text-xs text-neutral-500">ელფოსტის შეცვლა შეუძლებელია</p>
           </div>
 
           {/* Name */}
@@ -228,12 +228,12 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
               <FormItem className="space-y-2">
                 <FormLabel className="flex items-center gap-2 font-medium text-neutral-200">
                   <User className="h-4 w-4" />
-                  Full Name
+                  სრული სახელი
                 </FormLabel>
                 <FormControl>
                   <UnderlinedFieldWrapper error={!!fieldState.error}>
                     <Input
-                      placeholder="Enter your name"
+                      placeholder="შეიყვანეთ თქვენი სახელი"
                       disabled={updateProfileMutation.isPending}
                       className="h-10 w-full border-0 bg-transparent px-0 pr-7 text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0"
                       style={{
@@ -256,7 +256,7 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
               <FormItem className="space-y-2">
                 <FormLabel className="flex items-center gap-2 font-medium text-neutral-200">
                   <Phone className="h-4 w-4" />
-                  Phone Number
+                  ტელეფონის ნომერი
                 </FormLabel>
                 <FormControl>
                   <UnderlinedFieldWrapper error={!!fieldState.error}>
@@ -292,7 +292,7 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
               <FormItem className="space-y-2">
                 <FormLabel className="flex items-center gap-2 font-medium text-neutral-200">
                   <Clock className="h-4 w-4" />
-                  Timezone
+                  დროის სარტყელი
                 </FormLabel>
                 <FormControl>
                   <UnderlinedFieldWrapper error={!!fieldState.error}>
@@ -319,12 +319,12 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
             render={({ field, fieldState }) => {
               const currentValue = field.value ?? "person";
               const currentLabel =
-                PROFILE_TYPE_OPTIONS.find((o) => o.value === currentValue)?.label ?? "Select type";
+                PROFILE_TYPE_OPTIONS.find((o) => o.value === currentValue)?.label ?? "აირჩიეთ ტიპი";
               return (
                 <FormItem className="space-y-2">
                   <FormLabel className="flex items-center gap-2 font-medium text-neutral-200">
                     <Briefcase className="h-4 w-4" />
-                    Account Type
+                    ანგარიშის ტიპი
                   </FormLabel>
                   <FormControl>
                     <UnderlinedFieldWrapper error={!!fieldState.error}>
@@ -381,10 +381,10 @@ export default function ProfileEditForm({ onSuccess }: ProfileEditFormProps) {
           {updateProfileMutation.isPending || form.formState.isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Saving...
+              ინახება...
             </>
           ) : (
-            "Save Changes"
+            "ცვლილებების შენახვა"
           )}
         </Button>
       </form>
