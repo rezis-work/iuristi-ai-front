@@ -10,7 +10,7 @@ import TestimonialsSection from "@/src/features/home/components/TestimonialsSect
 import { ContingencyVictoryHero } from "@/src/features/home/components/ContingencyVictoryHero";
 import AwardsShowcase from "@/src/features/home/components/AwardsShowcase";
 import RecentBlogSection from "@/src/features/home/components/RecentBlogSection";
-import ContactMapSection from "@/src/components/shared/ContactMapSection";
+import ContactMapSection from "@/src/features/contacts/components/contact-form";
 import { Spinner } from "@/src/components/ui/spinner";
 
 export function HomepageView() {

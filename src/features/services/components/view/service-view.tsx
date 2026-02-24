@@ -1,7 +1,9 @@
+"use client";
 
+import { Services } from "../service";
 
-export  function ServiceView() {
+export function ServiceView() {
   return (
-    <div>service-view</div>
-  )
+    <Services/>
+  );
 }

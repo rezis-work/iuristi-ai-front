@@ -21,13 +21,13 @@ const panelButtons: PanelButton[] = [
   {
     id: "services",
     icon: <Briefcase className="w-5 h-5" />,
-    href: "/",
+    href: "/service",
     label: "სერვისი",
   },
   {
     id: "message",
     icon: <MessageSquare className="w-5 h-5" />,
-    href: "/contact",
+    href: "/contacts",
     label: "კონტაქტი",
   },
   {
