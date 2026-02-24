@@ -24,7 +24,7 @@ export function ContingencyVictoryHero() {
       <div className="absolute inset-0 -z-10">
         <Image
           src="/images/videoImage/videoimage.jpg"
-          alt="Lawyer signing documents"
+          alt="ადვოკატი აზრუნებს დოკუმენტებს"
           fill
           priority
           className="object-cover"
@@ -63,7 +63,7 @@ export function ContingencyVictoryHero() {
           transition={{ delay: 0.15, duration: 0.4, ease: "easeOut" }}
           className="mb-6 text-xs tracking-[0.32em] font-bold uppercase text-zinc-200"
         >
-          Tell us about your case
+          მოგვიყევით თქვენი მოუსის შესახებ
         </motion.p>
 
         <motion.h1
@@ -72,7 +72,7 @@ export function ContingencyVictoryHero() {
           transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }}
           className="max-w-5xl text-balance text-3xl font-bold leading-tight sm:text-3xl md:text-4xl lg:text-5xl"
         >
-          We work on contingency: you don&apos;t owe anything until we win!
+          ვმუშაობთ წარმატების საფუძველზე: თქვენ არაფერს უხდით, სანამ წარმატებას არ მივაღწევთ!
         </motion.h1>
       </div>
       <AnimatePresence>

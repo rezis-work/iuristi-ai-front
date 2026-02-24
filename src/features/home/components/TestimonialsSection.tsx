@@ -21,19 +21,19 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Jason Bright",
+    name: "ჯეისონ ბრაიტი",
     image: "/images/404.webp",
-    title: "General anager",
+    title: "სამოქალაქო დავის კლიენტი",
     quote:
-      "Ignissimos ducimos qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi, sint occaecatii gnissimos ducimus qui blanditiis.",
+      "რთული სამართლებრივი დავა გვქონდა და მხოლოდ მათი დახმარებით მივიღეთ სამართლიანი გადაწყვეტა სასამართლოში. პროფესიონალური იურიდიული დახმარება ყველას ვურჩევ, ვისაც მოუსი აქვს.",
   },
   {
     id: 2,
-    name: "Sarah Johnson",
+    name: "სარა ჯონსონი",
     image: "/images/bg-2.jpg",
-    title: "Social worker",
+    title: "საოჯახო საქმის კლიენტი",
     quote:
-      "Exceptional service and outstanding results. The team went above and beyond to ensure our success. Highly recommended for anyone looking for professional excellence.",
+      "ოჯახური საკითხის გარშემო მოუსი გვქონდა — გუნდმა დაგვეხმარა მოუსის მოგვარებაში და უფლებების დაცვაში. ვაფასებ მათ პროფესიონალიზმს და იურიდიულ მხარდაჭერას.",
   },
 ];
 
@@ -47,16 +47,15 @@ function TestimonialsSection() {
               <div className="space-y-4">
                 <div className="text-gray-400 uppercase tracking-wider text-sm flex items-center gap-4">
                   <div className="h-px w-10 bg-yellow-500" />
-                  TESTIMONIALS
+                  მიმოხილვები
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-                  Hear what our clients
+                  ისმინეთ, რას ამბობენ
                   <br />
-                  have to say
+                  ჩვენი კლიენტები
                 </h2>
                 <p className="text-gray-400 text-base lg:text-lg max-w-xl">
-                  Adipiscing elit, sed do euismod tempor incidunt ut labore et
-                  dolore magna aliqua.
+                  ისმინეთ მათ, ვინც ჩვენთან გააგრძელეს მოუსი და მიიღო სამართლიანი შედეგი სასამართლოში.
                 </p>
               </div>
               <div className="bg-zinc-900 px-6 lg:px-10 pt-10 lg:pt-24 overflow-hidden relative">
@@ -132,7 +131,7 @@ function TestimonialsSection() {
               <div className="w-full h-130 md:h-100 lg:h-155 overflow-hidden">
                 <Image
                   src="/assets/home/imageRight.jpg"
-                  alt="Our team"
+                  alt="ჩვენი გუნდი"
                   width={800}
                   height={600}
                   priority
@@ -141,11 +140,13 @@ function TestimonialsSection() {
               </div>
               <div className="border border-zinc-800 p-10 lg:p-16 space-y-4">
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold pb-4">
-                  We provide the <br /> best service for clients
+                  ჩვენ ვთავაზობთ საუკეთესო
+                  <br />
+                  იურიდიულ მომსახურებას მოუსისთვის
                 </h3>
                 <div className="flex flex-wrap justify-between gap-10 lg:gap-20">
                   <div className="min-w-0 max-w-xs space-y-1">
-                    <h4 className="font-semibold lg:text-xl">Lawyers</h4>
+                    <h4 className="font-semibold lg:text-xl">ადვოკატი</h4>
                     <div>
                       <NumberTicker
                         value={100}
@@ -153,11 +154,11 @@ function TestimonialsSection() {
                       />
                     </div>
                     <p className="text-sm g:text-md text-gray-300 lg:wrap-break-word max-w-32 lg:max-w-51">
-                      Lorem ipsum dolor sit, amet consectetur adipi
+                      პროფესიონალი იურისტი თქვენი მოუსებისთვის
                     </p>
                   </div>
                   <div className="min-w-0 max-w-xs space-y-1">
-                    <h4 className="font-semibold lg:text-xl">years</h4>
+                    <h4 className="font-semibold lg:text-xl">წელი</h4>
                     <div>
                       <NumberTicker
                         value={12}
@@ -165,7 +166,7 @@ function TestimonialsSection() {
                       />
                     </div>
                     <p className="text-sm lg:text-md text-gray-300 lg:wrap-break-word max-w-32 lg:max-w-51">
-                      Lorem, ipsum dolor sit amet consectetur
+                      წარმატებული საქმე სასამართლოში
                     </p>
                   </div>
                 </div>

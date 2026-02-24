@@ -15,11 +15,11 @@ export default function AwardsShowcase() {
   return (
     <Wrapper className="mx-auto w-full bg-black text-white py-12 px-6 lg:px-28">
       <SectionHeader
-        label="About Us"
-        title="Our awards from the legal community"
+        label="ჩვენს შესახებ"
+        title="ჩვენი ჯილდოები სამართლებრივი საზოგადოებისგან"
         titleHighlight="!"
         descriptions={[
-          "Adipiscing elit, sed do euismod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+          "ჩვენი გუნდი წარმატებით წარმართავს რთულ სასამართლო საქმეებს მოუსის მოგვარების გზით. სისხლის სამართლიდან საოჯახო დავამდე — ვეხმარებით კლიენტებს სამართლიანი შედეგის მიღებაში.",
         ]}
       />
       <motion.div
