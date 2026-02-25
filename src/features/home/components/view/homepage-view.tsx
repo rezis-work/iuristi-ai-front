@@ -17,6 +17,7 @@ export function HomepageView() {
   return (
     <React.Fragment>
       <section className="space-y-15">
+       
         <HeroSection />
         <TopServices />
         <LegalAdvisoryHero />

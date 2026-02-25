@@ -31,7 +31,7 @@ export function useLogin(options?: UseLoginOptions) {
     onSuccess: async () => {
       // Refetch profile so it's ready when we navigate (fixes profile not loading after login)
       await qc.refetchQueries({ queryKey: ["profile", "me"] });
-      toast.success("login successful");
+      toast.success("შესვლა წარმატებულია");
 
       // Determine redirect: explicit redirectTo > next query param > default
       let nextParam = options?.redirectTo ?? searchParams.get("next");
@@ -55,7 +55,7 @@ export function useLogin(options?: UseLoginOptions) {
       }
     },
     onError: () => {
-      toast.error("login failed");
+      toast.error("შესვლა ვერ მოხერხდა");
     },
   });
 }
@@ -77,7 +77,7 @@ export function useRegister(options?: { redirectTo?: string }) {
     onSuccess: async () => {
       // Refetch profile so it's ready when we navigate
       await qc.refetchQueries({ queryKey: ["profile", "me"] });
-      toast.success("register successful");
+      toast.success("რეგისტრაცია წარმატებულია");
       const nextParam = options?.redirectTo ?? searchParams.get("next");
       const targetPath =
         nextParam && typeof nextParam === "string" && nextParam.startsWith("/") && !nextParam.includes("//")
@@ -86,7 +86,7 @@ export function useRegister(options?: { redirectTo?: string }) {
       router.push(targetPath);
     },
     onError: () => {
-      toast.error("register failed");
+      toast.error("რეგისტრაცია ვერ მოხერხდა");
       console.log("registaracia");
     },
   });
@@ -113,12 +113,12 @@ export function useLogOut() {
     },
     onSuccess: () => {
       clearAuthState(qc);
-      toast.success("logout successful");
+      toast.success("გამოსვლა წარმატებულია");
       router.push("/login");
     },
     onError: () => {
       clearAuthState(qc);
-      toast.error("logout failed");
+      toast.error("გამოსვლა ვერ მოხერხდა");
       router.push("/login");
     },
   });
@@ -136,12 +136,12 @@ export function useChangePassword() {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["profile", "me"] });
-      toast.success("Password changed successfully");
+      toast.success("პაროლი წარმატებით შეიცვალა");
       router.push("/login");
     },
     onError: (error) => {
       // შეგიძლია backend error message ამოიღო shared error ფორმატიდან
-      toast.error(error?.message || "Failed to change password");
+      toast.error(error?.message || "პაროლის შეცვლა ვერ მოხერხდა");
     },
   });
 }

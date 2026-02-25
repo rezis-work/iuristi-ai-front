@@ -15,19 +15,19 @@ export default function ContactUsSection() {
             <div className="flex items-center gap-3">
               <div className="h-0.5 w-12 bg-yellow-500"></div>
               <span className="text-sm font-medium tracking-wider uppercase text-neutral-400">
-                Contact Us
+                დაგვიკავშირდით
               </span>
             </div>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-12 mt-6">
-            Have questions?
+            გაქვს კითხვები?
             <br />
-            <span className="text-white">Get in touch!</span>
+            <span className="text-white">მოგვწერე ახლავე!</span>
           </h2>
 
           {sent ? (
             <div className="text-green-400 text-center py-8">
-              Thanks — your message was sent.
+              მადლობა — შენი შეტყობინება წარმატებით გაიგზავნა.
             </div>
           ) : (
             <form
@@ -43,7 +43,7 @@ export default function ContactUsSection() {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Name"
+                    placeholder="სახელი"
                     required
                     className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors"
                   />
@@ -51,7 +51,7 @@ export default function ContactUsSection() {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Last Name"
+                    placeholder="გვარი"
                     required
                     className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors"
                   />
@@ -63,7 +63,7 @@ export default function ContactUsSection() {
                 <div className="relative">
                   <input
                     type="email"
-                    placeholder="Email"
+                    placeholder="ელფოსტა"
                     required
                     className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors"
                   />
@@ -71,7 +71,7 @@ export default function ContactUsSection() {
                 <div className="relative">
                   <input
                     type="tel"
-                    placeholder="Phone"
+                    placeholder="ტელეფონი"
                     className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors"
                   />
                 </div>
@@ -80,7 +80,7 @@ export default function ContactUsSection() {
               {/* Third Row: Message (Full Width) */}
               <div className="relative">
                 <textarea
-                  placeholder="Message"
+                  placeholder="შეტყობინება"
                   required
                   rows={4}
                   className="w-full bg-transparent border-0 border-b border-neutral-600 px-0 py-3 text-base text-neutral-300 placeholder:text-neutral-500 focus:outline-none focus:border-yellow-500 transition-colors resize-none"
@@ -94,7 +94,7 @@ export default function ContactUsSection() {
                   className="group flex items-center gap-3 bg-[#ff9D4D] hover:bg-[#ea9753] text-white font-semibold uppercase tracking-wider px-8 py-4 rounded-md transition-colors"
                 >
                   <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  <span>GET IN TOUCH</span>
+                  <span>დაგვიკავშირდი</span>
                 </button>
               </div>
             </form>

@@ -96,7 +96,9 @@ function getJwtExp(token: string): number | null {
 /** ტოკენი ვადაგასულა ან 5 წუთში ამოიწურება? */
 function tokenExpiresWithinMinutes(token: string, minutes = 5): boolean {
   const exp = getJwtExp(token);
-  if (exp == null) return true;
+  // If token is not a JWT or exp is unavailable, skip proactive refresh.
+  // 401 handler below will still attempt refresh when backend rejects the token.
+  if (exp == null) return false;
   const nowSec = Math.floor(Date.now() / 1000);
   return exp <= nowSec + minutes * 60;
 }

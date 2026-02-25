@@ -18,7 +18,7 @@ import { Input } from "@/src/components/ui/input";
 import { Logo } from "@/src/components/header/Logo";
 
 const formSchema = z.object({
-  search: z.string().min(1, "Please enter a search term"),
+  search: z.string().min(1, "გთხოვ, შეიყვანე საძიებო სიტყვა"),
 });
 
 interface SearchProps {
@@ -99,7 +99,7 @@ export function Search({ isOpen, onClose }: SearchProps) {
                   <button
                     onClick={handleClose}
                     className="text-zinc-400 hover:text-white transition-colors cursor-pointer"
-                    aria-label="Close search"
+                    aria-label="ძიების დახურვა"
                   >
                     <X className="w-7 h-7" />
                   </button>
@@ -135,7 +135,7 @@ export function Search({ isOpen, onClose }: SearchProps) {
                                   {...field}
                                   autoFocus
                                   type="text"
-                                  placeholder="Search across pages, services, and resources..."
+                                  placeholder="მოძებნე გვერდებში, სერვისებსა და რესურსებში..."
                                   className="h-10 w-full bg-black border-none rounded-none pl-4 pr-12 text-xs md:text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                                   style={{
                                     boxShadow: "inset 0 0 0 1000px #000000",

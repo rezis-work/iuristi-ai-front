@@ -19,8 +19,8 @@ type UseUpdateSettingsOptions = {
 
 export function useUpdateSettings(options?: UseUpdateSettingsOptions) {
   const queryClient = useQueryClient();
-  const successMsg = options?.messages?.success ?? "Settings updated successfully";
-  const errorMsg = options?.messages?.error ?? "Failed to save settings";
+  const successMsg = options?.messages?.success ?? "პარამეტრები წარმატებით განახლდა";
+  const errorMsg = options?.messages?.error ?? "პარამეტრების შენახვა ვერ მოხერხდა";
 
   return useMutation({
     mutationKey: ["update-settings"],

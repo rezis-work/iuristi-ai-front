@@ -42,16 +42,16 @@ function AcceptInviteContent() {
         <CardHeader>
           <CardTitle className="text-neutral-100 flex items-center gap-2">
             <XCircle className="size-5 text-red-400" />
-            Invalid link
+            არასწორი ბმული
           </CardTitle>
           <CardDescription className="text-neutral-400">
-            Invite link not found or not specified.
+            მოწვევის ბმული ვერ მოიძებნა ან არ არის მითითებული.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Link href="/login">
             <Button variant="outline" className="border-neutral-600 cursor-pointer">
-              Log in
+              შესვლა
             </Button>
           </Link>
         </CardContent>
@@ -64,7 +64,7 @@ function AcceptInviteContent() {
       <Card className="max-w-md mx-auto bg-zinc-900/90 border-neutral-700/80 shadow-xl">
         <CardContent className="py-12 flex flex-col items-center gap-4">
           <Loader2 className="size-10 animate-spin text-[#ff9D4D]" />
-          <p className="text-neutral-400">Checking invite...</p>
+          <p className="text-neutral-400">მოწვევა მოწმდება...</p>
         </CardContent>
       </Card>
     );
@@ -76,16 +76,16 @@ function AcceptInviteContent() {
         <CardHeader>
           <CardTitle className="text-neutral-100 flex items-center gap-2">
             <XCircle className="size-5 text-red-400" />
-            Invalid invite
+            არასწორი მოწვევა
           </CardTitle>
           <CardDescription className="text-neutral-400">
-            Link has expired, been revoked, or is invalid.
+            ბმული ვადაგასულია, გაუქმებულია ან არასწორია.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Link href="/login">
             <Button variant="outline" className="border-neutral-600 cursor-pointer">
-              Log in
+              შესვლა
             </Button>
           </Link>
         </CardContent>
@@ -98,11 +98,11 @@ function AcceptInviteContent() {
       <CardHeader>
         <CardTitle className="text-neutral-100 flex items-center gap-2">
           <CheckCircle className="size-5 text-emerald-400" />
-          Invite to organization
+          მოწვევა ორგანიზაციაში
         </CardTitle>
         <CardDescription className="text-neutral-400">
-          You are invited to &quot;{org?.name ?? "—"}&quot; with role &quot;
-          {role === "lawyer" ? "Lawyer" : role === "admin" ? "Admin" : role ?? "—"}&quot;
+          მოწვეული ხარ &quot;{org?.name ?? "—"}&quot; ორგანიზაციაში &quot;
+          {role === "lawyer" ? "იურისტი" : role === "admin" ? "ადმინისტრატორი" : role ?? "—"}&quot; როლით
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -120,27 +120,27 @@ function AcceptInviteContent() {
               {acceptInvite.isPending ? (
                 <>
                   <Loader2 className="mr-2 size-4 animate-spin" />
-                  Accepting...
+                  დადასტურება...
                 </>
               ) : (
-                "Accept Invite"
+                "მოწვევის მიღება"
               )}
             </Button>
             <Link href="/me/organization" className="block">
               <Button variant="ghost" className="w-full text-neutral-400 cursor-pointer">
-                Cancel
+                გაუქმება
               </Button>
             </Link>
           </>
         ) : (
           <>
             <p className="text-sm text-neutral-400 text-center">
-              Log in to accept this invite
+              მოწვევის მისაღებად გაიარე ავტორიზაცია
             </p>
             <Link href={loginUrl} className="block">
               <Button className="w-full bg-[#ff9D4D] hover:bg-[#ffa95d] text-white shadow-lg shadow-[#ff9D4D]/25 cursor-pointer">
                 <LogIn className="mr-2 size-4" />
-                Log in to accept
+                შესვლა და მიღება
               </Button>
             </Link>
           </>
@@ -157,7 +157,7 @@ export function AcceptInviteCard() {
         <Card className="max-w-md mx-auto bg-zinc-900/90 border-neutral-700/80 shadow-xl">
           <CardContent className="py-12 flex flex-col items-center gap-4">
             <Loader2 className="size-10 animate-spin text-[#ff9D4D]" />
-            <p className="text-neutral-400">Loading...</p>
+            <p className="text-neutral-400">იტვირთება...</p>
           </CardContent>
         </Card>
       }

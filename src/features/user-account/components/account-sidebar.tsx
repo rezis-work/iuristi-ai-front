@@ -32,7 +32,7 @@ export function AccountSidebar() {
       ?.split(" ")
       .map((n) => n[0])
       .join("")
-      .toUpperCase() || "U";
+      .toUpperCase() || "მ";
 
   const createdAtFormatted = useMemo(
     () => formatEnglishDate(profile?.createdAt),
@@ -61,7 +61,7 @@ export function AccountSidebar() {
           <Avatar className="h-full w-full border border-black/40 bg-black/40">
             <AvatarImage
               src={profile?.avatarUrl || undefined}
-              alt={profile?.name || "User"}
+              alt={profile?.name || "მომხმარებელი"}
               className="object-cover"
             />
             <AvatarFallback className="bg-zinc-900 text-2xl sm:text-3xl font-semibold text-neutral-100">
@@ -72,22 +72,22 @@ export function AccountSidebar() {
       </div>
 
       <h1 className="mb-6 text-center text-[20px] sm:text-[22px] font-semibold tracking-wide text-neutral-100">
-        {profile?.name || profile?.email || "User"}
+        {profile?.name || profile?.email || "მომხმარებელი"}
       </h1>
       <div className="mb-6 w-full py-3 flex flex-col gap-3 text-xs text-neutral-300">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-neutral-400">Registered at</span>
+          <span className="text-neutral-400">რეგისტრაციის თარიღი</span>
           <span className="font-medium text-neutral-200 text-right">
             {createdAtFormatted}
           </span>
         </div>
         {profile?.email && (
           <div className="flex items-center justify-between gap-2">
-            <span className="text-neutral-400">Email</span>
+            <span className="text-neutral-400">ელფოსტა</span>
             <span className="font-medium text-neutral-200 text-right truncate max-w-[60%] flex items-center justify-end gap-1.5">
               {profile.email}
               {profile.emailVerified && (
-                <span title="Verified" className="inline-flex">
+                <span title="დადასტურებული" className="inline-flex">
                   <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" aria-hidden />
                 </span>
               )}
@@ -96,7 +96,7 @@ export function AccountSidebar() {
         )}
         {profile?.phone && (
           <div className="flex items-center justify-between gap-2">
-            <span className="text-neutral-400">Phone</span>
+            <span className="text-neutral-400">ტელეფონი</span>
             <span className="font-medium text-neutral-200 text-right">
               {profile.phone}
             </span>
@@ -111,7 +111,7 @@ export function AccountSidebar() {
             className="inline-flex w-full cursor-pointer items-center justify-center gap-2 px-4 py-4 text-[13px] sm:text-[14px] font-medium text-neutral-300 hover:bg-[#202020] rounded-b-sm hover:text-neutral-50 transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <LogOut className="h-4 w-4" />
-            Logout
+            გასვლა
           </button>
         </div>
       </div>

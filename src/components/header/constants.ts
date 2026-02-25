@@ -2,20 +2,20 @@
 
 export const rightColumnBlocks = [
   {
-    eyebrow: "Have a Project?",
+    eyebrow: "გაქვს პროექტი?",
     title: "info@website.com",
     underline: true,
     showArrow: false,
   },
   {
-    eyebrow: "Where to Find Us?",
-    title: "Look Here",
+    eyebrow: "სად გვიპოვით?",
+    title: "იხილეთ აქ",
     underline: false,
     showArrow: true,
   },
   {
-    eyebrow: "Want an Appointment?",
-    title: "Make One",
+    eyebrow: "გსურთ შეხვედრა?",
+    title: "დაჯავშნე ახლა",
     underline: false,
     showArrow: true,
   },

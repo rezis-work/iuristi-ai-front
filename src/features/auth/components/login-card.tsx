@@ -31,7 +31,7 @@ const getInitials = (name?: string | null) =>
         .map((n) => n[0])
         .join("")
         .toUpperCase()
-    : "U";
+    : "მ";
 
 export function LoginCard({ className }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -104,14 +104,14 @@ export function LoginCard({ className }: UserMenuProps) {
             type="button"
             onClick={handleLogin}
             className="p-1.5 sm:p-2 md:p-2.5 rounded-full border border-[#ff9D4D] text-[#ff9D4D] hover:bg-[#ff9D4D] hover:text-black transition-colors duration-200 cursor-pointer"
-            aria-label="Sign in"
+            aria-label="შესვლა"
           >
             <UserIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5" />
           </button>
         </div>
         <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
           <DialogContent className="max-w-md bg-zinc-950 border-zinc-800 p-0 overflow-hidden [&>button]:text-zinc-400 [&>button]:hover:text-white">
-            <DialogTitle className="sr-only">Sign in</DialogTitle>
+            <DialogTitle className="sr-only">შესვლა</DialogTitle>
             <LoginForm
               onClose={() => setLoginOpen(false)}
               next={pathname || undefined}
@@ -127,7 +127,7 @@ export function LoginCard({ className }: UserMenuProps) {
     <Avatar className="w-9 h-9 sm:w-11 sm:h-11 ring-2 ring-[#ff9D4D]/60 ring-offset-2 ring-offset-black bg-zinc-800 text-white shrink-0 transition-all duration-300 hover:ring-[#ff9D4D] hover:scale-105 cursor-pointer">
       <AvatarImage
         src={user.avatarUrl ?? undefined}
-        alt={user?.name || "User avatar"}
+        alt={user?.name || "მომხმარებლის ავატარი"}
         className="object-cover"
       />
       <AvatarFallback className="bg-linear-to-br from-[#ff9D4D] to-[#ff7D2D] text-white text-xs font-semibold">
@@ -149,7 +149,7 @@ export function LoginCard({ className }: UserMenuProps) {
         type="button"
         onClick={handleToggleMenu}
         className="flex items-center gap-2 rounded-full p-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff9D4D] focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-transform duration-200 hover:scale-105 active:scale-95 cursor-pointer"
-        aria-label="Open user menu"
+        aria-label="მომხმარებლის მენიუს გახსნა"
       >
         {avatarNode}
       </button>
@@ -170,7 +170,7 @@ export function LoginCard({ className }: UserMenuProps) {
                   <Avatar className="h-14 w-14 ring-2 ring-[#ff9D4D]/40 ring-offset-2 ring-offset-zinc-900 shrink-0">
                     <AvatarImage
                       src={user.avatarUrl ?? undefined}
-                      alt={user?.name || "User"}
+                      alt={user?.name || "მომხმარებელი"}
                       className="object-cover"
                     />
                     <AvatarFallback className="bg-linear-to-br from-[#ff9D4D] to-[#ff7D2D] text-white text-sm font-semibold">
@@ -179,7 +179,7 @@ export function LoginCard({ className }: UserMenuProps) {
                   </Avatar>
                   <div className="min-w-0 flex-1">
                     <p className="text-[15px] font-semibold text-white truncate">
-                      {user?.name || "User"}
+                      {user?.name || "მომხმარებელი"}
                     </p>
                     <p className="text-[13px] text-zinc-400 truncate mt-0.5">
                       {user?.email}
@@ -227,7 +227,7 @@ export function LoginCard({ className }: UserMenuProps) {
                   className="w-full flex items-center justify-center gap-2.5 py-3.5 px-5 rounded-xl bg-linear-to-r from-[#ff9D4D] to-[#ff8D3D] text-white font-semibold text-[15px] shadow-lg shadow-[#ff9D4D]/20 hover:shadow-[#ff9D4D]/30 transition-all duration-200 cursor-pointer"
                 >
                   <LogOut className="w-5 h-5" />
-                  Log out
+                  გასვლა
                 </motion.button>
               </div>
             </div>

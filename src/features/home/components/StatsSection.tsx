@@ -8,16 +8,16 @@ const stats = [
   {
     id: "lawyers",
     icon: Briefcase,
-    label: "Lawyers",
+    label: "იურისტი",
     value: "12+",
-    description: "Adipiscing, sed do eiusm.",
+    description: "პროფესიონალი იურისტები თქვენს მხარდაჭერად.",
   },
   {
     id: "years",
     icon: Award,
-    label: "Years",
+    label: "წელი",
     value: "20+",
-    description: "Sed do eiusmod tempor.",
+    description: "მრავალწლიანი პრაქტიკული გამოცდილება.",
   },
 ];
 
@@ -29,11 +29,11 @@ export default function StatsSection() {
           <div className="flex items-center gap-3 mb-4">
             <div className="h-0.5 w-12 bg-yellow-500"></div>
             <span className="text-sm font-medium tracking-wider uppercase text-neutral-400">
-              Why Choose Us
+              რატომ ჩვენ
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
-            We provide the best service for clients
+            ჩვენ გთავაზობთ საუკეთესო იურიდიულ მომსახურებას
           </h2>
         </div>
 

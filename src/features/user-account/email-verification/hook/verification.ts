@@ -10,10 +10,10 @@ export function useRequestVerification() {
             return requestVerification(input);
         },
         onSuccess: () => {
-            toast.success("Verification email sent successfully");
+            toast.success("დადასტურების ელფოსტა წარმატებით გაიგზავნა");
         },
         onError: () => {
-            toast.error("Failed to send verification email");
+            toast.error("დადასტურების ელფოსტის გაგზავნა ვერ მოხერხდა");
         },
     });
 }
@@ -27,10 +27,10 @@ export function useVerifyEmail() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["profile", "me"] });
-            toast.success("Email verified successfully");
+            toast.success("ელფოსტა წარმატებით დადასტურდა");
         },
         onError: () => {
-            toast.error("Failed to verify email");
+            toast.error("ელფოსტის დადასტურება ვერ მოხერხდა");
         },
     });
 }
