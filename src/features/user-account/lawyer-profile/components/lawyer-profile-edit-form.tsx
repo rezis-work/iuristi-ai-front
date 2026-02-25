@@ -76,7 +76,7 @@ export function LawyerProfileEditForm({
           render={({ fieldState }) => (
             <FormItem>
               <FormLabel className="text-[15px] font-medium text-neutral-200">
-                Practice Areas <span className="text-red-500">*</span>
+                პრაქტიკის სფეროები <span className="text-red-500">*</span>
               </FormLabel>
               <div className="mt-4 space-y-3">
                 {allFields.map((field) => {
@@ -147,7 +147,7 @@ export function LawyerProfileEditForm({
         />
 
         <p className="text-xs text-neutral-500">
-          Select your practice areas (minimum 1, maximum 3)
+          აირჩიე პრაქტიკის სფეროები (მინიმუმ 1, მაქსიმუმ 3)
         </p>
 
         <Button
@@ -158,10 +158,10 @@ export function LawyerProfileEditForm({
           {updateMutation.isPending || form.formState.isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Saving...
+              ინახება...
             </>
           ) : (
-            "Save Changes"
+            "ცვლილებების შენახვა"
           )}
         </Button>
       </form>

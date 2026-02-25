@@ -11,15 +11,15 @@ export type LoginSchema = z.infer<typeof loginSchema>;
 
 export const registerSchema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Please enter a valid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    name: z.string().min(2, "სახელი უნდა იყოს მინიმუმ 2 სიმბოლო"),
+    email: z.string().email("გთხოვ, შეიყვანე სწორი ელფოსტის მისამართი"),
+    password: z.string().min(8, "პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო"),
     confirmPassword: z
       .string()
-      .min(8, "Password must be at least 8 characters"),
+      .min(8, "პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "პაროლები არ ემთხვევა",
     path: ["confirmPassword"],
   })
   .strict();
@@ -30,18 +30,18 @@ export type RegisterSchema = z.infer<typeof registerSchema>;
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: z.string().min(1, "Current password is required"),
-    newPassword: z.string().min(8, "Password must be at least 8 characters"),
+    currentPassword: z.string().min(1, "მიმდინარე პაროლი სავალდებულოა"),
+    newPassword: z.string().min(8, "პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო"),
     confirmPassword: z
       .string()
-      .min(8, "Password must be at least 8 characters"),
+      .min(8, "პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო"),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "პაროლები არ ემთხვევა",
     path: ["confirmPassword"],
   })
   .refine((data) => data.newPassword !== data.currentPassword, {
-    message: "New password must be different from current password",
+    message: "ახალი პაროლი უნდა განსხვავდებოდეს მიმდინარე პაროლისგან",
     path: ["newPassword"],
   });
 

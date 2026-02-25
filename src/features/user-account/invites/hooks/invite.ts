@@ -36,11 +36,11 @@ export function useCreateInvite(orgId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...INVITES_QUERY_KEY, orgId] });
       queryClient.invalidateQueries({ queryKey: ["members", orgId] });
-      toast.success("Invite created. Copy and share the link below with the invited person.");
+      toast.success("მოწვევა შეიქმნა. დააკოპირე ქვემოთ მოცემული ბმული და გაუზიარე მოწვეულ პირს.");
     },
     onError: (error: Error) => {
       const msg = error?.message?.trim();
-      toast.error(msg && msg.length < 120 ? msg : "Failed to create invite");
+      toast.error(msg && msg.length < 120 ? msg : "მოწვევის შექმნა ვერ მოხერხდა");
     },
   });
 }
@@ -52,10 +52,10 @@ export function useCreateInviteLink(orgId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...INVITES_QUERY_KEY, orgId] });
       queryClient.invalidateQueries({ queryKey: ["members", orgId] });
-      toast.success("Invite link created");
+      toast.success("მოწვევის ბმული შეიქმნა");
     },
     onError: () => {
-      toast.error("Failed to create invite link");
+      toast.error("მოწვევის ბმულის შექმნა ვერ მოხერხდა");
     },
   });
 }
@@ -67,10 +67,10 @@ export function useAcceptInvite() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get-orgs"] });
       queryClient.invalidateQueries({ queryKey: INVITES_QUERY_KEY });
-      toast.success("Invite accepted");
+      toast.success("მოწვევა მიღებულია");
     },
     onError: () => {
-      toast.error("Failed to accept invite");
+      toast.error("მოწვევის მიღება ვერ მოხერხდა");
     },
   });
 }
@@ -82,10 +82,10 @@ export function useDeleteInvite(orgId: string, inviteId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...INVITES_QUERY_KEY, orgId] });
       queryClient.invalidateQueries({ queryKey: ["members", orgId] });
-      toast.success("Invite revoked");
+      toast.success("მოწვევა გაუქმდა");
     },
     onError: () => {
-      toast.error("Failed to revoke invite");
+      toast.error("მოწვევის გაუქმება ვერ მოხერხდა");
     },
   });
 }

@@ -64,10 +64,10 @@ export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) 
       <Card className={`bg-transparent rounded-none md:rounded-md shadow-2xl border-none ${compact ? "pt-12 pb-4 px-6" : "py-20"}`}>
           <CardHeader className={`text-center ${compact ? "pb-3" : "pb-4"}`}>
             <CardTitle className={`font-bold text-white mb-2 ${compact ? "text-2xl" : "text-3xl"}`}>
-              Welcome Back
+              კეთილი დაბრუნება
             </CardTitle>
             <CardDescription className="text-gray-400 text-base">
-              Sign in to your account
+              შედი შენს ანგარიშში
             </CardDescription>
           </CardHeader>
           <CardContent className="sm:px-30 md:px-4">
@@ -84,12 +84,12 @@ export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) 
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Email Address
+                          ელფოსტის მისამართი
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="Enter your email"
+                            placeholder="შეიყვანე ელფოსტა"
                             disabled={form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -112,12 +112,12 @@ export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) 
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Password
+                          პაროლი
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="password"
-                            placeholder="Enter your password"
+                            placeholder="შეიყვანე პაროლი"
                             disabled={form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -136,7 +136,7 @@ export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) 
                     href="/reset-password"
                     className="cursor-pointer text-[15px] hover:text-[#FF9D4D] transition-colors"
                   >
-                    Forgot password?
+                    დაგავიწყდა პაროლი?
                   </Link>
                 </div>
                 {/* Submit Button */}
@@ -146,7 +146,7 @@ export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) 
                     disabled={form.formState.isSubmitting}
                     className="w-full h-13 mt-4 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    {form.formState.isSubmitting ? "Signing in..." : "Login"}
+                    {form.formState.isSubmitting ? "მიმდინარეობს შესვლა..." : "შესვლა"}
                   </Button>
                   <Link
                     href={nextParam ? `/register?next=${encodeURIComponent(nextParam)}` : "/register"}
@@ -158,7 +158,7 @@ export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) 
                       variant="secondary"
                       className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                     >
-                      Sign up
+                      რეგისტრაცია
                     </Button>
                   </Link>
                 </div>

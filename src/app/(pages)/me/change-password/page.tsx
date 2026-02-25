@@ -1,12 +1,5 @@
-import { PasswordChnage } from "@/src/features/user-account/change-password/components/password-chnage";
+import { redirect } from "next/navigation";
 
-
-function page() {
-  return (
-    <div>
-    <PasswordChnage/>
-    </div>
-  );
+export default function Page() {
+  redirect("/me/settings");
 }
-
-export default page;

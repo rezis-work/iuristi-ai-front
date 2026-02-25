@@ -12,7 +12,7 @@ export const awards: Award[] = [
     id: "02",
     title: "მოხერხებული მოტყუება",
     type: "ფინანსები",
-    client: "Tech Corporate",
+    client: "ტექ კორპორეითი",
     year: "2020",
   },
   {
@@ -26,7 +26,7 @@ export const awards: Award[] = [
     id: "04",
     title: "უძრავი ქონების მოტყუება",
     type: "კორპორატიული",
-    client: "Home Estate Co.",
+    client: "ჰოუმ ესტეიტ კო.",
     year: "2022",
   },
   {

@@ -23,8 +23,8 @@ export function useRequestPasswordReset() {
     },
     onSuccess: (data, variables) => {
       if (data?.sent) {
-        toast.success("✉️ Email sent!", {
-          description: `Check your inbox at ${variables.email} for the reset link. It expires in 30 minutes.`,
+        toast.success("✉️ ელფოსტა გაიგზავნა!", {
+          description: `პაროლის აღდგენის ბმული გამოგეგზავნა მისამართზე ${variables.email}. ბმული 30 წუთში იწურება.`,
         });
       }
     },
@@ -49,30 +49,30 @@ export function useRequestPasswordReset() {
 
       // Handle specific error codes from the backend
       if (errorCode === "RATE_LIMITED") {
-        toast.error("🔒 Too many requests", {
-          description: "Please wait a few moments and try again.",
+        toast.error("🔒 ზედმეტად ბევრი მოთხოვნა", {
+          description: "გთხოვ, ცოტა ხანს დაელოდე და ხელახლა სცადე.",
         });
       } else if (errorCode === "PASSWORD_RESET_COOLDOWN") {
-        toast.error("⏳ Please wait", {
-          description: "You can request another reset email in a moment.",
+        toast.error("⏳ გთხოვ, დაელოდე", {
+          description: "ცოტა ხანში კვლავ შეძლებ აღდგენის ელფოსტის მოთხოვნას.",
         });
       } else if (errorCode === "PASSWORD_RESET_DAILY_LIMIT") {
-        toast.error("📅 Daily limit reached", {
+        toast.error("📅 დღიური ლიმიტი ამოიწურა", {
           description:
-            "You've reached the limit for today. Please try again tomorrow.",
+            "დღევანდელი ლიმიტი ამოწურულია. გთხოვ, ხვალ სცადე.",
         });
       } else if (
         errorMessage?.includes("user doesn't exist") ||
         errorMessage?.includes("not found")
       ) {
         // Security: Don't reveal if email exists or not
-        toast.success("✓ Check your email", {
+        toast.success("✓ გადაამოწმე ელფოსტა", {
           description:
-            "If this email is registered, you'll receive a reset link shortly.",
+            "თუ ეს ელფოსტა რეგისტრირებულია, მალე მიიღებ აღდგენის ბმულს.",
         });
       } else {
-        toast.error("❌ Couldn't send reset email", {
-          description: "Please check your email and try again later.",
+        toast.error("❌ აღდგენის ელფოსტის გაგზავნა ვერ მოხერხდა", {
+          description: "გთხოვ, გადაამოწმე ელფოსტა და მოგვიანებით სცადე.",
         });
       }
     },
@@ -98,8 +98,8 @@ export function useConfirmPasswordReset() {
       return response;
     },
     onSuccess: () => {
-      toast.success("🎉 Password reset successfully!", {
-        description: "You can now log in with your new password.",
+      toast.success("🎉 პაროლი წარმატებით განახლდა!", {
+        description: "ახლა შეგიძლია ახალი პაროლით შეხვიდე.",
       });
 
       // Redirect to login after a short delay to let user see the success message
@@ -127,30 +127,30 @@ export function useConfirmPasswordReset() {
 
       // Handle specific error codes from the backend
       if (errorCode === "RATE_LIMITED") {
-        toast.error("🔒 Too many requests", {
-          description: "Please wait a few moments and try again.",
+        toast.error("🔒 ზედმეტად ბევრი მოთხოვნა", {
+          description: "გთხოვ, ცოტა ხანს დაელოდე და ხელახლა სცადე.",
         });
       } else if (errorCode === "INVALID_TOKEN") {
-        toast.error("🔗 Invalid reset link", {
+        toast.error("🔗 პაროლის აღდგენის ბმული არასწორია", {
           description:
-            "This link has expired. Please request a new password reset.",
+            "ეს ბმული ვადაგასულია. გთხოვ, მოითხოვე ახალი აღდგენის ბმული.",
         });
       } else if (
         errorMessage?.includes("password") &&
         errorMessage?.includes("match")
       ) {
-        toast.error("🔐 Passwords don't match", {
-          description: "Please make sure both passwords are identical.",
+        toast.error("🔐 პაროლები არ ემთხვევა", {
+          description: "გთხოვ, დარწმუნდი რომ ორივე პაროლი იდენტურია.",
         });
       } else if (errorMessage?.includes("ValidationError")) {
-        toast.error("⚠️ Invalid password", {
+        toast.error("⚠️ არასწორი პაროლი", {
           description:
-            "Password must be 8+ characters with at least one letter and number.",
+            "პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო და შეიცავდეს მინიმუმ ერთ ასოსა და ერთ ციფრს.",
         });
       } else {
-        toast.error("❌ Couldn't reset password", {
+        toast.error("❌ პაროლის განახლება ვერ მოხერხდა", {
           description:
-            "Something went wrong. Please try again or request a new reset link.",
+            "რაღაც შეცდა. გთხოვ, სცადე ხელახლა ან მოითხოვე ახალი აღდგენის ბმული.",
         });
       }
     },

@@ -11,9 +11,9 @@ import { Building2, Edit2, Loader2 } from "lucide-react"
 const VALID_TYPES = ["law_firm", "business", "individual"] as const
 
 const ORG_TYPE_LABELS: Record<string, string> = {
-  law_firm: "Law Firm",
-  business: "Business",
-  individual: "Individual",
+  law_firm: "იურიდიული ფირმა",
+  business: "ბიზნესი",
+  individual: "ინდივიდუალური",
 }
 
 export default function OrgsPage() {
@@ -45,8 +45,8 @@ export default function OrgsPage() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-neutral-100">Organizations</h2>
-          <p className="text-sm text-neutral-500 mt-0.5">Manage your organizations and workspaces</p>
+          <h2 className="text-lg font-semibold text-neutral-100">ორგანიზაციები</h2>
+          <p className="text-sm text-neutral-500 mt-0.5">მართე შენი ორგანიზაციები და სამუშაო სივრცეები</p>
         </div>
         <OrgsCreateModale />
       </div>
@@ -54,8 +54,8 @@ export default function OrgsPage() {
       {orgList.length === 0 ? (
         <div className="rounded-lg border-2 border-dashed border-neutral-700 bg-neutral-900/30 py-12 text-center">
           <Building2 className="mx-auto h-12 w-12 text-neutral-600" />
-          <p className="mt-3 text-sm text-neutral-500">You have no organizations yet.</p>
-          <p className="mt-1 text-sm text-neutral-500">Create one using the button above.</p>
+          <p className="mt-3 text-sm text-neutral-500">ჯერ ორგანიზაცია არ გაქვს.</p>
+          <p className="mt-1 text-sm text-neutral-500">შექმენი ზედა ღილაკის გამოყენებით.</p>
         </div>
       ) : selectedOrg ? (
         <div className="group flex items-center justify-between gap-3 rounded-lg border border-neutral-700 bg-neutral-800/50 px-4 py-4 transition-colors hover:border-neutral-600 hover:bg-neutral-800/70">
@@ -76,14 +76,14 @@ export default function OrgsPage() {
               setEditingOrg({ ...selectedOrg, type: displayType || selectedOrg.type })
             }
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-700 hover:text-[#ff9D4D] focus:outline-none focus:ring-1 focus:ring-[#ff9D4D]/50"
-            aria-label="Edit organization"
+            aria-label="ორგანიზაციის რედაქტირება"
           >
             <Edit2 className="h-4 w-4" />
           </button>
         </div>
       ) : (
         <div className="rounded-lg border border-neutral-700 bg-neutral-800/30 py-8 text-center">
-          <p className="text-sm text-neutral-500">Select an organization from the dropdown above to view and edit it.</p>
+          <p className="text-sm text-neutral-500">აირჩიე ორგანიზაცია ზედა ჩამოსაშლელი სიიდან მის სანახავად და რედაქტირებისთვის.</p>
         </div>
       )}
 

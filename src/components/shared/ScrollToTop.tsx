@@ -38,7 +38,7 @@ export default function ScrollToTop() {
           whileTap={{ scale: 0.95 }}
           onClick={scrollToTop}
           className="fixed bottom-8 right-8 md:bottom-12 md:right-12 z-50 w-12 h-12 md:w-14 md:h-14 bg-[#ff9D4D] hover:bg-[#ea9753] text-black rounded-full flex items-center justify-center shadow-lg transition-colors cursor-pointer"
-          aria-label="Scroll to top"
+          aria-label="ზემოთ ასქროლვა"
         >
           <ArrowUp className="w-5 h-5 md:w-6 md:h-6" />
         </motion.button>

@@ -30,10 +30,10 @@ import { Loader2, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
 const ROLE_OPTIONS = [
-  { value: "lawyer", label: "Lawyer" },
-  { value: "paralegal", label: "Paralegal" },
-  { value: "staff", label: "Staff" },
-  { value: "client", label: "Client" },
+  { value: "lawyer", label: "იურისტი" },
+  { value: "paralegal", label: "იურისტის ასისტენტი" },
+  { value: "staff", label: "თანამშრომელი" },
+  { value: "client", label: "კლიენტი" },
 ];
 
 export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
@@ -72,10 +72,10 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
     try {
       await navigator.clipboard.writeText(generatedUrl);
       setCopied(true);
-      toast.success("Link copied");
+      toast.success("ბმული დაკოპირდა");
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Copy failed");
+      toast.error("დაკოპირება ვერ მოხერხდა");
     }
   }
 
@@ -88,7 +88,7 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral-200">Email</FormLabel>
+                <FormLabel className="text-neutral-200">ელფოსტა</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -106,7 +106,7 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
             name="role"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral-200">Role</FormLabel>
+                <FormLabel className="text-neutral-200">როლი</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -114,7 +114,7 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
                 >
                   <FormControl>
                     <SelectTrigger className="bg-zinc-800/80 border-neutral-700 text-neutral-200 cursor-pointer">
-                      <SelectValue placeholder="Select role" />
+                      <SelectValue placeholder="აირჩიე როლი" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-zinc-900 border-neutral-700">
@@ -139,7 +139,7 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-neutral-200">
-                  Expiry (days)
+                  ვადა (დღეებში)
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -167,10 +167,10 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
             {createLink.isPending ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" />
-                Creating...
+                იქმნება...
               </>
             ) : (
-              "Create Invite Link"
+              "მოწვევის ბმულის შექმნა"
             )}
           </Button>
         </form>
@@ -179,7 +179,7 @@ export function CreateInviteLinkForm({ orgId }: { orgId: string }) {
       {generatedUrl && (
         <div className="rounded-lg border border-[#ff9D4D]/30 bg-zinc-900/60 p-4 space-y-2">
           <p className="text-sm text-neutral-400 font-medium">
-            Generated link (share with the user):
+            გენერირებული ბმული (გაუზიარე მომხმარებელს):
           </p>
           <div className="flex gap-2">
             <Input

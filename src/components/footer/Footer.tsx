@@ -8,12 +8,15 @@ import { Separator } from "@/src/components/ui/separator";
 
 function Footer() {
   const pathname = usePathname();
+  const isAiChatPage = pathname?.startsWith("/ai-chat");
+
+  if (isAiChatPage) return null;
 
   const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/blog", label: "Blog" },
-    { href: "/shop", label: "Shop" },
-    { href: "/contacts", label: "Contacts" },
+    { href: "/", label: "მთავარი" },
+    { href: "/blog", label: "ბლოგი" },
+    { href: "/shop", label: "მაღაზია" },
+    { href: "/contacts", label: "კონტაქტები" },
   ];
 
   return (
@@ -23,10 +26,10 @@ function Footer() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start justify-between mb-20">
             <div className="lg:col-span-12 w-full">
               <h2 className="text-zinc-200 font-extrabold leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
-                We protect your future.
+                ჩვენ ვიცავთ შენს მომავალს.
                 <br />
                 <span className="underline underline-offset-4">
-                  Let&apos;s talk.
+                  დაგვიკავშირდი.
                 </span>
               </h2>
               <div className="flex items-start sm:items-center flex-col sm:flex-row justify-between w-full mt-8">
@@ -63,7 +66,7 @@ function Footer() {
           </div>
           <Separator className="bg-zinc-800" />
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-md text-zinc-500 py-7">
-            <div>AncoraThemes © 2026. All rights reserved.</div>
+            <div>AncoraThemes © 2026. ყველა უფლება დაცულია.</div>
           </div>
         </Wrapper>
       </div>

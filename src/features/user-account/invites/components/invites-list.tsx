@@ -27,10 +27,10 @@ import type { InviteListItem } from "../api/invite";
 import { Trash2 } from "lucide-react";
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: "Pending",
-  accepted: "Accepted",
-  revoked: "Revoked",
-  expired: "Expired",
+  pending: "მოლოდინში",
+  accepted: "მიღებული",
+  revoked: "გაუქმებული",
+  expired: "ვადაგასული",
 };
 
 const STATUS_BADGE_CLASSES: Record<string, string> = {
@@ -41,13 +41,13 @@ const STATUS_BADGE_CLASSES: Record<string, string> = {
 };
 
 const ROLE_LABELS: Record<string, string> = {
-  owner: "Owner",
-  lawyer: "Lawyer",
-  admin: "Admin",
-  paralegal: "Paralegal",
-  staff: "Staff",
-  member: "Member",
-  client: "Client",
+  owner: "მფლობელი",
+  lawyer: "იურისტი",
+  admin: "ადმინისტრატორი",
+  paralegal: "იურისტის ასისტენტი",
+  staff: "თანამშრომელი",
+  member: "წევრი",
+  client: "კლიენტი",
 };
 
 function formatDate(dateStr: string) {
@@ -117,7 +117,7 @@ function InviteRow({
                 size="icon-sm"
                 className="text-red-400 hover:text-red-300 hover:bg-red-950/30 cursor-pointer"
                 disabled={deleteInvite.isPending}
-                aria-label="Revoke invite"
+      aria-label="მოწვევის გაუქმება"
               >
                 <Trash2 className="size-4" />
               </Button>
@@ -125,21 +125,21 @@ function InviteRow({
             <AlertDialogContent className="bg-zinc-900 border-neutral-700">
               <AlertDialogHeader>
                 <AlertDialogTitle className="text-neutral-100">
-                  Revoke Invite
+                  მოწვევის გაუქმება
                 </AlertDialogTitle>
                 <AlertDialogDescription className="text-neutral-400">
-                  Are you sure you want to revoke the invite for {invite.email}?
+                  დარწმუნებული ხარ, რომ გსურს {invite.email}-ისთვის მოწვევის გაუქმება?
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel className="bg-zinc-800 border-neutral-700 text-neutral-200 hover:bg-zinc-700 cursor-pointer">
-                  Cancel
+                  გაუქმება
                 </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleRevoke}
                   className="bg-red-600 text-white hover:bg-red-500 transition-colors cursor-pointer"
                 >
-                  Revoke
+                  გაუქმება
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -170,10 +170,10 @@ export function InvitesList({
     <Table className="[&_tr]:border-neutral-800">
       <TableHeader>
         <TableRow className="border-neutral-800 hover:bg-transparent">
-          <TableHead className="text-neutral-400 font-medium">Email</TableHead>
-          <TableHead className="text-neutral-400 font-medium">Role</TableHead>
-          <TableHead className="text-neutral-400 font-medium">Expires</TableHead>
-          <TableHead className="text-neutral-400 font-medium">Status</TableHead>
+          <TableHead className="text-neutral-400 font-medium">ელფოსტა</TableHead>
+          <TableHead className="text-neutral-400 font-medium">როლი</TableHead>
+          <TableHead className="text-neutral-400 font-medium">ვადა</TableHead>
+          <TableHead className="text-neutral-400 font-medium">სტატუსი</TableHead>
           <TableHead className="w-[60px]"></TableHead>
         </TableRow>
       </TableHeader>

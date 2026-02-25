@@ -32,8 +32,8 @@ export default function Seetings() {
   const { data: settings, isLoading } = useSettings();
   const updateSettings = useUpdateSettings({
     messages: {
-      success: "Settings updated successfully",
-      error: "Failed to save settings",
+      success: "პარამეტრები წარმატებით განახლდა",
+      error: "პარამეტრების შენახვა ვერ მოხერხდა",
     },
   });
 
@@ -91,7 +91,7 @@ export default function Seetings() {
     }
 
     if (Object.keys(updateData).length === 0) {
-      toast.info("No changes found");
+      toast.info("ცვლილება ვერ მოიძებნა");
       return;
     }
 
@@ -125,8 +125,8 @@ export default function Seetings() {
           <Settings2 className="h-5 w-5 text-[#ff9D4D]" />
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-neutral-100">Settings</h2>
-          <p className="text-sm text-neutral-500">Manage notification preferences</p>
+          <h2 className="text-xl font-semibold text-neutral-100">პარამეტრები</h2>
+          <p className="text-sm text-neutral-500">შეტყობინებების პარამეტრების მართვა</p>
         </div>
       </div>
 
@@ -135,10 +135,10 @@ export default function Seetings() {
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-neutral-300">
               <Bell className="h-4 w-4 text-[#ff9D4D]" />
-              <span className="text-sm font-medium">Notifications</span>
+              <span className="text-sm font-medium">შეტყობინებები</span>
             </div>
             <p className="text-xs text-neutral-500 pl-6">
-              Choose which notifications you want to receive
+              აირჩიე, რომელი შეტყობინებების მიღება გსურს
             </p>
           </div>
 
@@ -187,10 +187,10 @@ export default function Seetings() {
               {updateSettings.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
+                  ინახება...
                 </>
               ) : (
-                "Save settings"
+                "პარამეტრების შენახვა"
               )}
             </Button>
           </div>

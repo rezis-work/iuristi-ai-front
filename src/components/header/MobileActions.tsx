@@ -18,14 +18,14 @@ export function MobileActions({
       <button
         onClick={onToggleSearch}
         className="text-zinc-400 hover:text-white transition-colors pl-3 absolute right-23"
-        aria-label="Open search"
+        aria-label="ძიების გახსნა"
       >
         <Search className="w-5 h-5" />
       </button>
       <button
         onClick={onToggleMenu}
         className="text-zinc-400 hover:text-white transition-colors"
-        aria-label="Toggle menu"
+        aria-label="მენიუს გადართვა"
       >
         {isMenuOpen ? (
           <X className="w-6 h-6" />

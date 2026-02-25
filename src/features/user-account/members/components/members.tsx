@@ -58,13 +58,13 @@ import type { UpdateMemberRoleInput } from "../schemas/memebers-schema";
 import { UserMinus, Users, Loader2, Pencil, Trash2 } from "lucide-react";
 
 const ROLE_LABELS: Record<string, string> = {
-  owner: "Owner",
-  admin: "Admin",
-  member: "Member",
-  lawyer: "Lawyer",
-  paralegal: "Paralegal",
-  staff: "Staff",
-  client: "Client",
+  owner: "მფლობელი",
+  admin: "ადმინისტრატორი",
+  member: "წევრი",
+  lawyer: "იურისტი",
+  paralegal: "იურისტის ასისტენტი",
+  staff: "თანამშრომელი",
+  client: "კლიენტი",
 };
 
 const ROLE_BADGE_CLASSES: Record<string, string> = {
@@ -143,9 +143,9 @@ function EditMemberModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-zinc-900 border-neutral-700 sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-neutral-100">Edit Member</DialogTitle>
+          <DialogTitle className="text-neutral-100">წევრის რედაქტირება</DialogTitle>
           <DialogDescription className="text-neutral-400">
-            Change role or remove {member.name ?? member.email} from the organization.
+            შეცვალე როლი ან წაშალე {member.name ?? member.email} ორგანიზაციიდან.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-2">
@@ -162,7 +162,7 @@ function EditMemberModal({
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-neutral-200">Role</label>
+            <label className="text-sm font-medium text-neutral-200">როლი</label>
             <Select
               value={selectedRole}
               onValueChange={setSelectedRole}
@@ -195,28 +195,28 @@ function EditMemberModal({
                 disabled={removeMember.isPending}
               >
                 <Trash2 className="mr-2 size-4" />
-                Remove Member
+                წევრის წაშლა
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-zinc-900 border-neutral-700">
               <AlertDialogHeader>
                 <AlertDialogTitle className="text-neutral-100">
-                  Remove Member
+                  წევრის წაშლა
                 </AlertDialogTitle>
                 <AlertDialogDescription className="text-neutral-400">
-                  Are you sure you want to remove {member.name ?? member.email} from the
-                  organization? This action cannot be undone.
+                  დარწმუნებული ხარ, რომ გსურს {member.name ?? member.email}-ის
+                  ორგანიზაციიდან წაშლა? ეს მოქმედება შეუქცევადია.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel className="bg-zinc-800 border-neutral-700 text-neutral-200 hover:bg-zinc-700 cursor-pointer">
-                  Cancel
+                  გაუქმება
                 </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleRemove}
                   className="bg-red-600 text-white hover:bg-red-500 cursor-pointer"
                 >
-                  Remove
+                  წაშლა
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -227,7 +227,7 @@ function EditMemberModal({
               onClick={() => onOpenChange(false)}
               className="cursor-pointer"
             >
-              Cancel
+              გაუქმება
             </Button>
             <Button
               onClick={handleSave}
@@ -237,7 +237,7 @@ function EditMemberModal({
               {updateRole.isPending ? (
                 <Loader2 className="mr-2 size-4 animate-spin" />
               ) : null}
-              Save Changes
+              ცვლილებების შენახვა
             </Button>
           </div>
         </DialogFooter>
@@ -297,7 +297,7 @@ function MemberRow({
                 size="icon-sm"
                 onClick={() => setEditOpen(true)}
                 className="text-neutral-400 hover:text-[#ff9D4D] hover:bg-[#ff9D4D]/10 cursor-pointer"
-                aria-label="Edit member"
+                aria-label="წევრის რედაქტირება"
               >
                 <Pencil className="size-4" />
               </Button>
@@ -308,7 +308,7 @@ function MemberRow({
                     size="icon-sm"
                     className="text-red-400 hover:text-red-300 hover:bg-red-950/30 cursor-pointer"
                     disabled={removeMember.isPending}
-                    aria-label="Remove member"
+                    aria-label="წევრის წაშლა"
                   >
                     <UserMinus className="size-4" />
                   </Button>
@@ -316,22 +316,22 @@ function MemberRow({
                 <AlertDialogContent className="bg-zinc-900 border-neutral-700">
                   <AlertDialogHeader>
                     <AlertDialogTitle className="text-neutral-100">
-                      Remove Member
+                      წევრის წაშლა
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-neutral-400">
-                      Are you sure you want to remove {member.name ?? member.email} from the
-                      organization? This action cannot be undone.
+                      დარწმუნებული ხარ, რომ გსურს {member.name ?? member.email}-ის
+                      ორგანიზაციიდან წაშლა? ეს მოქმედება შეუქცევადია.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel className="bg-zinc-800 border-neutral-700 text-neutral-200 hover:bg-zinc-700 cursor-pointer">
-                      Cancel
+                      გაუქმება
                     </AlertDialogCancel>
                     <AlertDialogAction
                       onClick={handleRemove}
                       className="bg-red-600 text-white hover:bg-red-500 cursor-pointer"
                     >
-                      Remove
+                      წაშლა
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -383,12 +383,12 @@ export function Members() {
         <CardHeader className="px-0 pb-4">
           <CardTitle className="text-xl sm:text-2xl font-semibold text-neutral-100 flex items-center gap-2">
             <Users className="h-6 w-6 text-[#ff9D4D]" />
-            Organization Members
+            ორგანიზაციის წევრები
           </CardTitle>
           <CardDescription className="text-neutral-400">
             {!orgId && !isOrgsLoading
-              ? "Organization not selected or not found."
-              : "Loading members..."}
+              ? "ორგანიზაცია არ არის არჩეული ან ვერ მოიძებნა."
+              : "წევრები იტვირთება..."}
           </CardDescription>
         </CardHeader>
         <CardContent className="px-0">
@@ -409,10 +409,10 @@ export function Members() {
       <CardHeader className="px-0 pb-4">
         <CardTitle className="text-xl sm:text-2xl font-semibold text-neutral-100 flex items-center gap-2">
           <Users className="h-6 w-6 text-[#ff9D4D]" />
-            Organization Members
+            ორგანიზაციის წევრები
         </CardTitle>
         <CardDescription className="text-neutral-400">
-          {members.length} member{members.length !== 1 ? "s" : ""} total
+          სულ {members.length} წევრი
         </CardDescription>
       </CardHeader>
       <CardContent className="px-0">
@@ -422,17 +422,17 @@ export function Members() {
           </div>
         ) : members.length === 0 ? (
           <div className="rounded-lg border border-neutral-800 bg-neutral-900/50 p-6 text-center">
-            <p className="text-neutral-400">No members yet</p>
+            <p className="text-neutral-400">ჯერ წევრები არ არის</p>
             <p className="text-sm text-neutral-500 mt-1">
-              Add members via invite
+              დაამატე წევრები მოწვევის მეშვეობით
             </p>
           </div>
         ) : (
           <Table className="[&_tr]:border-neutral-800">
             <TableHeader>
               <TableRow className="border-neutral-800 hover:bg-transparent">
-                <TableHead className="text-neutral-400 font-medium">Name</TableHead>
-                <TableHead className="text-neutral-400 font-medium">Role</TableHead>
+                <TableHead className="text-neutral-400 font-medium">სახელი</TableHead>
+                <TableHead className="text-neutral-400 font-medium">როლი</TableHead>
                 <TableHead className="w-[60px]"></TableHead>
               </TableRow>
             </TableHeader>

@@ -12,10 +12,10 @@ export function useCreateOrgs() {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get-orgs"] });
-      toast.success("your organisation created successully");
+      toast.success("ორგანიზაცია წარმატებით შეიქმნა");
     },
     onError:() => {
-        toast.error("failed to create organisation")
+        toast.error("ორგანიზაციის შექმნა ვერ მოხერხდა")
     }
   });
 }
@@ -42,10 +42,10 @@ export function useUpdateOrg() {
           org.id === id ? { ...org, name: data.name, type: data.type } : org
         );
       });
-      toast.success("your organisation updated successully");
+      toast.success("ორგანიზაცია წარმატებით განახლდა");
     },
     onError: () => {
-      toast.error("failed to update organisation");
+      toast.error("ორგანიზაციის განახლება ვერ მოხერხდა");
     },
   });
 }
@@ -57,16 +57,16 @@ export function useDeleteOrg() {
     mutationFn: async (id: string) => deleteOrgs(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get-orgs"] });
-      toast.success("your organisation deleted successfully");
+      toast.success("ორგანიზაცია წარმატებით წაიშალა");
     },
     onError: (error: unknown) => {
       const msg = (error as Error)?.message ?? "";
       if (msg.includes("404")) {
         toast.error(
-          "Delete organisation unavailable. Backend needs DELETE /orgs/:id endpoint."
+          "ორგანიზაციის წაშლა მიუწვდომელია. ბექენდს სჭირდება DELETE /orgs/:id ენდფოინთი."
         );
       } else {
-        toast.error("failed to delete organisation");
+        toast.error("ორგანიზაციის წაშლა ვერ მოხერხდა");
       }
     },
   });

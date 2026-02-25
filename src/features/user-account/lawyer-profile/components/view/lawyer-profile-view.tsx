@@ -35,7 +35,7 @@ export function LawyerProfileView({
     return (
       <div className="rounded-lg border border-neutral-800 bg-neutral-900/50 p-6">
         <p className="text-sm text-neutral-400">
-          No lawyer profile yet. Select practice areas below to create one.
+          იურისტის პროფილი ჯერ არ არის. შესაქმნელად ქვემოთ აირჩიე პრაქტიკის სფეროები.
         </p>
       </div>
     );
@@ -49,7 +49,7 @@ export function LawyerProfileView({
       <div className="flex items-center gap-2">
         <Briefcase className="h-5 w-5 text-[#ff9D4D]" />
         <h3 className="text-lg font-semibold text-neutral-100">
-          Practice Areas
+          პრაქტიკის სფეროები
         </h3>
       </div>
       {displayFields.length > 0 ? (
@@ -65,7 +65,7 @@ export function LawyerProfileView({
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-neutral-500">No practice areas selected.</p>
+        <p className="text-sm text-neutral-500">პრაქტიკის სფეროები არჩეული არ არის.</p>
       )}
     </div>
   );

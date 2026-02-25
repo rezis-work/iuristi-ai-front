@@ -28,18 +28,18 @@ export function OrgsSelect() {
   const isValidSelection =
     selectedOrgId && selectedOrgId !== "default" && orgList.some((o) => o.id === selectedOrgId);
   const displayName = isValidSelection
-    ? orgList.find((o) => o.id === selectedOrgId)?.name ?? "Select organization"
-    : "Select organization";
+    ? orgList.find((o) => o.id === selectedOrgId)?.name ?? "აირჩიე ორგანიზაცია"
+    : "აირჩიე ორგანიზაცია";
 
   if (orgList.length === 0) {
     return (
       <div className="flex flex-col items-center gap-3 rounded-lg border border-neutral-700 bg-neutral-800/50 px-4 py-6 text-center">
-        <p className="text-sm text-neutral-400">No organisation created</p>
+        <p className="text-sm text-neutral-400">ორგანიზაცია ჯერ არ შექმნილა</p>
         <Link
           href="/orgs/new"
           className="text-sm font-medium text-[#ff9D4D] hover:text-[#ffad6d] underline underline-offset-2"
         >
-          Create a new organisation
+          ახალი ორგანიზაციის შექმნა
         </Link>
       </div>
     );

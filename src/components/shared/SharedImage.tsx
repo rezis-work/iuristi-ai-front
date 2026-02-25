@@ -30,7 +30,7 @@ function SharedImage({
           {title}
         </h1>
         <div>
-          <h3 className="uppercase text-sm font-semibold">home / {title}</h3>
+          <h3 className="uppercase text-sm font-semibold">მთავარი / {title}</h3>
         </div>
       </div>
     </div>

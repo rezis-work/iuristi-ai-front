@@ -53,10 +53,10 @@ export function RegisterForm() {
         <Card className="bg-transparent shadow-2xl border-none py-20 rounded-none md:rounded-md">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-3xl font-bold text-white mb-2">
-              Create Account
+              ანგარიშის შექმნა
             </CardTitle>
             <CardDescription className="text-gray-400 text-base">
-              Sign up to get started
+              დასაწყებად გაიარე რეგისტრაცია
             </CardDescription>
           </CardHeader>
           <CardContent className="sm:px-30 md:px-4">
@@ -73,12 +73,12 @@ export function RegisterForm() {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Full Name
+                          სრული სახელი
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter your full name"
+                            placeholder="შეიყვანე სრული სახელი"
                             disabled={form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -101,12 +101,12 @@ export function RegisterForm() {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Email Address
+                          ელფოსტის მისამართი
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="Enter your email"
+                            placeholder="შეიყვანე ელფოსტა"
                             disabled={form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -129,12 +129,12 @@ export function RegisterForm() {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Password
+                          პაროლი
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="password"
-                            placeholder="Enter your password"
+                            placeholder="შეიყვანე პაროლი"
                             disabled={form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -157,12 +157,12 @@ export function RegisterForm() {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Confirm Password
+                          პაროლის დადასტურება
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="password"
-                            placeholder="Repeat your password"
+                            placeholder="გაიმეორე პაროლი"
                             disabled={form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -184,18 +184,18 @@ export function RegisterForm() {
                   className="w-full h-13 mt-8 bg-[#FF9D4D] text-white hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base rounded-xs shadow-xs hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                 >
                   {form.formState.isSubmitting
-                    ? "Creating Account..."
-                    : "Create Account"}
+                    ? "იქმნება ანგარიში..."
+                    : "ანგარიშის შექმნა"}
                 </Button>
               </form>
             </Form>
             <div className="text-center text-gray-400 text-sm mt-6">
-              Already have an account?{" "}
+              უკვე გაქვს ანგარიში?{" "}
               <Link
                 href={nextParam ? `/login?next=${encodeURIComponent(nextParam)}` : "/login"}
                 className="text-[#FF9D4D] hover:text-[#FF8D3D] transition-colors duration-200 font-medium"
               >
-                Login
+                შესვლა
               </Link>
             </div>
           </CardContent>

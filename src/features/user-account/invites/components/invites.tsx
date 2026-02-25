@@ -41,12 +41,12 @@ export function Invites() {
         <CardHeader className="px-0 pb-4">
           <CardTitle className="text-xl sm:text-2xl font-semibold text-neutral-100 flex items-center gap-2">
             <Mail className="h-6 w-6 text-[#ff9D4D]" />
-            Invites
+            მოწვევები
           </CardTitle>
           <CardDescription className="text-neutral-400">
             {!orgId && !isOrgsLoading
-              ? "Organization not selected or not found."
-              : "Loading invites..."}
+              ? "ორგანიზაცია არ არის არჩეული ან ვერ მოიძებნა."
+              : "მოწვევები იტვირთება..."}
           </CardDescription>
         </CardHeader>
         <CardContent className="px-0">
@@ -67,10 +67,10 @@ export function Invites() {
       <CardHeader className="px-0 pb-4">
         <CardTitle className="text-xl sm:text-2xl font-semibold text-neutral-100 flex items-center gap-2">
             <Mail className="h-6 w-6 text-[#ff9D4D]" />
-            Invites
+            მოწვევები
         </CardTitle>
         <CardDescription className="text-neutral-400">
-          Manage invites and create new invitations
+          მართე მოწვევები და შექმენი ახალი მოწვევები
         </CardDescription>
       </CardHeader>
       <CardContent className="px-0">
@@ -81,14 +81,14 @@ export function Invites() {
               className="text-white hover:text-yellow-400 transition-colors data-[state=active]:bg-[#ff9D4D]/20 data-[state=active]:text-[#ff9D4D] data-[state=active]:border-[#ff9D4D]/40 data-[state=active]:hover:text-[#ff9D4D] cursor-pointer"
             >
               <List className="mr-2 size-4" />
-              Invite List
+              მოწვევების სია
             </TabsTrigger>
             <TabsTrigger
               value="invite"
               className="text-white hover:text-yellow-400 transition-colors data-[state=active]:bg-[#ff9D4D]/20 data-[state=active]:text-[#ff9D4D] data-[state=active]:border-[#ff9D4D]/40 data-[state=active]:hover:text-[#ff9D4D] cursor-pointer"
             >
               <Mail className="mr-2 size-4" />
-              New Invite
+              ახალი მოწვევა
             </TabsTrigger>
           </TabsList>
 
@@ -99,9 +99,9 @@ export function Invites() {
               </div>
             ) : invites.length === 0 ? (
               <div className="rounded-lg border border-neutral-700/60 bg-zinc-900/40 p-8 text-center">
-                <p className="text-neutral-300">No pending invites yet</p>
+                <p className="text-neutral-300">მოლოდინში მოწვევა ჯერ არ არის</p>
                 <p className="text-sm text-neutral-500 mt-1">
-                  Create a new invite from the tabs above
+                  შექმენი ახალი მოწვევა ზემოთ არსებული ტაბიდან
                 </p>
               </div>
             ) : (
@@ -113,7 +113,7 @@ export function Invites() {
             <div className="max-w-md">
               <CreateInviteForm orgId={orgId} />
               <p className="text-sm text-neutral-500 mt-4">
-                The invite will be created for the specified email. Copy the generated link and share it with the person – the system does not send emails automatically.
+                მოწვევა შეიქმნება მითითებული ელფოსტისთვის. დააკოპირე გენერირებული ბმული და გაუზიარე ადრესატს — სისტემა ელფოსტას ავტომატურად არ აგზავნის.
               </p>
             </div>
           </TabsContent>

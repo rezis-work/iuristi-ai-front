@@ -12,7 +12,7 @@ export function MobileToggle({ isOpen, onToggle }: MobileToggleProps) {
     <button
       onClick={onToggle}
       className="text-zinc-400 hover:text-white transition-colors pr-4 lg:hidden flex items-center gap-3 ml-auto"
-      aria-label="Toggle menu"
+      aria-label="მენიუს გადართვა"
     >
       {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
     </button>
