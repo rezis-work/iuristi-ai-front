@@ -5,7 +5,7 @@ export const ORG_ID_UUID_REGEX =
 
 export function assertValidOrgId(orgId: string): void {
   if (!ORG_ID_UUID_REGEX.test(orgId)) {
-    throw new Error("Invalid organization ID format (must be UUID)");
+    throw new Error("ორგანიზაციის ID-ის ფორმატი არასწორია (უნდა იყოს UUID)");
   }
 }
 

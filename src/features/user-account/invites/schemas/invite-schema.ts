@@ -5,7 +5,7 @@ export const memberRoleEnum = z.enum(["owner", "lawyer", "paralegal", "staff", "
 
 
 export const createInviteSchema = z.object({
-    email: z.string().email("Invalid email format").transform((val) => val.toLowerCase()),
+    email: z.string().email("არასწორი ელფოსტის ფორმატი").transform((val) => val.toLowerCase()),
     role: memberRoleEnum,
     expiresInDays: z.number().int().min(1).max(30).optional().default(7),
   });

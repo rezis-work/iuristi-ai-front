@@ -52,7 +52,7 @@ export default function ProfileMe() {
     return (
       <div className="rounded-xl border border-neutral-700 bg-neutral-800/50 p-12 text-center">
         <User className="mx-auto h-12 w-12 text-neutral-600" />
-        <p className="mt-3 text-sm text-neutral-500">Profile could not be loaded</p>
+        <p className="mt-3 text-sm text-neutral-500">პროფილის ჩატვირთვა ვერ მოხერხდა</p>
       </div>
     );
 
@@ -61,7 +61,7 @@ export default function ProfileMe() {
       <div className="rounded-xl border border-neutral-700 bg-neutral-800/50 p-6 shadow-sm overflow-x-hidden">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-neutral-100">
-            Edit Profile
+            პროფილის რედაქტირება
           </h2>
           <Button
             variant="ghost"
@@ -69,7 +69,7 @@ export default function ProfileMe() {
             onClick={() => setIsEditing(null)}
             className="cursor-pointer rounded-lg text-neutral-400 transition-colors hover:bg-neutral-700/50 hover:text-neutral-100"
           >
-            Cancel
+            გაუქმება
           </Button>
         </div>
         <ProfileEditForm onSuccess={() => setIsEditing(null)} />
@@ -81,7 +81,7 @@ export default function ProfileMe() {
     <div className="rounded-xl border border-neutral-700 bg-neutral-800/50 p-6 shadow-sm">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
         <Avatar className="h-16 w-16 shrink-0 border-2 border-neutral-600">
-          <AvatarImage src={profileMe.avatarUrl ?? undefined} alt={profileMe.name ?? "Profile"} />
+          <AvatarImage src={profileMe.avatarUrl ?? undefined} alt={profileMe.name ?? "პროფილი"} />
           <AvatarFallback className="bg-[#ff9D4D]/10 text-lg font-medium text-[#ff9D4D]">
             {getInitials(profileMe.name, profileMe.email)}
           </AvatarFallback>
@@ -89,7 +89,7 @@ export default function ProfileMe() {
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <h2 className="text-xl font-semibold text-neutral-100">
-              {profileMe.name || "Anonymous User"}
+              {profileMe.name || "ანონიმური მომხმარებელი"}
             </h2>
             <p className="text-sm text-neutral-400">{profileMe.email}</p>
           </div>
@@ -100,7 +100,7 @@ export default function ProfileMe() {
             className="cursor-pointer rounded-lg border-neutral-600 bg-neutral-800/30 px-4 py-2 text-neutral-200 shadow-sm transition-all hover:border-[#ff9D4D]/50 hover:bg-neutral-700/50 hover:text-[#ff9D4D]"
           >
             <Pencil className="mr-2 h-4 w-4" />
-            Edit
+            რედაქტირება
           </Button>
         </div>
       </div>
@@ -111,13 +111,13 @@ export default function ProfileMe() {
             <Mail className="h-4 w-4 text-[#ff9D4D]" />
           </div>
           <div>
-            <p className="text-neutral-500">Email</p>
+            <p className="text-neutral-500">ელფოსტა</p>
             <p className="text-neutral-200 flex items-center gap-2">
               {profileMe.email}
               {profileMe.emailVerified && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
                   <CheckCircle2 className="h-3.5 w-3.5" />
-                  verified
+                  დადასტურებული
                 </span>
               )}
             </p>
@@ -129,7 +129,7 @@ export default function ProfileMe() {
               <Phone className="h-4 w-4 text-[#ff9D4D]" />
             </div>
             <div>
-              <p className="text-neutral-500">Phone</p>
+              <p className="text-neutral-500">ტელეფონი</p>
               <p className="text-neutral-200">{profileMe.phone}</p>
             </div>
           </div>
@@ -139,13 +139,13 @@ export default function ProfileMe() {
             <Briefcase className="h-4 w-4 text-[#ff9D4D]" />
           </div>
           <div>
-            <p className="text-neutral-500">Account Type</p>
+            <p className="text-neutral-500">ანგარიშის ტიპი</p>
             <p className="text-neutral-200">
               {(!profileMe.accountType || profileMe.accountType === "person")
-                ? "Person"
+                ? "პიროვნება"
                 : profileMe.accountType === "lawyer"
-                  ? "Lawyer"
-                  : "Business Owner"}
+                  ? "იურისტი"
+                  : "ბიზნესის მფლობელი"}
             </p>
           </div>
         </div>

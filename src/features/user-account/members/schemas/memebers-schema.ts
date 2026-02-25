@@ -30,7 +30,7 @@ export type UpdateMemberRoleInput = z.infer<typeof updateMemberRoleSchema>;
 
 
 export const acceptInviteSchema = z.object({
-  token: z.string().min(1, "Token is required"),
+  token: z.string().min(1, "ტოკენი სავალდებულოა"),
 });
 
 export type AcceptInviteInput = z.infer<typeof acceptInviteSchema>;
@@ -39,7 +39,7 @@ export type AcceptInviteInput = z.infer<typeof acceptInviteSchema>;
 
 
 export const createInviteLinkSchema = z.object({
-  email: z.string().email("Invalid email format").transform((val) => val.toLowerCase()),
+  email: z.string().email("არასწორი ელფოსტის ფორმატი").transform((val) => val.toLowerCase()),
   role: memberRoleEnum.default("staff"),
   expiresInDays: z.number().int().min(1).max(30).optional().default(7),
 });

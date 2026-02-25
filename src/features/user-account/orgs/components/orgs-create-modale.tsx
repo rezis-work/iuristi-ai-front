@@ -24,10 +24,10 @@ export default function OrgsCreateModale({ trigger }: OrgsCreateModaleProps) {
       </div>
       <div className="text-left cursor-pointer">
         <span className="block text-sm font-semibold text-neutral-100 group-hover:text-[#ff9D4D] transition-colors">
-          Create Organization
+          ორგანიზაციის შექმნა
         </span>
         <span className="block text-xs text-neutral-500 mt-0.5">
-          Add a new organization to your workspace
+          დაამატე ახალი ორგანიზაცია შენს სამუშაო სივრცეში
         </span>
       </div>
     </button>
@@ -51,8 +51,8 @@ export default function OrgsCreateModale({ trigger }: OrgsCreateModaleProps) {
               <Building2 className="h-5 w-5" />
             </div>
             <div>
-              <span className="block text-lg font-semibold">Create Organization</span>
-              <span className="block text-sm text-neutral-500 font-normal mt-0.5">Add a new organization to manage your workspace</span>
+              <span className="block text-lg font-semibold">ორგანიზაციის შექმნა</span>
+              <span className="block text-sm text-neutral-500 font-normal mt-0.5">დაამატე ახალი ორგანიზაცია სამუშაო სივრცის სამართავად</span>
             </div>
           </span>
         }

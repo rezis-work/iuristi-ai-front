@@ -1,4 +1,4 @@
-import { Scale, User, Lock, Mail, Briefcase, Building, Settings } from "lucide-react";
+import { Scale, User, Mail, Briefcase, Building, Settings } from "lucide-react";
 
 type MenuItem = {
   path: string;
@@ -7,11 +7,10 @@ type MenuItem = {
 };
 
 export const menuItems: MenuItem[] = [
-  { path: "/me/profile", label: "Profile", icon: User },
-  { path: "/me/lawyer-profile", label: "Lawyer Profile", icon: Briefcase },
-  { path: "/me/settings", label: "Settings", icon: Settings },
-  { path: "/me/invites", label: "Invites", icon: Mail },
-  { path: "/me/organization", label: "Organization", icon: Building },
-  { path: "/me/members", label: "Members", icon: Scale },
-  { path: "/me/change-password", label: "Change Password", icon: Lock },
+  { path: "/me/profile", label: "პროფილი", icon: User },
+  { path: "/me/lawyer-profile", label: "იურისტის პროფილი", icon: Briefcase },
+  { path: "/me/settings", label: "პარამეტრები", icon: Settings },
+  { path: "/me/invites", label: "მოწვევები", icon: Mail },
+  { path: "/me/organization", label: "ორგანიზაცია", icon: Building },
+  { path: "/me/members", label: "წევრები", icon: Scale },
 ];

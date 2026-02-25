@@ -35,11 +35,11 @@ export function useUpdateMemberRole(orgId: string, userId:string) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['members', orgId] });
-            toast.success("Member role updated successfully");
+            toast.success("წევრის როლი წარმატებით განახლდა");
         },
         onError: (error) => {
             console.log("Failed to update member role", error);
-            toast.error("Failed to update member role");
+            toast.error("წევრის როლის განახლება ვერ მოხერხდა");
         },
     });
 }
@@ -58,11 +58,11 @@ export function useRemoveMember(orgId: string, userId: string) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['members', orgId] });
-            toast.success("Member removed successfully");
+            toast.success("წევრი წარმატებით წაიშალა");
         },
         onError: (error) => {
             console.log("Failed to remove member", error);
-            toast.error("Failed to remove member");
+            toast.error("წევრის წაშლა ვერ მოხერხდა");
         },
     });
 }

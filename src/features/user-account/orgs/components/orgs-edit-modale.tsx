@@ -27,9 +27,9 @@ export default function OrgsEditModale({
             <Building2 className="h-5 w-5" />
           </div>
           <div>
-            <span className="block text-lg font-semibold">Edit Organization</span>
+            <span className="block text-lg font-semibold">ორგანიზაციის რედაქტირება</span>
             <span className="block text-sm text-neutral-500 font-normal mt-0.5">
-              Update organization details
+              ორგანიზაციის დეტალების განახლება
             </span>
           </div>
         </span>

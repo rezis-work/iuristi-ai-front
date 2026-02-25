@@ -70,10 +70,10 @@ export function ResetPasswordForm() {
                 </div>
               </div>
               <CardTitle className="text-3xl font-bold text-white mb-2">
-                Check Your Email
+                გადაამოწმე ელფოსტა
               </CardTitle>
               <CardDescription className="text-gray-400 text-base">
-                We&apos;ve sent a password reset link to{" "}
+                პაროლის აღდგენის ბმული გამოგიგზავნეთ მისამართზე{" "}
                 <span className="text-gray-300 font-medium">
                   {submittedEmail}
                 </span>
@@ -85,21 +85,20 @@ export function ResetPasswordForm() {
                 <p className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-[#FF9D4D] shrink-0 mt-0.5" />
                   <span>
-                    Click the link in the email to reset your password. The link
-                    expires in 30 minutes.
+                    ელფოსტაში არსებულ ბმულზე დაჭერით შეძლებ პაროლის აღდგენას.
+                    ბმული 30 წუთში იწურება.
                   </span>
                 </p>
                 <p className="flex items-start gap-3">
                   <span className="text-[#FF9D4D] shrink-0">📁</span>
                   <span>
-                    Check your spam or junk folder if you don&apos;t see it in your
-                    inbox.
+                    თუ შემოსულებში ვერ ხედავ, გადაამოწმე სპამი ან არასასურველი წერილები.
                   </span>
                 </p>
                 <p className="flex items-start gap-3">
                   <span className="text-[#FF9D4D] shrink-0">⏱️</span>
                   <span>
-                    You can request a new reset email after 60 seconds.
+                    ახალი აღდგენის ელფოსტის მოთხოვნას 60 წამში შეძლებ.
                   </span>
                 </p>
               </div>
@@ -110,7 +109,7 @@ export function ResetPasswordForm() {
                   <div className="w-full border-t border-gray-700"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-transparent text-gray-500">Or</span>
+                  <span className="px-2 bg-transparent text-gray-500">ან</span>
                 </div>
               </div>
 
@@ -121,7 +120,7 @@ export function ResetPasswordForm() {
                   type="button"
                   className="w-full h-13 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  Try Another Email
+                  სხვა ელფოსტის ცდა
                 </Button>
                 <Link href="/login" className="block">
                   <Button
@@ -129,7 +128,7 @@ export function ResetPasswordForm() {
                     variant="secondary"
                     className="w-full h-13 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    Back to Login
+                    შესვლაზე დაბრუნება
                   </Button>
                 </Link>
               </div>
@@ -151,10 +150,10 @@ export function ResetPasswordForm() {
         <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-3xl font-bold text-white mb-2">
-              Reset Password
+              პაროლის აღდგენა
             </CardTitle>
             <CardDescription className="text-gray-400 text-base">
-              Enter your email to receive a password reset link
+              შეიყვანე ელფოსტა პაროლის აღდგენის ბმულის მისაღებად
             </CardDescription>
           </CardHeader>
           <CardContent className="sm:px-30 md:px-4">
@@ -171,12 +170,12 @@ export function ResetPasswordForm() {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Email Address
+                          ელფოსტის მისამართი
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="Enter your email"
+                            placeholder="შეიყვანე ელფოსტა"
                             disabled={isPending}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -199,7 +198,7 @@ export function ResetPasswordForm() {
                       variant="secondary"
                       className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                     >
-                      Back to Login
+                      შესვლაზე დაბრუნება
                     </Button>
                   </Link>
                   <Button
@@ -207,7 +206,7 @@ export function ResetPasswordForm() {
                     disabled={isPending}
                     className="w-full h-13 mt-4 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    {isPending ? "Sending..." : "Send Reset Link"}
+                    {isPending ? "იგზავნება..." : "აღდგენის ბმულის გაგზავნა"}
                   </Button>
                 </div>
               </form>

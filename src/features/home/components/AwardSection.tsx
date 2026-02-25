@@ -12,29 +12,29 @@ export default function AwardSection() {
             <div className="flex items-center gap-3 mb-4">
               <div className="h-0.5 w-12 bg-yellow-500"></div>
               <span className="text-sm font-medium tracking-wider uppercase text-neutral-400">
-                HUGE HONOR
+                დიდი აღიარება
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8">
-              Our awards from the legal community
+              ჩვენი ჯილდოები იურიდიული სფეროდან
             </h2>
             <p className="text-base md:text-lg leading-relaxed text-neutral-300">
-              Adipiscing elit, sed do euismod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+              ჩვენი გუნდი მრავალჯერ დაჯილდოვდა პროფესიონალიზმისა და მაღალი ხარისხის მომსახურებისთვის. ეს აღიარება ასახავს ნდობას, რომელსაც კლიენტები და პარტნიორები ყოველდღიურად გვიცხადებენ.
             </p>
           </div>
 
           <div className="space-y-6">
             <div className="p-8 border border-neutral-800 rounded-lg hover:border-yellow-500/50 transition-all duration-300 hover:bg-neutral-900/50">
-              <h3 className="text-xl font-bold text-white mb-3">Best Legal Firm 2024</h3>
-              <p className="text-neutral-400">Recognized by National Legal Association</p>
+              <h3 className="text-xl font-bold text-white mb-3">საუკეთესო იურიდიული ფირმა 2024</h3>
+              <p className="text-neutral-400">აღიარებული ეროვნული იურიდიული ასოციაციის მიერ</p>
             </div>
             <div className="p-8 border border-neutral-800 rounded-lg hover:border-yellow-500/50 transition-all duration-300 hover:bg-neutral-900/50">
-              <h3 className="text-xl font-bold text-white mb-3">Top 10 Attorneys</h3>
-              <p className="text-neutral-400">Distinguished achievement in legal excellence</p>
+              <h3 className="text-xl font-bold text-white mb-3">ტოპ 10 ადვოკატი</h3>
+              <p className="text-neutral-400">გამორჩეული მიღწევა იურიდიულ პროფესიონალიზმში</p>
             </div>
             <div className="p-8 border border-neutral-800 rounded-lg hover:border-yellow-500/50 transition-all duration-300 hover:bg-neutral-900/50">
-              <h3 className="text-xl font-bold text-white mb-3">Client Choice Award</h3>
-              <p className="text-neutral-400">Voted by satisfied clients for outstanding service</p>
+              <h3 className="text-xl font-bold text-white mb-3">კლიენტების არჩევანის ჯილდო</h3>
+              <p className="text-neutral-400">კლიენტების მიერ არჩეული გამორჩეული მომსახურებისთვის</p>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ export function MobileOverlay({ isOpen, onClose }: MobileOverlayProps) {
                 <button
                   onClick={onClose}
                   className="text-zinc-400 hover:text-white transition-colors"
-                  aria-label="Close menu"
+                  aria-label="მენიუს დახურვა"
                 >
                   <X className="w-6 h-6" />
                 </button>

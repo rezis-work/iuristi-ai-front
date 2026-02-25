@@ -8,8 +8,11 @@ import { MobileOverlay } from "@/src/components/header/MobileOverlay";
 import { MobileActions } from "@/src/components/header/MobileActions";
 import { LoginCard } from "@/src/features/auth/components/login-card";
 import { Search } from "@/src/components/header/Search";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
+  const isAiChatPage = pathname?.startsWith("/ai-chat");
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -74,6 +77,8 @@ export default function Header() {
   }, [isFixed, headerHeight]);
 
   const toggleDesktopSearch = () => setIsDesktopSearchOpen((prev) => !prev);
+
+  if (isAiChatPage) return null;
 
   return (
     <React.Fragment>

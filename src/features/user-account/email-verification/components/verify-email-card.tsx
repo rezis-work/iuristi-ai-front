@@ -30,14 +30,14 @@ export function VerifyEmailCard() {
             <Mail className="h-8 w-8 text-amber-500" />
           </div>
           <h1 className="text-xl font-semibold text-neutral-100 mb-2">
-            Invalid verification link
+            დადასტურების ბმული არასწორია
           </h1>
           <p className="text-neutral-400 text-sm mb-6">
-            The verification link is missing or invalid. Please request a new
-            verification email from your account settings.
+            დადასტურების ბმული აკლია ან არასწორია. გთხოვ, ანგარიშის პარამეტრებიდან
+            მოითხოვე ახალი დადასტურების ელფოსტა.
           </p>
           <Button asChild className="bg-[#ff9D4D] hover:bg-[#ff8D3D]">
-            <Link href="/me/settings">Go to Settings</Link>
+            <Link href="/me/settings">პარამეტრებზე გადასვლა</Link>
           </Button>
         </div>
       </div>
@@ -52,13 +52,13 @@ export function VerifyEmailCard() {
             <Mail className="h-8 w-8 text-amber-500" />
           </div>
           <h1 className="text-xl font-semibold text-neutral-100 mb-2">
-            Log in to verify
+            შესვლა დადასტურებისთვის
           </h1>
           <p className="text-neutral-400 text-sm mb-6">
-            Please log in to your account to verify your email address.
+            ელფოსტის დასადასტურებლად გთხოვ, შეხვიდე შენს ანგარიშში.
           </p>
           <Button asChild className="bg-[#ff9D4D] hover:bg-[#ff8D3D]">
-            <Link href="/login">Log in</Link>
+            <Link href="/login">შესვლა</Link>
           </Button>
         </div>
       </div>
@@ -71,10 +71,10 @@ export function VerifyEmailCard() {
         <div className="text-center">
           <Loader2 className="mx-auto h-12 w-12 animate-spin text-[#ff9D4D] mb-6" />
           <h1 className="text-xl font-semibold text-neutral-100">
-            Verifying your email...
+            ელფოსტა მოწმდება...
           </h1>
           <p className="text-neutral-400 text-sm mt-2">
-            Please wait a moment.
+            გთხოვ, მოიცადე.
           </p>
         </div>
       </div>
@@ -89,17 +89,16 @@ export function VerifyEmailCard() {
             <CheckCircle2 className="h-8 w-8 text-emerald-500" />
           </div>
           <h1 className="text-xl font-semibold text-neutral-100 mb-2">
-            Email verified successfully
+            ელფოსტა წარმატებით დადასტურდა
           </h1>
           <p className="text-neutral-400 text-sm mb-6">
-            Your email has been verified. You can now use all features of your
-            account.
+            შენი ელფოსტა დადასტურებულია. ახლა შეგიძლია ანგარიშის ყველა ფუნქციის გამოყენება.
           </p>
           <Button
             onClick={() => router.push("/me/profile")}
             className="bg-[#ff9D4D] hover:bg-[#ff8D3D]"
           >
-            Go to Profile
+            პროფილზე გადასვლა
           </Button>
         </div>
       </div>
@@ -114,14 +113,14 @@ export function VerifyEmailCard() {
             <XCircle className="h-8 w-8 text-red-500" />
           </div>
           <h1 className="text-xl font-semibold text-neutral-100 mb-2">
-            Verification failed
+            დადასტურება ვერ მოხერხდა
           </h1>
           <p className="text-neutral-400 text-sm mb-6">
-            The verification link may have expired or is invalid. Please request
-            a new verification email from your account settings.
+            დადასტურების ბმული შესაძლოა ვადაგასული ან არასწორია. გთხოვ, ანგარიშის
+            პარამეტრებიდან მოითხოვე ახალი დადასტურების ელფოსტა.
           </p>
           <Button asChild className="bg-[#ff9D4D] hover:bg-[#ff8D3D]">
-            <Link href="/me/settings">Go to Settings</Link>
+            <Link href="/me/settings">პარამეტრებზე გადასვლა</Link>
           </Button>
         </div>
       </div>

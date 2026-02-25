@@ -35,7 +35,7 @@ export function LawyerProfileMenu() {
           <button
             type="button"
             disabled={atStart}
-            className={`shrink-0 2xl:hidden transition-all duration-200 ${
+            className={`shrink-0 lg:hidden transition-all duration-200 ${
               atStart
                 ? "text-zinc-600 cursor-default opacity-90"
                 : "text-zinc-400 hover:text-white hover:scale-110 cursor-pointer"
@@ -52,20 +52,20 @@ export function LawyerProfileMenu() {
             id="header-menu-scroll"
             ref={scrollRef}
             onScroll={updateScrollState}
-            className="[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex-1 flex items-center gap-2 overflow-x-auto pb-1 -mb-1 scroll-smooth snap-x snap-mandatory touch-pan-x select-none"
+            className="[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex-1 flex items-center gap-1.5 overflow-x-auto pb-1 -mb-1 scroll-smooth snap-x snap-mandatory touch-pan-x select-none"
           >
             {menuItems.map(({ path, label, icon: Icon }) => (
-              <div key={path} className="shrink-0 snap-center px-1">
+              <div key={path} className="shrink-0 snap-center px-0.5">
                 <button
                   onClick={() => router.push(path)}
-                  className={`min-w-33.75 sm:min-w-28.75 py-3 px-2 flex flex-col cursor-pointer sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs font-medium transition-all duration-200 hover:scale-[1.02] group whitespace-nowrap touch-manipulation ${
+                  className={`min-w-[128px] sm:min-w-[138px] py-2.5 px-2 flex flex-col cursor-pointer items-center justify-center gap-1 text-xs font-medium transition-all duration-200 hover:scale-[1.02] group whitespace-normal text-center touch-manipulation rounded-md border ${
                     pathname === path
-                      ? "text-[#ff9D4D]"
-                      : "text-zinc-300 hover:text-white"
+                      ? "text-[#ff9D4D] bg-[#ff9D4D]/12 border-[#ff9D4D]/35"
+                      : "text-zinc-200 border-transparent hover:text-white hover:bg-zinc-800/60"
                   }`}
                 >
                   <Icon className="w-5 h-5 sm:w-4 sm:h-4 shrink-0 group-hover:rotate-12 transition-transform duration-200" />
-                  <span className="truncate text-center leading-tight font-semibold">
+                  <span className="text-center leading-tight font-semibold max-w-[112px] wrap-break-word">
                     {label}
                   </span>
                 </button>
@@ -75,7 +75,7 @@ export function LawyerProfileMenu() {
           <button
             type="button"
             disabled={atEnd}
-            className={`shrink-0 2xl:hidden transition-all duration-200 ${
+            className={`shrink-0 lg:hidden transition-all duration-200 ${
               atEnd
                 ? "text-zinc-600 cursor-default opacity-90"
                 : "text-zinc-400 hover:text-white hover:scale-110 cursor-pointer"

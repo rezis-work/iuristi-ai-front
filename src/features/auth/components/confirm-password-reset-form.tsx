@@ -73,11 +73,11 @@ export function ConfirmPasswordResetForm() {
           <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
             <CardHeader className="text-center pb-4">
               <CardTitle className="text-3xl font-bold text-white mb-2">
-                Invalid Reset Link
+                არასწორი აღდგენის ბმული
               </CardTitle>
               <CardDescription className="text-gray-400 text-base">
-                This password reset link is invalid or has expired. Please
-                request a new one.
+                პაროლის აღდგენის ეს ბმული არასწორია ან ვადაგასულია.
+                გთხოვ, მოითხოვე ახალი.
               </CardDescription>
             </CardHeader>
             <CardContent className="sm:px-30 md:px-4 space-y-4">
@@ -87,7 +87,7 @@ export function ConfirmPasswordResetForm() {
                     type="button"
                     className="w-full h-13 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    Request New Reset Link
+                    ახალი აღდგენის ბმულის მოთხოვნა
                   </Button>
                 </Link>
                 <Link href="/login" className="block">
@@ -96,7 +96,7 @@ export function ConfirmPasswordResetForm() {
                     variant="secondary"
                     className="w-full h-13 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    Back to Login
+                    შესვლაზე დაბრუნება
                   </Button>
                 </Link>
               </div>
@@ -118,10 +118,10 @@ export function ConfirmPasswordResetForm() {
         <Card className="bg-transparent rounded-none md:rounded-md shadow-2xl border-none py-20">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-3xl font-bold text-white mb-2">
-              Set New Password
+              ახალი პაროლის დაყენება
             </CardTitle>
             <CardDescription className="text-gray-400 text-base">
-              Enter your new password below
+              ქვემოთ შეიყვანე ახალი პაროლი
             </CardDescription>
           </CardHeader>
           <CardContent className="sm:px-30 md:px-4">
@@ -141,12 +141,12 @@ export function ConfirmPasswordResetForm() {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          New Password
+                          ახალი პაროლი
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="password"
-                            placeholder="Enter new password"
+                            placeholder="შეიყვანე ახალი პაროლი"
                             disabled={isPending || form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -169,12 +169,12 @@ export function ConfirmPasswordResetForm() {
                     return (
                       <FormItem className="space-y-2">
                         <FormLabel className="text-gray-200 text-[15px] font-medium">
-                          Confirm Password
+                          პაროლის დადასტურება
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="password"
-                            placeholder="Confirm new password"
+                            placeholder="გაიმეორე ახალი პაროლი"
                             disabled={isPending || form.formState.isSubmitting}
                             className="h-13 w-full bg-black border-none rounded-none text-xs text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-0 focus-visible:ring-offset-0 keep-bg"
                             {...field}
@@ -191,11 +191,11 @@ export function ConfirmPasswordResetForm() {
 
                 {/* Password Requirements */}
                 <div className="text-xs text-gray-400">
-                  <p className="font-medium mb-1">Password requirements:</p>
+                  <p className="font-medium mb-1">პაროლის მოთხოვნები:</p>
                   <ul className="list-disc list-inside space-y-1">
-                    <li>At least 8 characters long</li>
-                    <li>Contains at least one letter</li>
-                    <li>Contains at least one number</li>
+                    <li>მინიმუმ 8 სიმბოლო</li>
+                    <li>უნდა შეიცავდეს მინიმუმ ერთ ასოს</li>
+                    <li>უნდა შეიცავდეს მინიმუმ ერთ ციფრს</li>
                   </ul>
                 </div>
 
@@ -208,7 +208,7 @@ export function ConfirmPasswordResetForm() {
                       variant="secondary"
                       className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                     >
-                      Back to Login
+                      შესვლაზე დაბრუნება
                     </Button>
                   </Link>
                   <Button
@@ -219,8 +219,8 @@ export function ConfirmPasswordResetForm() {
                     className="w-full h-13 mt-4 bg-[#FF9D4D] text-white rounded-xs hover:bg-[#FF8D3D] transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {isPending || form.formState.isSubmitting
-                      ? "Resetting..."
-                      : "Reset Password"}
+                      ? "მიმდინარეობს აღდგენა..."
+                      : "პაროლის აღდგენა"}
                   </Button>
                 </div>
               </form>

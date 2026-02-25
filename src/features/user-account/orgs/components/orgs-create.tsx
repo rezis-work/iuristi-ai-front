@@ -25,9 +25,9 @@ import { useCreateOrgs } from "../hooks/orgs";
 import { Building2, Briefcase, Loader2 } from "lucide-react";
 
 const ORG_TYPES = [
-  { value: "law_firm", label: "Law Firm" },
-  { value: "business", label: "Business" },
-  { value: "individual", label: "Individual" },
+  { value: "law_firm", label: "იურიდიული ფირმა" },
+  { value: "business", label: "ბიზნესი" },
+  { value: "individual", label: "ინდივიდუალური" },
 ] as const;
 
 interface OrgsCreatePageProps {
@@ -67,11 +67,11 @@ export default function OrgsCreatePage({ onSuccess, compact }: OrgsCreatePagePro
             <FormItem className="space-y-2">
               <FormLabel className="text-neutral-200 text-sm font-medium flex items-center gap-2">
                 <Building2 className="h-4 w-4 text-[#ff9D4D]/80" />
-                Organization Name
+                ორგანიზაციის სახელი
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="e.g. Smith & Associates"
+                  placeholder="მაგ: სამართალი და პარტნიორები"
                   className="h-11 bg-neutral-900/60 border-neutral-700 text-neutral-100 placeholder:text-neutral-500 focus-visible:border-[#ff9D4D] focus-visible:ring-[#ff9D4D]/25 rounded-md"
                   {...field}
                 />
@@ -87,12 +87,12 @@ export default function OrgsCreatePage({ onSuccess, compact }: OrgsCreatePagePro
             <FormItem className="space-y-2">
               <FormLabel className="text-neutral-200 text-sm font-medium flex items-center gap-2">
                 <Briefcase className="h-4 w-4 text-[#ff9D4D]/80" />
-                Type
+                ტიპი
               </FormLabel>
               <Select onValueChange={field.onChange} value={field.value ?? ""}>
                 <FormControl>
                   <SelectTrigger className="h-11 w-full bg-neutral-900/60 border-neutral-700 text-neutral-100 data-placeholder:text-neutral-500 focus:border-[#ff9D4D] focus:ring-[#ff9D4D]/25 rounded-md">
-                    <SelectValue placeholder="Select organization type" />
+                    <SelectValue placeholder="აირჩიე ორგანიზაციის ტიპი" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-neutral-900 border-neutral-700">
@@ -119,10 +119,10 @@ export default function OrgsCreatePage({ onSuccess, compact }: OrgsCreatePagePro
           {createOrgMutation.isPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Creating...
+              იქმნება...
             </>
           ) : (
-            "Create Organization"
+            "ორგანიზაციის შექმნა"
           )}
         </Button>
       </form>
@@ -143,10 +143,10 @@ export default function OrgsCreatePage({ onSuccess, compact }: OrgsCreatePagePro
         <CardHeader>
           <CardTitle className="text-xl sm:text-2xl font-semibold text-neutral-100 flex items-center gap-2">
             <Building2 className="h-6 w-6 text-[#ff9D4D]" />
-            Create Organization
+            ორგანიზაციის შექმნა
           </CardTitle>
           <p className="text-sm text-neutral-400 mt-1">
-            Add a new organization to manage your workspace
+            დაამატე ახალი ორგანიზაცია სამუშაო სივრცის სამართავად
           </p>
         </CardHeader>
         <CardContent>{formContent}</CardContent>

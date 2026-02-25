@@ -9,32 +9,32 @@ import {
 export const NOTIFICATION_OPTIONS = [
   {
     name: "productUpdates" as const,
-    label: "Product updates",
-    description: "Notifications about new features and changes",
+    label: "პროდუქტის განახლებები",
+    description: "შეტყობინებები ახალ ფუნქციებსა და ცვლილებებზე",
     icon: Package,
   },
   {
     name: "security" as const,
-    label: "Security notifications",
-    description: "Important security notifications (recommended)",
+    label: "უსაფრთხოების შეტყობინებები",
+    description: "მნიშვნელოვანი უსაფრთხოების შეტყობინებები (რეკომენდებულია)",
     icon: Shield,
   },
   {
     name: "caseReminders" as const,
-    label: "Case reminders",
-    description: "Reminders about ongoing cases",
+    label: "საქმის შეხსენებები",
+    description: "შეხსენებები მიმდინარე საქმეებზე",
     icon: AlertCircle,
   },
   {
     name: "agentResults" as const,
-    label: "AI agent results",
-    description: "When AI agent completes a task",
+    label: "AI აგენტის შედეგები",
+    description: "როცა AI აგენტი დაასრულებს დავალებას",
     icon: Zap,
   },
   {
     name: "marketing" as const,
-    label: "Marketing and promotions",
-    description: "News, tips and special offers",
+    label: "მარკეტინგი და აქციები",
+    description: "სიახლეები, რჩევები და სპეციალური შეთავაზებები",
     icon: Megaphone,
   },
 ] as const;

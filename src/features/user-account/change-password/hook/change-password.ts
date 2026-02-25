@@ -13,10 +13,10 @@ export function usePasswordChange(){
         return responce
       },
       onSuccess:()=> {
-        toast.success("password changed successfully")
+        toast.success("პაროლი წარმატებით შეიცვალა")
       },
       onError: (error) => {
-        toast.error(error?.message || "Failed to change password");
+        toast.error(error?.message || "პაროლის შეცვლა ვერ მოხერხდა");
       },
     })
 }

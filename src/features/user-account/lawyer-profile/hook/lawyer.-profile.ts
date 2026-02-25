@@ -39,10 +39,10 @@ export function useUpdateLawyerProfile(orgId: string | null) {
         queryClient.setQueryData(["lawyer-profile", orgId], data);
       }
       queryClient.invalidateQueries({ queryKey: ["lawyer-profile", orgId] });
-      toast.success("Lawyer profile updated successfully");
+      toast.success("იურისტის პროფილი წარმატებით განახლდა");
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to update lawyer profile");
+      toast.error(error.message || "იურისტის პროფილის განახლება ვერ მოხერხდა");
     },
   });
 }
