@@ -188,7 +188,26 @@ export default function AIChatPage() {
         }
       }
     } catch {
-      // Inline error state and toast are handled by mutation error callbacks.
+      // If streaming endpoint is unavailable in production, fallback to regular chat response.
+      try {
+        const response = await sendChat({ ...payload, options: { stream: false } });
+        if (response.conversationId) {
+          setConversationId(response.conversationId);
+          setHistoryConversationId(response.conversationId);
+          if (shouldSetInitialTitle) {
+            setConversationItems(upsertConversationSummary(response.conversationId, trimmedInput));
+          }
+        }
+        if (response.history?.length) {
+          setMessages(response.history);
+          return;
+        }
+        if (response.message) {
+          setMessages((prev) => [...prev, { role: "assistant", content: response.message }]);
+        }
+      } catch {
+        // Inline error state and toast are handled by mutation error callbacks.
+      }
       return;
     }
   };
