@@ -1,13 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import type { ChatRequestSchema } from "../schemas/chat-schema";
 import {
   chatWithAI,
   deleteConversation,
   getConversationHistory,
-  streamEvent,
+  streamChat, // თუ შენთან streamEvent ჰქვია, ეს სახელი შეცვალე
   type ChatStreamEvent,
+  type StoredConversation,
 } from "../api/chat";
-import { toast } from "sonner";
 
 export function useAiChat() {
   return useMutation({
@@ -30,7 +31,8 @@ type StreamMutationInput = {
 export function useAiChatStream() {
   return useMutation({
     mutationKey: ["chat-stream"],
-    mutationFn: ({ data, onEvent }: StreamMutationInput) => streamEvent(data, onEvent),
+    mutationFn: ({ data, onEvent }: StreamMutationInput) =>
+      streamChat(data, onEvent), // თუ შენთან streamEvent-ია, აქაც შეცვალე
     onError: () => {
       toast.error("სტრიმინგი შეწყდა, სცადეთ თავიდან");
     },
@@ -38,10 +40,15 @@ export function useAiChatStream() {
 }
 
 export function useGetConversationHistory(conversationId?: string) {
-  return useQuery({
+  return useQuery<StoredConversation>({
     queryKey: ["chat-history", conversationId],
-    enabled: !!conversationId,
-    queryFn: () => getConversationHistory(conversationId as string),
+    enabled: Boolean(conversationId),
+    queryFn: async () => {
+      if (!conversationId) {
+        throw new Error("conversationId is required");
+      }
+      return getConversationHistory(conversationId);
+    },
   });
 }
 
@@ -50,8 +57,10 @@ export function useDeleteConversation() {
 
   return useMutation({
     mutationFn: (conversationId: string) => deleteConversation(conversationId),
-    onSuccess: (_data, conversationId) => {
+    onSuccess: async (_data, conversationId) => {
       queryClient.removeQueries({ queryKey: ["chat-history", conversationId] });
+      // სურვილის მიხედვით cache list-იც გაასუფთავე:
+      // queryClient.invalidateQueries({ queryKey: ["chat-conversations"] });
       toast.success("საუბარი წაიშალა");
     },
     onError: () => {

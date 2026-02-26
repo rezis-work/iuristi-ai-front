@@ -31,7 +31,7 @@ export function ChatHistorySidebar({
   onDeleteConversation,
 }: ChatHistorySidebarProps) {
   return (
-    <aside className="w-full rounded-3xl border border-zinc-800/90 bg-zinc-950/90 p-4 shadow-2xl shadow-black/40 md:sticky md:top-6 md:max-h-[76vh]">
+    <aside className="w-full rounded-3xl border border-zinc-800/90 bg-zinc-950/90 p-4 shadow-2xl shadow-black/40 min-[1000px]:sticky min-[1000px]:top-6 min-[1000px]:max-h-[76vh]">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2 text-zinc-200">
           <History className="h-4 w-4 text-[#ff9D4D]" />
@@ -42,14 +42,14 @@ export function ChatHistorySidebar({
           size="sm"
           variant="outline"
           onClick={onStartNewChat}
-          className="rounded-xl border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800"
+          className="rounded-xl border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800 hover:text-[#ff9D4D]"
         >
           <Plus className="h-4 w-4" />
           ახალი
         </Button>
       </div>
 
-      <div className="space-y-2 overflow-y-auto md:max-h-[64vh] md:pr-1">
+      <div className="space-y-2 overflow-y-auto min-[1000px]:max-h-[64vh] min-[1000px]:pr-1">
         {items.length === 0 && (
           <p className="rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 py-2 text-xs text-zinc-400">
             ჯერ ისტორია არ არის. პირველი დიალოგის დასრულების შემდეგ აქ გამოჩნდება.

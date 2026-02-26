@@ -114,6 +114,26 @@ export default function AIChatPage() {
       options: { stream: true },
     };
     const shouldSetInitialTitle = !conversationId;
+    const applyNonStreamResponse = async () => {
+      const response = await sendChat({ ...payload, options: { stream: false } });
+      if (response.conversationId) {
+        setConversationId(response.conversationId);
+        setHistoryConversationId(response.conversationId);
+        if (shouldSetInitialTitle) {
+          setConversationItems(upsertConversationSummary(response.conversationId, trimmedInput));
+        }
+      }
+
+      const historyMessages = parseHistoryResponse(response);
+      if (historyMessages.length) {
+        setMessages(historyMessages);
+        return;
+      }
+
+      if (response.content?.trim()) {
+        setMessages((prev) => [...prev, { role: "assistant", content: response.content }]);
+      }
+    };
 
     try {
       let hasAssistantMessage = false;
@@ -137,10 +157,6 @@ export default function AIChatPage() {
               if (shouldSetInitialTitle) {
                 setConversationItems(upsertConversationSummary(event.data.conversationId, trimmedInput));
               }
-            }
-            if (!streamHadToken && event.data?.message) {
-              setMessages((prev) => [...prev, { role: "assistant", content: event.data.message as string }]);
-              streamHadToken = true;
             }
             return;
           }
@@ -171,40 +187,12 @@ export default function AIChatPage() {
 
       // Fallback: if stream endpoint returned without token events.
       if (!streamHadToken) {
-        const response = await sendChat({ ...payload, options: { stream: false } });
-        if (response.conversationId) {
-          setConversationId(response.conversationId);
-          setHistoryConversationId(response.conversationId);
-          if (shouldSetInitialTitle) {
-            setConversationItems(upsertConversationSummary(response.conversationId, trimmedInput));
-          }
-        }
-        if (response.history?.length) {
-          setMessages(response.history);
-          return;
-        }
-        if (response.message) {
-          setMessages((prev) => [...prev, { role: "assistant", content: response.message }]);
-        }
+        await applyNonStreamResponse();
       }
     } catch {
       // If streaming endpoint is unavailable in production, fallback to regular chat response.
       try {
-        const response = await sendChat({ ...payload, options: { stream: false } });
-        if (response.conversationId) {
-          setConversationId(response.conversationId);
-          setHistoryConversationId(response.conversationId);
-          if (shouldSetInitialTitle) {
-            setConversationItems(upsertConversationSummary(response.conversationId, trimmedInput));
-          }
-        }
-        if (response.history?.length) {
-          setMessages(response.history);
-          return;
-        }
-        if (response.message) {
-          setMessages((prev) => [...prev, { role: "assistant", content: response.message }]);
-        }
+        await applyNonStreamResponse();
       } catch {
         // Inline error state and toast are handled by mutation error callbacks.
       }
@@ -213,12 +201,12 @@ export default function AIChatPage() {
   };
 
   return (
-    <section className="mx-auto w-full max-w-[1320px] pt-[100px] px-3 py-5 sm:px-5 lg:px-8">
-      <div className="overflow-x-auto pb-1">
-        <div className="grid min-w-[960px] grid-cols-[minmax(0,1fr)_300px] gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
+    <section className="mx-auto w-full max-w-[1320px] px-3 pb-5 pt-[84px] sm:px-5 sm:pt-[96px] lg:px-8 lg:pt-[100px]">
+      <div className="pb-1">
+        <div className="grid min-w-0 grid-cols-1 gap-4 min-[1000px]:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_340px]">
           <div className="min-w-0 overflow-hidden rounded-3xl border border-zinc-800/90 bg-zinc-950/90 shadow-2xl shadow-black/40 backdrop-blur">
             <ChatHeader />
-            <div className="flex min-h-[62vh] flex-col lg:min-h-[68vh]">
+            <div className="flex min-h-[60dvh] flex-col min-[1000px]:min-h-[68vh]">
               <ChatMessages
                 messages={messages}
                 isPending={isPending || isHistoryLoading}
