@@ -8,8 +8,9 @@ function getCookieToken() {
 
   //cookie-ტოკენებს გადაუვლის და ნახავს token თუ ემთხვევა COOKIE_NAME და დააბრუნებს value-ს
   for (const cookie of cookies) {
-    const [name, value] = cookie.trim().split("=");
+    const [name, ...valueParts] = cookie.trim().split("=");
     if (name === COOKIE_NAME) {
+      const value = valueParts.join("=");
       return decodeURIComponent(value);
     }
   }

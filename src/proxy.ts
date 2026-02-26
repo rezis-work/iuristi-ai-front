@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const COOKIE_NAME = "token";
+const AUTH_COOKIE_NAMES = ["token", "refreshToken", "refresh_token"];
 
 /**
  * Protects private routes - redirects to login if user is not authenticated.
- * Auth is checked via "token" cookie.
+ * Auth is checked via access or refresh cookie.
  */
 export function proxy(request: NextRequest) {
-  const token = request.cookies.get(COOKIE_NAME)?.value;
+  const hasAuthCookie = AUTH_COOKIE_NAMES.some((name) =>
+    Boolean(request.cookies.get(name)?.value?.trim()),
+  );
   const pathname = request.nextUrl.pathname;
   const isProtectedRoute =
     pathname.startsWith("/me") || pathname.startsWith("/ai-chat");
 
-  if (isProtectedRoute && !token?.trim()) {
+  if (isProtectedRoute && !hasAuthCookie) {
     const nextPath = pathname + (request.nextUrl.search || "");
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", nextPath);

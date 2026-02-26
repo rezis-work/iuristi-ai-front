@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       return [
         { source: "/api/chat/:path*", destination: `${LAWYER_URL}/chat/:path*` },
         { source: "/api/search/:path*", destination: `${LAWYER_URL}/search/:path*` },
+        { source: "/api/ingest/:path*", destination: `${LAWYER_URL}/search/:path*` },
         // ყველა დანარჩენი → iam-service (Auth, Users, Orgs, Profile, ფაილები)
         { source: "/api/:path*", destination: `${IAM_URL}/:path*` },
       ];

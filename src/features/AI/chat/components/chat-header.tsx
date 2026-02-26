@@ -25,8 +25,8 @@ export function ChatHeader() {
             variant="outline"
             className="h-8 rounded-lg border-zinc-700 bg-zinc-900/70 text-zinc-200 hover:bg-zinc-800"
           >
-            <Link href="/">
-              <Home className="h-3.5 w-3.5" />
+            <Link href="/" className="text-white hover:text-yellow-700">
+              <Home className="h-3.5 w-3.5 text-[#ff9D4D]" />
               მთავარი
             </Link>
           </Button>
