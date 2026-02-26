@@ -10,7 +10,7 @@ type ChatMessagesProps = {
 
 export function ChatMessages({ messages, isPending, messagesEndRef }: ChatMessagesProps) {
   return (
-    <div className="flex-1 overflow-y-auto bg-linear-to-b from-zinc-950 to-zinc-950/80 px-4 py-5 sm:px-6">
+    <div className="min-h-0 flex-1 overflow-y-auto bg-linear-to-b from-zinc-950 to-zinc-950/80 px-4 py-5 sm:px-6">
       <div className="mx-auto w-full max-w-4xl space-y-4">
         {messages.map((message, index) => {
           const isUser = message.role === "user";
