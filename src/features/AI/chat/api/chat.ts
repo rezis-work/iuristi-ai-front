@@ -146,7 +146,7 @@ export async function streamChat(
   onEvent: (event: ChatStreamEvent) => void,
 ): Promise<void> {
   const token = getToken();
-  const response = await fetch(buildUrl("/chat/stream"), {
+  const response = await fetch(buildUrl("/agent/chat/stream"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -190,14 +190,14 @@ export async function streamChat(
 export async function getConversationHistory(
   conversationId: string,
 ): Promise<StoredConversation> {
-  return api<StoredConversation>(`/chat/conversations/${conversationId}`, {
+  return api<StoredConversation>(`/agent/chat/conversations/${conversationId}`, {
     method: "GET",
     auth: true,
   });
 }
 
 export async function deleteConversation(conversationId: string): Promise<void> {
-  await api<void>(`/chat/conversations/${conversationId}`, {
+  await api<void>(`/agent/chat/conversations/${conversationId}`, {
     method: "DELETE",
     auth: true,
   });
