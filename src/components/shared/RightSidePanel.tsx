@@ -39,7 +39,7 @@ const panelButtons: PanelButton[] = [
   {
     id: "calendar",
     icon: <Calendar className="w-5 h-5" />,
-    href: "/Meetings",
+    href: "#",
     label: "მალე დაემატება",
   },
 ];
