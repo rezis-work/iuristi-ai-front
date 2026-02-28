@@ -12,7 +12,9 @@ export function proxy(request: NextRequest) {
   );
   const pathname = request.nextUrl.pathname;
   const isProtectedRoute =
-    pathname.startsWith("/me") || pathname.startsWith("/ai-chat");
+    pathname.startsWith("/me") ||
+    pathname.startsWith("/ai-chat") || 
+    pathname.startsWith("/search");
 
   if (isProtectedRoute && !hasAuthCookie) {
     const nextPath = pathname + (request.nextUrl.search || "");
@@ -25,5 +27,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/me", "/me/:path*", "/ai-chat", "/ai-chat/:path*"],
+  matcher: ["/me", "/me/:path*", 
+    "/ai-chat", "/ai-chat/:path*", 
+    "/search", "/search/:path*"],
 };
