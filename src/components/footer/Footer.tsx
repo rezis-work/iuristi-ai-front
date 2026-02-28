@@ -14,9 +14,10 @@ function Footer() {
 
   const navItems = [
     { href: "/", label: "მთავარი" },
-    { href: "/blog", label: "ბლოგი" },
-    { href: "/shop", label: "მაღაზია" },
-    { href: "/contacts", label: "კონტაქტები" },
+    { href: "/search", label: "საძიებო ბარი" },
+    { href: "/ai-chat", label: "AI ჩათი" },
+    { href: "/contacts", label: "კონტაქტი" },
+    { href: "/services", label: "სერვისები" },
   ];
 
   return (
@@ -25,10 +26,10 @@ function Footer() {
         <Wrapper className="max-w-7xl mx-auto px-6 pt-10 lg:px-28">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start justify-between mb-20">
             <div className="lg:col-span-12 w-full">
-              <h2 className="text-zinc-200 font-extrabold leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+              <h2 className="text-zinc-200 font-extrabold leading-tight text-xl sm:text-2xl md:text-3xl ">
                 ჩვენ ვიცავთ შენს მომავალს.
                 <br />
-                <span className="underline underline-offset-4">
+                <span className="">
                   დაგვიკავშირდი.
                 </span>
               </h2>
