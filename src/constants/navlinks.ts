@@ -5,4 +5,5 @@ export const navLinks: NavLink[] = [
   { href: "/service", label: "სერვისები" },
   { href: "/contacts", label: "კონტაქტი" },
   { href: "/ai-chat", label: "AI ჩათი" },
+  { href: "/search", label: "საძიებო სივრცე" },
 ];

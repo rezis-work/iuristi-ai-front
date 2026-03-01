@@ -31,6 +31,8 @@ export async function search(data: SearchRequest) {
     const response = await api<SearchResponse[]>("/agent/search", {
       method: "POST",
       body: JSON.stringify(data),
+      auth: true,
+      disableRedirect: true,
     });
     return response;
   } catch (error) {
@@ -43,7 +45,10 @@ export async function search(data: SearchRequest) {
 
 export async function getArticleById(id: string) {
   try {
-    const response = await api<SearchResponse>(`/agent/search/articles/${id}`);
+    const response = await api<SearchResponse>(`/agent/search/articles/${id}`,{
+      auth: true,
+      disableRedirect: true,
+    });
     return response;
   } catch (error) {
     console.error("Get article by id error:", error);
@@ -54,7 +59,10 @@ export async function getArticleById(id: string) {
 
 export async function getCollectionStats() {
   try {
-    const response = await api<CollectionStats>("/agent/search/collections/stats");
+    const response = await api<CollectionStats>("/agent/search/collections/stats", {
+      auth: true,
+      disableRedirect: true,
+    });
     return response;
   } catch (error) {
     console.error("Get collection stats error:", error);

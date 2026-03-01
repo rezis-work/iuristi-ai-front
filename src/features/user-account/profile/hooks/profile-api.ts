@@ -7,12 +7,32 @@ import {
   type UpdateProfileData,
 } from "../api/profile-api";
 
+type ApiErrorLike = Error & { code?: string };
+
+function isAuthError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  const apiError = error as ApiErrorLike;
+  const code = (apiError.code ?? "").toUpperCase();
+  const message = error.message.toLowerCase();
+
+  return (
+    code === "UNAUTHORIZED" ||
+    code === "AUTH_REQUIRED" ||
+    message.includes("not authenticated") ||
+    message.includes("authentication required") ||
+    message.includes("unauthorized")
+  );
+}
+
 /** Shared queryFn - disableRedirect so unauthenticated users get null, not redirect */
 async function fetchProfile(): Promise<Profile | null> {
   try {
     return await getProfile({ disableRedirect: true });
-  } catch {
-    return null;
+  } catch (error) {
+    if (isAuthError(error)) {
+      return null;
+    }
+    throw error;
   }
 }
 
