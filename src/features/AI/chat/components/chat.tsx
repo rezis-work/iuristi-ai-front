@@ -32,6 +32,10 @@ export default function AIChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
   const [conversationItems, setConversationItems] = useState<ConversationSummary[]>([]);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const activeRequestIdRef = useRef(0);
+  const assistantBufferRef = useRef("");
+  const hasAssistantMessageRef = useRef(false);
+  const flushRafRef = useRef<number | null>(null);
 
   const { data: historyData, isFetching: isHistoryLoading, refetch: refetchHistory } =
     useGetConversationHistory(historyConversationId);
@@ -60,7 +64,51 @@ export default function AIChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isPending]);
 
+  const invalidateActiveStream = () => {
+    activeRequestIdRef.current += 1;
+    assistantBufferRef.current = "";
+    hasAssistantMessageRef.current = false;
+    if (flushRafRef.current !== null) {
+      cancelAnimationFrame(flushRafRef.current);
+      flushRafRef.current = null;
+    }
+  };
+
+  const flushAssistantBuffer = (requestId: number) => {
+    if (activeRequestIdRef.current !== requestId) return;
+    const buffered = assistantBufferRef.current;
+    if (!buffered) return;
+    assistantBufferRef.current = "";
+
+    setMessages((prev) => {
+      if (activeRequestIdRef.current !== requestId) return prev;
+      const next = [...prev];
+      const last = next[next.length - 1];
+
+      if (!hasAssistantMessageRef.current || last?.role !== "assistant") {
+        next.push({ role: "assistant", content: buffered });
+        hasAssistantMessageRef.current = true;
+        return next;
+      }
+
+      next[next.length - 1] = {
+        ...last,
+        content: `${last.content}${buffered}`,
+      };
+      return next;
+    });
+  };
+
+  const scheduleAssistantFlush = (requestId: number) => {
+    if (flushRafRef.current !== null) return;
+    flushRafRef.current = requestAnimationFrame(() => {
+      flushRafRef.current = null;
+      flushAssistantBuffer(requestId);
+    });
+  };
+
   const resetToNewChat = () => {
+    invalidateActiveStream();
     setConversationId(undefined);
     setHistoryConversationId(undefined);
     setMessages([INITIAL_MESSAGE]);
@@ -68,6 +116,7 @@ export default function AIChatPage() {
   };
 
   const handleSelectConversation = async (selectedId: string) => {
+    invalidateActiveStream();
     setConversationId(selectedId);
     setHistoryConversationId(selectedId);
     if (selectedId === historyConversationId) {
@@ -114,8 +163,17 @@ export default function AIChatPage() {
       options: { stream: true },
     };
     const shouldSetInitialTitle = !conversationId;
+    const requestId = activeRequestIdRef.current + 1;
+    activeRequestIdRef.current = requestId;
+    assistantBufferRef.current = "";
+    hasAssistantMessageRef.current = false;
+    if (flushRafRef.current !== null) {
+      cancelAnimationFrame(flushRafRef.current);
+      flushRafRef.current = null;
+    }
     const applyNonStreamResponse = async () => {
       const response = await sendChat({ ...payload, options: { stream: false } });
+      if (activeRequestIdRef.current !== requestId) return;
       if (response.conversationId) {
         setConversationId(response.conversationId);
         setHistoryConversationId(response.conversationId);
@@ -136,13 +194,15 @@ export default function AIChatPage() {
     };
 
     try {
-      let hasAssistantMessage = false;
       let streamHadToken = false;
 
       await sendChatStream({
         data: payload,
         onEvent: (event) => {
+          if (activeRequestIdRef.current !== requestId) return;
+
           if (event.type === "error") {
+            flushAssistantBuffer(requestId);
             const message =
               event.data?.error?.trim() || "ამ ეტაპზე პასუხის მიღება ვერ მოხერხდა. სცადე თავიდან.";
             setMessages((prev) => [...prev, { role: "assistant", content: message }]);
@@ -151,6 +211,7 @@ export default function AIChatPage() {
           }
 
           if (event.type === "done") {
+            flushAssistantBuffer(requestId);
             if (event.data?.conversationId) {
               setConversationId(event.data.conversationId);
               setHistoryConversationId(event.data.conversationId);
@@ -165,26 +226,12 @@ export default function AIChatPage() {
           const token = event.data?.content ?? "";
           if (!token) return;
           streamHadToken = true;
-
-          setMessages((prev) => {
-            const next = [...prev];
-            const last = next[next.length - 1];
-
-            if (!hasAssistantMessage || last?.role !== "assistant") {
-              next.push({ role: "assistant", content: token });
-              hasAssistantMessage = true;
-              return next;
-            }
-
-            next[next.length - 1] = {
-              ...last,
-              content: `${last.content}${token}`,
-            };
-            return next;
-          });
+          assistantBufferRef.current += token;
+          scheduleAssistantFlush(requestId);
         },
       });
 
+      flushAssistantBuffer(requestId);
       // Fallback: if stream endpoint returned without token events.
       if (!streamHadToken) {
         await applyNonStreamResponse();
@@ -199,6 +246,14 @@ export default function AIChatPage() {
       return;
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (flushRafRef.current !== null) {
+        cancelAnimationFrame(flushRafRef.current);
+      }
+    };
+  }, []);
 
   return (
     <section className="mx-auto w-full max-w-[1320px] px-3 pb-5 pt-[84px] sm:px-5 sm:pt-[96px] lg:px-8 lg:pt-[100px]">

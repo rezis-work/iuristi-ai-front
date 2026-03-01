@@ -220,6 +220,7 @@ export async function api<T>(
     if (
       typeof window !== "undefined" &&
       (res as Response).status === 401 &&
+      options.auth &&
       !options.disableRedirect
     ) {
       try {
@@ -304,6 +305,7 @@ export async function apiForm<T>(
     if (
       typeof window !== "undefined" &&
       (res as Response).status === 401 &&
+      options.auth &&
       !options.disableRedirect
     ) {
       try {
@@ -379,7 +381,7 @@ export async function apiBlob(
   });
 
   if (!res.ok) {
-    if (typeof window !== "undefined" && res.status === 401) {
+    if (typeof window !== "undefined" && res.status === 401 && options.auth) {
       try {
         if (options.auth && !options._skipRefresh) {
           const { refreshAccessToken } = await import(
