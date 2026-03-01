@@ -133,6 +133,7 @@ export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) 
                 />
                 <div className="text-gray-200 flex justify-end">
                   <Link
+                  onClick={() => onClose?.()}
                     href="/reset-password"
                     className="cursor-pointer text-[15px] hover:text-[#FF9D4D] transition-colors"
                   >

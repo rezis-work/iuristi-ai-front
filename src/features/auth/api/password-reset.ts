@@ -36,14 +36,8 @@ export async function requestPasswordReset(data: RequestPasswordResetData) {
       },
     );
 
-    // Log success
-    if (response?.sent) {
-      console.log("✅ Password reset email sent to:", data.email);
-    }
-
     return response;
   } catch (error) {
-    console.log("Failed to request password reset", error);
     throw error;
   }
 }
@@ -63,14 +57,8 @@ export async function confirmPasswordReset(data: ConfirmPasswordResetData) {
       },
     );
 
-    // Log success
-    if (response?.reset) {
-      console.log("✅ Password reset successful");
-    }
-
     return response;
   } catch (error) {
-    console.log("Failed to confirm password reset", error);
     throw error;
   }
 }

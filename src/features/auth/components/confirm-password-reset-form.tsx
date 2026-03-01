@@ -80,7 +80,7 @@ export function ConfirmPasswordResetForm() {
                 გთხოვ, მოითხოვე ახალი.
               </CardDescription>
             </CardHeader>
-            <CardContent className="sm:px-30 md:px-4 space-y-4">
+            <CardContent className="sm:px-8 md:px-4 space-y-4">
               <div className="flex flex-col gap-3">
                 <Link href="/reset-password">
                   <Button
@@ -124,7 +124,7 @@ export function ConfirmPasswordResetForm() {
               ქვემოთ შეიყვანე ახალი პაროლი
             </CardDescription>
           </CardHeader>
-          <CardContent className="sm:px-30 md:px-4">
+          <CardContent className="sm:px-8 md:px-4">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -200,17 +200,7 @@ export function ConfirmPasswordResetForm() {
                 </div>
 
                 {/* Submit Button */}
-                <div className="grid grid-cols-2 gap-3 sm:gap-7 items-center">
-                  <Link href="/login">
-                    <Button
-                      type="button"
-                      disabled={isPending || form.formState.isSubmitting}
-                      variant="secondary"
-                      className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      შესვლაზე დაბრუნება
-                    </Button>
-                  </Link>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-7 items-center">
                   <Button
                     type="submit"
                     disabled={
@@ -222,6 +212,16 @@ export function ConfirmPasswordResetForm() {
                       ? "მიმდინარეობს აღდგენა..."
                       : "პაროლის აღდგენა"}
                   </Button>
+                  <Link href="/login">
+                    <Button
+                      type="button"
+                      disabled={isPending || form.formState.isSubmitting}
+                      variant="secondary"
+                      className="w-full h-13 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      შესვლაზე დაბრუნება
+                    </Button>
+                  </Link>
                 </div>
               </form>
             </Form>
