@@ -33,15 +33,12 @@ export function useRequestPasswordReset() {
       // It has the format: new Error(message) with error.code property
       const apiError = error as Error & { code?: string };
       const errorCode = apiError?.code;
-      const errorMessage = apiError?.message;
 
       // Log only unexpected errors (not handled error codes)
       const isHandledError =
         errorCode === "RATE_LIMITED" ||
         errorCode === "PASSWORD_RESET_COOLDOWN" ||
-        errorCode === "PASSWORD_RESET_DAILY_LIMIT" ||
-        errorMessage?.includes("user doesn't exist") ||
-        errorMessage?.includes("not found");
+        errorCode === "PASSWORD_RESET_DAILY_LIMIT";
 
       if (!isHandledError) {
         console.error("Unexpected password reset request error:", error);
@@ -60,15 +57,6 @@ export function useRequestPasswordReset() {
         toast.error("📅 დღიური ლიმიტი ამოიწურა", {
           description:
             "დღევანდელი ლიმიტი ამოწურულია. გთხოვ, ხვალ სცადე.",
-        });
-      } else if (
-        errorMessage?.includes("user doesn't exist") ||
-        errorMessage?.includes("not found")
-      ) {
-        // Security: Don't reveal if email exists or not
-        toast.success("✓ გადაამოწმე ელფოსტა", {
-          description:
-            "თუ ეს ელფოსტა რეგისტრირებულია, მალე მიიღებ აღდგენის ბმულს.",
         });
       } else {
         toast.error("❌ აღდგენის ელფოსტის გაგზავნა ვერ მოხერხდა", {
