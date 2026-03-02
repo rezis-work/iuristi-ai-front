@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -24,6 +25,7 @@ import {
 } from "@/src/components/ui/card";
 import Wrapper from "@/src/components/shared/wrapper";
 import { useLogin } from "@/src/features/auth/hook/auth";
+import { useGetMe } from "@/src/features/user-account/profile/hooks/profile-api";
 
 interface LoginFormProps {
   onClose?: () => void;
@@ -35,10 +37,30 @@ export function LoginForm({ onClose, next: nextProp, compact }: LoginFormProps) 
   const searchParams = useSearchParams();
   const nextFromUrl = searchParams.get("next");
   const nextParam = nextProp ?? nextFromUrl;
+  const { data: profileMe, isLoading: profileLoading } = useGetMe();
   const { mutate: Login } = useLogin({
-    disableAutoRedirect: true,
+    // Modal-ში router.push; standalone გვერდზე window.location.href (სანდო რედირექტი)
+    disableAutoRedirect: !!onClose,
     redirectTo: nextParam || undefined,
   });
+
+  // უკვე დალოგინებული მომხმარებელი – standalone გვერდიდან რედირექტი
+  useEffect(() => {
+    if (onClose || profileLoading || !profileMe) return;
+    let decoded = nextParam;
+    if (decoded && typeof decoded === "string" && !decoded.startsWith("/")) {
+      try {
+        decoded = decodeURIComponent(decoded);
+      } catch {
+        decoded = null;
+      }
+    }
+    const target =
+      decoded && typeof decoded === "string" && decoded.startsWith("/") && !decoded.includes("//")
+        ? decoded
+        : "/me/profile";
+    window.location.replace(target);
+  }, [onClose, profileLoading, profileMe, nextParam]);
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
