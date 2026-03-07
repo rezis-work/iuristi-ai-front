@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { AnimatePresence, motion } from "motion/react";
 import { X, Search as Search2 } from "lucide-react";
@@ -28,6 +29,7 @@ interface SearchProps {
 }
 
 export function Search({ isOpen, onClose }: SearchProps) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,15 +37,17 @@ export function Search({ isOpen, onClose }: SearchProps) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Search submitted:", values);
-    form.reset();
-  }
-
   const handleClose = useCallback(() => {
     form.reset();
     onClose();
   }, [form, onClose]);
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const query = encodeURIComponent(values.search.trim());
+    form.reset();
+    handleClose();
+    router.push(`/search?query=${query}`);
+  }
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
