@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Home, FileQuestion } from "lucide-react";
+import { Link } from "@/src/components/shared/link";
 
 function NotFound() {
   return (

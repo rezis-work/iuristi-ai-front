@@ -24,12 +24,16 @@ export default function Search() {
     resolver: zodResolver(searchRequestSchema),
     defaultValues: {
       query: "",
+      scoreThreshold: 0.4,
+      topK: 10
     },
   });
 
   async function onSubmit(data: SearchRequest) {
     const response = await search({
       query: data.query,
+      scoreThreshold: data.scoreThreshold,
+      topK:data.topK
     });
     setResults(response);
     setHasSearched(true);
