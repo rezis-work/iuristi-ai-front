@@ -79,7 +79,7 @@ export function ResetPasswordForm() {
                 </span>
               </CardDescription>
             </CardHeader>
-            <CardContent className="sm:px-30 md:px-4 space-y-6">
+            <CardContent className="sm:px-8 md:px-4 space-y-6">
               {/* Instructions */}
               <div className="space-y-4 text-sm text-gray-400">
                 <p className="flex items-start gap-3">
@@ -156,7 +156,7 @@ export function ResetPasswordForm() {
               შეიყვანე ელფოსტა პაროლის აღდგენის ბმულის მისაღებად
             </CardDescription>
           </CardHeader>
-          <CardContent className="sm:px-30 md:px-4">
+          <CardContent className="sm:px-8 md:px-4">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -191,16 +191,7 @@ export function ResetPasswordForm() {
                 />
 
                 {/* Submit Button */}
-                <div className="grid grid-cols-2 gap-3 sm:gap-7 items-center">
-                  <Link href="/login">
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      className="w-full h-13.5 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      შესვლაზე დაბრუნება
-                    </Button>
-                  </Link>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-7 items-center">
                   <Button
                     type="submit"
                     disabled={isPending}
@@ -208,6 +199,15 @@ export function ResetPasswordForm() {
                   >
                     {isPending ? "იგზავნება..." : "აღდგენის ბმულის გაგზავნა"}
                   </Button>
+                  <Link href="/login">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="w-full h-13 mt-4 bg-gray-900 text-white rounded-xs hover:bg-gray-900 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      შესვლაზე დაბრუნება
+                    </Button>
+                  </Link>
                 </div>
               </form>
             </Form>
