@@ -8,10 +8,13 @@ import { MobileOverlay } from "@/src/components/header/MobileOverlay";
 import { MobileActions } from "@/src/components/header/MobileActions";
 import { LoginCard } from "@/src/features/auth/components/login-card";
 import { Search } from "@/src/components/header/Search";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useMe } from "@/src/features/auth/hook/use-getme";
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: user } = useMe();
   const isAiChatPage = pathname?.startsWith("/ai-chat");
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -76,7 +79,21 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isFixed, headerHeight]);
 
-  const toggleDesktopSearch = () => setIsDesktopSearchOpen((prev) => !prev);
+  const toggleDesktopSearch = () => {
+    if (!user) {
+      router.push(`/login?next=${encodeURIComponent("/search")}`);
+      return;
+    }
+    setIsDesktopSearchOpen((prev) => !prev);
+  };
+
+  const toggleMobileSearch = () => {
+    if (!user) {
+      router.push(`/login?next=${encodeURIComponent("/search")}`);
+      return;
+    }
+    setIsMobileSearchOpen((prev) => !prev);
+  };
 
   if (isAiChatPage) return null;
 
@@ -107,7 +124,7 @@ export default function Header() {
             <MobileActions
               isMenuOpen={isMobileMenuOpen}
               onToggleMenu={() => setIsMobileMenuOpen((prev) => !prev)}
-              onToggleSearch={() => setIsMobileSearchOpen((prev) => !prev)}
+              onToggleSearch={toggleMobileSearch}
             />
           </div>
         </Wrapper>
