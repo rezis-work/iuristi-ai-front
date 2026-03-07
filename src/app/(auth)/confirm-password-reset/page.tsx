@@ -3,6 +3,8 @@ import { ConfirmPasswordResetForm } from "@/src/features/auth/components/confirm
 import { Spinner } from "@/src/components/ui/spinner";
 import Wrapper from "@/src/components/shared/wrapper";
 
+export const dynamic = "force-dynamic";
+
 function page() {
   return (
     <Suspense
