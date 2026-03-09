@@ -13,7 +13,7 @@ import { Badge } from "@/src/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/src/components/ui/empty";
 import { Spinner } from "@/src/components/ui/spinner";
-import { useGetCollectionStats, useSearch } from "../hook/search";
+import { useGetCollectionStats, useSearch, useSearchSuggestions } from "../hook/search";
 import type { SearchResponse } from "../api/search";
 import { LawType, Results, ScoreThreshold } from "../lib/states";
 
@@ -26,6 +26,7 @@ export default function Search() {
   const { data: stats, isLoading: isStatsLoading } = useGetCollectionStats();
   const [results, setResults] = useState<SearchResponse[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [suggestionsOpen, setSuggestionsOpen] = useState(false);
 
   const [law] = LawType();
   const [result] = Results();
@@ -121,12 +122,59 @@ export default function Search() {
                   <FormItem className="flex-1">
                     <FormLabel className="text-zinc-200">საძიებო მოთხოვნა</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="მაგალითი: შრომითი ხელშეკრულების შეწყვეტის საფუძვლები"
-                        disabled={isSearchPending}
-                        className="border-zinc-700 bg-zinc-900 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-zinc-500/60"
-                        {...field}
-                      />
+                      <Popover open={suggestionsOpen} onOpenChange={setSuggestionsOpen}>
+                        <PopoverAnchor asChild>
+                          <div className="relative">
+                            <Input
+                              placeholder="მაგალითი: შრომითი ხელშეკრულების შეწყვეტის საფუძვლები"
+                              disabled={isSearchPending}
+                              className="border-zinc-700 bg-zinc-900 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-zinc-500/60"
+                              {...field}
+                              onFocus={() => queryValue && setSuggestionsOpen(true)}
+                              onBlur={() => setTimeout(() => setSuggestionsOpen(false), 150)}
+                              onChange={(e) => {
+                                field.onChange(e);
+                                setSuggestionsOpen(true);
+                              }}
+                            />
+                          </div>
+                        </PopoverAnchor>
+                        <PopoverContent
+                          className="w-(--radix-popover-trigger-width) max-h-[280px] overflow-y-auto p-0 border-zinc-800 bg-zinc-950"
+                          align="start"
+                          sideOffset={4}
+                        >
+                          {isSuggestionsLoading ? (
+                            <div className="flex items-center justify-center gap-2 p-4 text-sm text-zinc-400">
+                              <Spinner className="size-4" />
+                              იტვირთება...
+                            </div>
+                          ) : suggestions.length > 0 ? (
+                            <ul className="py-1">
+                              {suggestions.map((item) => (
+                                <li key={item.id}>
+                                  <button
+                                    type="button"
+                                    className="w-full px-3 py-2.5 text-left text-sm text-zinc-200 hover:bg-zinc-800/80 transition-colors"
+                                    onMouseDown={(e) => {
+                                      e.preventDefault();
+                                      form.setValue("query", item.text.slice(0, 150));
+                                      setSuggestionsOpen(false);
+                                    }}
+                                  >
+                                    <span className="line-clamp-2">{item.text}</span>
+                                    {item.lawTitle && (
+                                      <span className="mt-1 block text-xs text-zinc-500">{item.lawTitle}</span>
+                                    )}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : debouncedQuery.trim().length >= 1 ? (
+                            <div className="p-4 text-sm text-zinc-400">შედეგი ვერ მოიძებნა</div>
+                          ) : null}
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
