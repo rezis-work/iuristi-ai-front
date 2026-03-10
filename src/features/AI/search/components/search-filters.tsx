@@ -47,16 +47,37 @@ export function SearchFilters({ form }: SearchFiltersProps) {
   const [, setResult] = Results();
   const [, setThreshold] = ScoreThreshold();
 
+  function syncLawToUrl(lawCode: string | undefined) {
+    void setLaw(snapLaw(lawCode));
+  }
+
+  function syncResultToUrl(topK: number | undefined) {
+    void setResult(snapResult(topK ?? 10));
+  }
+
+  function syncThresholdToUrl(scoreThreshold: number | undefined) {
+    const thresholdVal = snapThreshold(Math.round((scoreThreshold ?? 0.4) * 100));
+    void setThreshold(thresholdVal);
+  }
+
   function syncFiltersToUrl() {
     const lawCode = form.getValues("lawCode");
     const topK = form.getValues("topK");
     const scoreThreshold = form.getValues("scoreThreshold");
-    const lawVal = snapLaw(lawCode);
-    const resultVal = snapResult(topK ?? 10);
-    const thresholdVal = snapThreshold(Math.round((scoreThreshold ?? 0.4) * 100));
-    setLaw(lawVal);
-    setResult(resultVal);
-    setThreshold(thresholdVal);
+    syncLawToUrl(lawCode);
+    syncResultToUrl(topK);
+    syncThresholdToUrl(scoreThreshold);
+  }
+
+  function clearFilters() {
+    form.setValue("lawCode", undefined);
+    form.setValue("chapter", undefined);
+    form.setValue("topK", 10);
+    form.setValue("scoreThreshold", 0.4);
+
+    syncLawToUrl(undefined);
+    syncResultToUrl(10);
+    syncThresholdToUrl(0.4);
   }
 
   return (
@@ -66,7 +87,7 @@ export function SearchFilters({ form }: SearchFiltersProps) {
           type="button"
           variant="outline"
           size="sm"
-          className="border-zinc-700 bg-zinc-900/80 text-zinc-200 hover:border-[#ff9D4D]/50 hover:bg-zinc-800 hover:text-zinc-100"
+          className="w-full border-zinc-700 bg-zinc-900/80 text-zinc-200 hover:border-[#ff9D4D]/50 hover:bg-zinc-800 hover:text-zinc-100 sm:w-auto"
         >
           <Filter className="mr-2 size-4" />
           ფილტრები
@@ -99,9 +120,11 @@ export function SearchFilters({ form }: SearchFiltersProps) {
                   კანონი
                 </FormLabel>
                 <Select
-                  onValueChange={(v) =>
-                    field.onChange(v === "__all__" ? undefined : v)
-                  }
+                  onValueChange={(v) => {
+                    const nextLawCode = v === "__all__" ? undefined : v;
+                    field.onChange(nextLawCode);
+                    syncLawToUrl(nextLawCode);
+                  }}
                   value={field.value ?? "__all__"}
                 >
                   <FormControl>
@@ -156,7 +179,11 @@ export function SearchFilters({ form }: SearchFiltersProps) {
                   შედეგების რაოდენობა
                 </FormLabel>
                 <Select
-                  onValueChange={(v) => field.onChange(Number(v))}
+                  onValueChange={(v) => {
+                    const nextTopK = Number(v);
+                    field.onChange(nextTopK);
+                    syncResultToUrl(nextTopK);
+                  }}
                   value={String(field.value)}
                 >
                   <FormControl>
@@ -198,7 +225,10 @@ export function SearchFilters({ form }: SearchFiltersProps) {
                     max={1}
                     step={0.05}
                     value={[field.value]}
-                    onValueChange={([v]) => field.onChange(v)}
+                    onValueChange={([v]) => {
+                      field.onChange(v);
+                      syncThresholdToUrl(v);
+                    }}
                     className="py-4 [&_[data-slot=slider-range]]:bg-[#ff9D4D] [&_[data-slot=slider-thumb]]:border-[#ff9D4D] [&_[data-slot=slider-thumb]]:bg-[#ff9D4D]"
                   />
                 </FormControl>
@@ -211,16 +241,26 @@ export function SearchFilters({ form }: SearchFiltersProps) {
         </div>
 
         <div className="border-t border-zinc-800/80 px-6 py-4">
-          <Button
-            type="button"
-            onClick={() => {
-              syncFiltersToUrl();
-              setOpen(false);
-            }}
-            className="w-full bg-[#ff9D4D] text-white hover:bg-[#ea9753]"
-          >
-            გამოყენება
-          </Button>
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:justify-between">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={clearFilters}
+              className="w-full border-zinc-700 bg-zinc-800 text-zinc-100 hover:bg-red-400 hover:text-white sm:w-auto sm:min-w-52"
+            >
+              ფილტრების გასუფთავება
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                syncFiltersToUrl();
+                setOpen(false);
+              }}
+              className="w-full bg-[#ff9D4D] text-white hover:bg-[#ea9753] sm:w-auto sm:min-w-40"
+            >
+              გამოყენება
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
