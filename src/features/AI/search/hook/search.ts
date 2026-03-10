@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getArticleById,
   getCollectionStats,
+  getSearchSuggestions,
   search,
   type SearchRequest,
   type SearchResponse,
@@ -53,5 +54,16 @@ export function useGetCollectionStats() {
       const response = await getCollectionStats();
       return response;
     },
+  });
+}
+
+
+
+export function useSearchSuggestions(query: string) {
+  return useQuery({
+    queryKey: ["search-suggestions", query],
+    queryFn: ({ signal }) => getSearchSuggestions(query, { signal }),
+    enabled: query.trim().length >= 1,
+    staleTime: 60_000,
   });
 }

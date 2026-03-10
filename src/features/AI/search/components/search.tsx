@@ -1,8 +1,10 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { searchRequestSchema, type SearchRequest } from "../schema/search-schema";
+import { SearchFilters } from "./search-filters";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/src/components/ui/form";
 import { Button } from "@/src/components/ui/button";
@@ -13,27 +15,68 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/src/componen
 import { Spinner } from "@/src/components/ui/spinner";
 import { useGetCollectionStats, useSearch } from "../hook/search";
 import type { SearchResponse } from "../api/search";
+import { LawType, Results, ScoreThreshold } from "../lib/states";
 
 export default function Search() {
+  const searchParams = useSearchParams();
+  const queryFromUrl = searchParams.get("query") ?? "";
+  const hasRunInitialSearch = useRef(false);
+
   const { mutateAsync: search, isPending: isSearchPending } = useSearch();
   const { data: stats, isLoading: isStatsLoading } = useGetCollectionStats();
   const [results, setResults] = useState<SearchResponse[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
 
+  const [law] = LawType();
+  const [result] = Results();
+  const [threshold] = ScoreThreshold();
+
   const form = useForm<SearchRequest>({
     resolver: zodResolver(searchRequestSchema),
     defaultValues: {
-      query: "",
-      scoreThreshold: 0.4,
-      topK: 10
+      query: queryFromUrl || "",
+      lawCode: law === "__all__" ? undefined : law,
+      chapter: undefined,
+      scoreThreshold: threshold / 100,
+      topK: Number(result),
     },
   });
+
+  useEffect(() => {
+    form.reset({
+      ...form.getValues(),
+      lawCode: law === "__all__" ? undefined : law,
+      topK: Number(result),
+      scoreThreshold: threshold / 100,
+    });
+  }, [law, result, threshold, form]);
+
+  useEffect(() => {
+    const q = queryFromUrl.trim();
+    if (q && !hasRunInitialSearch.current) {
+      hasRunInitialSearch.current = true;
+      form.setValue("query", q);
+      const vals = form.getValues();
+      search({
+        query: q,
+        lawCode: vals.lawCode || undefined,
+        chapter: vals.chapter?.trim() || undefined,
+        scoreThreshold: vals.scoreThreshold ?? threshold / 100,
+        topK: vals.topK ?? Number(result),
+      }).then((response) => {
+        setResults(response);
+        setHasSearched(true);
+      });
+    }
+  }, [queryFromUrl, form, search, threshold, result]);
 
   async function onSubmit(data: SearchRequest) {
     const response = await search({
       query: data.query,
+      lawCode: data.lawCode || undefined,
+      chapter: data.chapter?.trim() || undefined,
       scoreThreshold: data.scoreThreshold,
-      topK:data.topK
+      topK: data.topK,
     });
     setResults(response);
     setHasSearched(true);
@@ -70,7 +113,7 @@ export default function Search() {
           </CardHeader>
           <CardContent className="pt-6">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3 sm:flex-row">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3 sm:flex-row sm:items-end">
               <FormField
                 control={form.control}
                 name="query"
@@ -83,16 +126,18 @@ export default function Search() {
                         disabled={isSearchPending}
                         className="border-zinc-700 bg-zinc-900 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-zinc-500/60"
                         {...field}
+                        onChange={(e) => field.onChange(e.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              <SearchFilters form={form} />
               <Button
                 type="submit"
                 disabled={isSearchPending}
-                className="self-end bg-[#ff9D4D] text-white hover:bg-[#ea9753] sm:min-w-32"
+                className="w-full bg-[#ff9D4D] text-white hover:bg-[#ea9753] sm:w-auto sm:min-w-32"
               >
                 {isSearchPending ? (
                   <>

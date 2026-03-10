@@ -69,3 +69,19 @@ export async function getCollectionStats() {
     throw error;
   }
 }
+
+
+export async function getSearchSuggestions (query:string, options?:{signal?:AbortSignal }) {
+  const responce = await api<SearchResponse[]>("/agent/search",{
+    method: 'POST',
+    body: JSON.stringify({
+      query,
+      topK:5,
+      scoreThreshold: 0.3
+    }),
+    auth:true,
+    disableRedirect:true,
+    signal:options?.signal
+  });
+  return responce
+}
