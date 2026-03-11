@@ -86,8 +86,7 @@ export function SearchFilters({ form }: SearchFiltersProps) {
         <Button
           type="button"
           variant="outline"
-          size="sm"
-          className="w-full border-zinc-700 bg-zinc-900/80 text-zinc-200 hover:border-[#ff9D4D]/50 hover:bg-zinc-800 hover:text-zinc-100 sm:w-auto"
+          className="h-11 w-full rounded-xl border-zinc-700 bg-zinc-900 px-4 text-zinc-200 shadow-sm shadow-black/20 transition-all hover:border-zinc-600 hover:bg-zinc-800 hover:text-zinc-100 sm:w-auto sm:min-w-32"
         >
           <Filter className="mr-2 size-4" />
           ფილტრები
@@ -229,7 +228,7 @@ export function SearchFilters({ form }: SearchFiltersProps) {
                       field.onChange(v);
                       syncThresholdToUrl(v);
                     }}
-                    className="py-4 [&_[data-slot=slider-range]]:bg-[#ff9D4D] [&_[data-slot=slider-thumb]]:border-[#ff9D4D] [&_[data-slot=slider-thumb]]:bg-[#ff9D4D]"
+                    className="py-4 **:data-[slot=slider-range]:bg-[#ff9D4D] **:data-[slot=slider-thumb]:border-[#ff9D4D] **:data-[slot=slider-thumb]:bg-[#ff9D4D]"
                   />
                 </FormControl>
                 <p className="text-xs text-zinc-500">

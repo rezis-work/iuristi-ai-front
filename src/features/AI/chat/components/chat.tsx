@@ -256,12 +256,24 @@ export default function AIChatPage() {
   }, []);
 
   return (
-    <section className="mx-auto w-full max-w-[1320px] px-3 pb-5 pt-[84px] sm:px-5 sm:pt-[96px] lg:px-8 lg:pt-[100px]">
-      <div className="pb-1">
-        <div className="grid min-w-0 grid-cols-1 gap-4 min-[1000px]:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_340px]">
-          <div className="min-w-0 overflow-hidden rounded-3xl border border-zinc-800/90 bg-zinc-950/90 shadow-2xl shadow-black/40 backdrop-blur">
+    <section className="h-[calc(100dvh-84px)] w-full bg-zinc-950 pt-[84px] sm:h-[calc(100dvh-96px)] sm:pt-[96px] lg:h-[calc(100dvh-100px)] lg:pt-[100px]">
+      <div className="mx-auto h-full w-full max-w-[1600px] px-2 pb-2 sm:px-4">
+        <div className="grid h-full min-h-0 grid-cols-1 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/40 md:grid-cols-[280px_minmax(0,1fr)]">
+          <div className="min-h-0 overflow-y-auto border-b border-zinc-800 bg-zinc-900/80 p-3 md:border-b-0 md:border-r">
+            <ChatHistorySidebar
+              items={conversationItems}
+              activeConversationId={historyConversationId ?? conversationId}
+              isHistoryLoading={isHistoryLoading}
+              isDeletePending={isDeletePending}
+              deletingId={deletingId}
+              onStartNewChat={resetToNewChat}
+              onSelectConversation={handleSelectConversation}
+              onDeleteConversation={handleDeleteConversation}
+            />
+          </div>
+          <div className="flex min-h-0 min-w-0 flex-col bg-zinc-900/35">
             <ChatHeader />
-            <div className="flex min-h-[60dvh] flex-col min-[1000px]:min-h-[68vh]">
+            <div className="flex min-h-0 flex-1 flex-col">
               <ChatMessages
                 messages={messages}
                 isPending={isPending || isHistoryLoading}
@@ -276,16 +288,6 @@ export default function AIChatPage() {
               />
             </div>
           </div>
-          <ChatHistorySidebar
-            items={conversationItems}
-            activeConversationId={historyConversationId ?? conversationId}
-            isHistoryLoading={isHistoryLoading}
-            isDeletePending={isDeletePending}
-            deletingId={deletingId}
-            onStartNewChat={resetToNewChat}
-            onSelectConversation={handleSelectConversation}
-            onDeleteConversation={handleDeleteConversation}
-          />
         </div>
       </div>
     </section>
