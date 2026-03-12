@@ -4,35 +4,34 @@ import { Button } from "@/src/components/ui/button";
 
 export function ChatHeader() {
   return (
-    <header className="border-b border-zinc-800/80 bg-linear-to-r from-zinc-900 to-zinc-950 px-4 py-4 sm:px-6 sm:py-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#ff9D4D]/25 bg-[#ff9D4D]/15 text-[#ff9D4D] shadow-lg shadow-[#ff9D4D]/10">
-            <Sparkles className="h-5 w-5" />
+    <header className="border-b border-zinc-800/80 bg-zinc-900/65 px-4 py-3 backdrop-blur sm:px-6">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800/80 text-zinc-200">
+            <Sparkles className="h-4 w-4" />
           </div>
-          <div>
-            <h2 className="text-base font-semibold tracking-tight text-zinc-100 sm:text-lg">AI ჩათი</h2>
-            <p className="text-xs text-zinc-400 sm:text-sm">
-              დასვი კითხვა და მიიღე სწრაფი, ზუსტი პასუხი რეალურ დროში
-            </p>
+          <div className="min-w-0">
+            <h2 className="truncate text-sm font-semibold text-zinc-100 sm:text-base">AI Legal Assistant</h2>
+          
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <span className="hidden items-center gap-2 rounded-full border border-zinc-700 bg-zinc-800/70 px-2.5 py-1 text-[11px] text-zinc-300 sm:inline-flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            Online
+          </span>
           <Button
             asChild
             type="button"
             size="sm"
             variant="outline"
-            className="h-8 rounded-lg border-zinc-700 bg-zinc-900/70 text-zinc-200 hover:bg-zinc-800"
+            className="h-8 rounded-lg border-zinc-700 bg-zinc-800/70 text-zinc-100 hover:bg-zinc-700 hover:text-white"
           >
-            <Link href="/" className="text-white hover:text-yellow-700">
-              <Home className="h-3.5 w-3.5 text-[#ff9D4D]" />
+            <Link href="/">
+              <Home className="h-3.5 w-3.5" />
               მთავარი
             </Link>
           </Button>
-          <div className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1 text-[11px] font-medium text-zinc-300 sm:text-xs">
-            Pro Assistant
-          </div>
         </div>
       </div>
     </header>

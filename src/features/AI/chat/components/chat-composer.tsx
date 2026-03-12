@@ -1,5 +1,5 @@
 import { FormEvent, KeyboardEvent } from "react";
-import { Loader2, Send, Sparkles } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Textarea } from "@/src/components/ui/textarea";
 
@@ -27,46 +27,28 @@ export function ChatComposer({
   };
 
   return (
-    <form onSubmit={onSubmit} className="border-t border-zinc-800/90 bg-zinc-950/95 p-4 sm:p-5">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-3">
-        <div className="rounded-2xl border border-zinc-700/80 bg-zinc-900/80 p-2 shadow-inner shadow-black/30">
-          <div className="mb-1 flex items-center gap-2 px-2 pt-1 text-[11px] text-zinc-400">
-            <Sparkles className="h-3.5 w-3.5 text-[#ff9D4D]" />
-            დაწერე რაც შეიძლება კონკრეტულად, რომ ზუსტი პასუხი მიიღო
-          </div>
+    <form onSubmit={onSubmit} className="border-t border-zinc-800/80 bg-zinc-900/65 px-3 py-3 backdrop-blur sm:px-6 sm:py-4">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-2">
+        <div className="rounded-[28px] border border-zinc-700/90 bg-zinc-800/80 p-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition-colors focus-within:border-zinc-500">
           <Textarea
             value={input}
             onChange={(event) => onInputChange(event.target.value)}
             onKeyDown={handleTextareaKeyDown}
             placeholder="მაგ: შრომითი ხელშეკრულების შეწყვეტის შემთხვევაში რა ვადებია?"
-            className="min-h-[95px] resize-none border-0 bg-transparent text-zinc-100 shadow-none placeholder:text-zinc-500 focus-visible:ring-0"
+            className="min-h-[72px] max-h-[220px] resize-none border-0 bg-transparent px-2 pt-2 text-[15px] leading-6 text-zinc-100 shadow-none placeholder:text-zinc-500 focus-visible:ring-0"
             maxLength={5000}
           />
-        </div>
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="rounded-full border border-zinc-700 bg-zinc-900 px-2.5 py-1 text-xs text-zinc-400">
-              {input.length}/5000
-            </span>
-            <span className="text-xs text-zinc-500">Shift + Enter ახალი ხაზი</span>
+          <div className="mt-2 flex items-center justify-between gap-3 px-2 pb-1">
+            <span className="text-xs text-zinc-500">{input.length}/5000 • Enter გასაგზავნად</span>
+            <Button
+              type="submit"
+              size="icon"
+              disabled={isPending || !input.trim()}
+              className="h-10 w-10 rounded-full bg-zinc-100 text-black shadow-md transition-all hover:scale-[1.03] hover:bg-zinc-200 disabled:bg-zinc-700 disabled:text-zinc-400"
+            >
+              {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            </Button>
           </div>
-          <Button
-            type="submit"
-            disabled={isPending || !input.trim()}
-            className="h-10 rounded-xl bg-[#ff9D4D] px-5 font-semibold text-black shadow-lg shadow-[#ff9D4D]/20 hover:bg-[#ff8D3D]"
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                იგზავნება...
-              </>
-            ) : (
-              <>
-                <Send className="h-4 w-4" />
-                გაგზავნა
-              </>
-            )}
-          </Button>
         </div>
         {hasError && (
           <p className="text-xs text-red-400">პასუხის მიღება ვერ მოხერხდა. გთხოვ, სცადე თავიდან.</p>
