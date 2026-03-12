@@ -50,7 +50,6 @@ export function Results() {
   );
   return [result, setResult] as const;
 }
-
 /** მინიმალური შესაბამისობა პროცენტებში (20–100). URL: ?threshold=65 */
 export function ScoreThreshold() {
   const [percent, setPercent] = useQueryState(
@@ -59,3 +58,4 @@ export function ScoreThreshold() {
   );
   return [percent, setPercent] as const;
 }
+

@@ -15,7 +15,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/src/componen
 import { Spinner } from "@/src/components/ui/spinner";
 import { useGetCollectionStats, useSearch } from "../hook/search";
 import type { SearchResponse } from "../api/search";
-import { LawType, Results, ScoreThreshold } from "../lib/states";
+import { LawType, Results } from "../lib/states";
 
 export default function Search() {
   const searchParams = useSearchParams();
@@ -29,7 +29,6 @@ export default function Search() {
 
   const [law] = LawType();
   const [result] = Results();
-  const [threshold] = ScoreThreshold();
 
   const form = useForm<SearchRequest>({
     resolver: zodResolver(searchRequestSchema),
@@ -37,7 +36,6 @@ export default function Search() {
       query: queryFromUrl || "",
       lawCode: law === "__all__" ? undefined : law,
       chapter: undefined,
-      scoreThreshold: threshold / 100,
       topK: Number(result),
     },
   });
@@ -47,9 +45,8 @@ export default function Search() {
       ...form.getValues(),
       lawCode: law === "__all__" ? undefined : law,
       topK: Number(result),
-      scoreThreshold: threshold / 100,
     });
-  }, [law, result, threshold, form]);
+  }, [law, result, form]);
 
   useEffect(() => {
     const q = queryFromUrl.trim();
@@ -61,21 +58,19 @@ export default function Search() {
         query: q,
         lawCode: vals.lawCode || undefined,
         chapter: vals.chapter?.trim() || undefined,
-        scoreThreshold: vals.scoreThreshold ?? threshold / 100,
         topK: vals.topK ?? Number(result),
       }).then((response) => {
         setResults(response);
         setHasSearched(true);
       });
     }
-  }, [queryFromUrl, form, search, threshold, result]);
+  }, [queryFromUrl, form, search, result]);
 
   async function onSubmit(data: SearchRequest) {
     const response = await search({
       query: data.query,
       lawCode: data.lawCode || undefined,
       chapter: data.chapter?.trim() || undefined,
-      scoreThreshold: data.scoreThreshold,
       topK: data.topK,
     });
     setResults(response);
@@ -83,80 +78,91 @@ export default function Search() {
   }
 
   return (
-    <section className="mx-auto w-full py-20 max-w-[1100px] px-3 pb-6 pt-[84px] sm:px-5 sm:pt-[96px] lg:px-8 lg:pt-[100px] ">
-      <div className="space-y-5">
-        <Card className="overflow-hidden rounded-3xl border-zinc-800/90 bg-zinc-950/90 text-zinc-100 shadow-2xl shadow-black/40 backdrop-blur">
-          <CardHeader className="gap-4 border-b border-zinc-800/90">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div className="space-y-1">
-                <CardTitle className="text-xl font-semibold">იურიდიული ძიება AI-ით</CardTitle>
-                <p className="text-sm text-zinc-400">
-                  მოძებნე შესაბამისი ნორმები, მუხლები და წყაროები ბუნებრივი ენით.
+    <section className="mx-auto w-full max-w-[1120px] px-3 pb-10 pt-[84px] sm:px-5 sm:pt-[96px] lg:px-8 lg:pt-[100px]">
+      <div className="space-y-7">
+        <Card className="overflow-hidden rounded-3xl border-zinc-800/80 bg-zinc-950 text-zinc-100 shadow-lg shadow-black/15">
+          <CardHeader className="gap-3 border-b border-zinc-800/70 pb-6">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="max-w-2xl space-y-2">
+                <Badge className="w-fit border-zinc-700 bg-zinc-900/80 text-zinc-200 hover:bg-zinc-900">
+                  AI Legal Search
+                </Badge>
+                <CardTitle className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                  იურიდიული ძიება AI-ით
+                </CardTitle>
+                <p className="max-w-xl text-sm leading-6 text-zinc-400 sm:text-base">
+                  მოძებნე შესაბამისი ნორმები, მუხლები და წყაროები ბუნებრივი ენით, სწრაფად და ზუსტად.
                 </p>
               </div>
               {isStatsLoading ? (
-                <div className="inline-flex items-center gap-2 text-sm text-zinc-400">
+                <div className="inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-400">
                   <Spinner />
                   ბაზის სტატუსი იტვირთება...
                 </div>
               ) : (
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary" className="bg-zinc-800 text-zinc-100">
-                    ჩანაწერები: {stats?.pointsCount ?? 0}
-                  </Badge>
-                  <Badge variant="outline" className="border-zinc-700 text-zinc-200">
-                    ინდექსირებული ვექტორები: {stats?.indexedVectorsCount ?? 0}
-                  </Badge>
+                <div className="grid w-full max-w-sm grid-cols-2 gap-2 sm:w-auto">
+                  <div className="rounded-xl border border-zinc-800 bg-zinc-900/75 px-3 py-2.5">
+                    <p className="text-xs text-zinc-500">ჩანაწერები</p>
+                    <p className="text-lg font-semibold text-zinc-100">{stats?.pointsCount ?? 0}</p>
+                  </div>
+                  <div className="rounded-xl border border-zinc-800 bg-zinc-900/75 px-3 py-2.5">
+                    <p className="text-xs text-zinc-500">ინდექსირებული ვექტორები</p>
+                    <p className="text-lg font-semibold text-zinc-100">{stats?.indexedVectorsCount ?? 0}</p>
+                  </div>
                 </div>
               )}
             </div>
           </CardHeader>
           <CardContent className="pt-6">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3 sm:flex-row sm:items-end">
-              <FormField
-                control={form.control}
-                name="query"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="text-zinc-200">საძიებო მოთხოვნა</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="მაგალითი: შრომითი ხელშეკრულების შეწყვეტის საფუძვლები"
-                        disabled={isSearchPending}
-                        className="border-zinc-700 bg-zinc-900 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-zinc-500/60"
-                        {...field}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <SearchFilters form={form} />
-              <Button
-                type="submit"
-                disabled={isSearchPending}
-                className="w-full bg-[#ff9D4D] text-white hover:bg-[#ea9753] sm:w-auto sm:min-w-32"
-              >
-                {isSearchPending ? (
-                  <>
-                    <Spinner />
-                    ვეძებ...
-                  </>
-                ) : (
-                  "ძებნა"
-                )}
-              </Button>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <div className="rounded-2xl border border-zinc-800/80 bg-zinc-950/70 p-4 sm:p-5">
+                  <FormField
+                    control={form.control}
+                    name="query"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-zinc-200">საძიებო მოთხოვნა</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="მაგალითი: შრომითი ხელშეკრულების შეწყვეტის საფუძვლები"
+                            disabled={isSearchPending}
+                            className="h-12 rounded-xl border-zinc-700 bg-zinc-900 text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-zinc-500/50"
+                            {...field}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <SearchFilters form={form} />
+                    <Button
+                      type="submit"
+                      disabled={isSearchPending}
+                      className="h-11 w-full rounded-xl bg-zinc-100 px-5 font-medium text-zinc-950 shadow-sm shadow-black/20 transition-all hover:bg-zinc-200 sm:w-auto sm:min-w-36"
+                    >
+                      {isSearchPending ? (
+                        <>
+                          <Spinner />
+                          ვეძებ...
+                        </>
+                      ) : (
+                        "ძიების დაწყება"
+                      )}
+                    </Button>
+                  </div>
+                </div>
               </form>
             </Form>
           </CardContent>
         </Card>
 
         {!hasSearched && (
-          <Card className="rounded-2xl border-zinc-800/90 bg-zinc-950/80 text-zinc-100">
+          <Card className="rounded-2xl border-zinc-800/80 bg-zinc-950/70 text-zinc-100">
             <CardContent className="pt-6">
-              <Empty className="border-zinc-800/80 text-zinc-100">
+              <Empty className="rounded-2xl border-zinc-800/80 bg-zinc-900/40 text-zinc-100">
                 <EmptyHeader>
                   <EmptyTitle>მზად ვარ ძიებისთვის</EmptyTitle>
                   <EmptyDescription className="text-zinc-400">
@@ -170,9 +176,9 @@ export default function Search() {
         )}
 
         {hasSearched && results.length === 0 && !isSearchPending && (
-          <Card className="rounded-2xl border-zinc-800/90 bg-zinc-950/80 text-zinc-100">
+          <Card className="rounded-2xl border-zinc-800/80 bg-zinc-950/70 text-zinc-100">
             <CardContent className="pt-6">
-              <Empty className="border-zinc-800/80 text-zinc-100">
+              <Empty className="rounded-2xl border-zinc-800/80 bg-zinc-900/40 text-zinc-100">
                 <EmptyHeader>
                   <EmptyTitle>ამ მოთხოვნაზე შედეგი ვერ მოიძებნა</EmptyTitle>
                   <EmptyDescription className="text-zinc-400">
@@ -185,20 +191,21 @@ export default function Search() {
         )}
 
         {results.length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-medium text-zinc-300">
-                ნაპოვნია {results.length} შედეგი
-              </h2>
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-sm font-medium text-zinc-300">ნაპოვნია {results.length} შედეგი</h2>
+              <Badge variant="outline" className="border-zinc-700 bg-zinc-900/70 text-zinc-200">
+                დალაგება: შესაბამისობით
+              </Badge>
             </div>
             {results.map((item) => (
               <Card
                 key={item.id}
-                className="rounded-2xl border-zinc-800/90 bg-zinc-950/85 text-zinc-100 shadow-lg shadow-black/20"
+                className="group rounded-2xl border-zinc-800/80 bg-zinc-950 text-zinc-100 transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-700 hover:shadow-lg hover:shadow-black/20"
               >
-                <CardHeader className="gap-3">
+                <CardHeader className="gap-3 pb-4">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge className="bg-blue-600 text-white hover:bg-blue-600">{item.lawTitle}</Badge>
+                    <Badge className="bg-zinc-800 text-zinc-100 hover:bg-zinc-800">{item.lawTitle}</Badge>
                     {item.articleNumber && (
                       <Badge variant="outline" className="border-zinc-700 text-zinc-200">
                         მუხლი: {item.articleNumber}
@@ -210,18 +217,25 @@ export default function Search() {
                       </Badge>
                     )}
                   </div>
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
+                    <div
+                      className="h-full rounded-full bg-zinc-400"
+                      style={{ width: `${Math.min(Math.max(item.score * 100, 0), 100)}%` }}
+                    />
+                  </div>
                   <div className="text-sm text-zinc-400">
-                    შესაბამისობის დონე: {(item.score * 100).toFixed(1)}%
+                    შესაბამისობის დონე:{" "}
+                    <span className="font-medium text-zinc-200">{(item.score * 100).toFixed(1)}%</span>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-sm leading-6 text-zinc-200">{item.text}</p>
+                <CardContent className="space-y-4">
+                  <p className="text-sm leading-7 text-zinc-200">{item.text}</p>
                   {item.sourceUrl && (
                     <a
                       href={item.sourceUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex text-sm text-blue-400 underline underline-offset-4 hover:text-blue-300"
+                      className="inline-flex items-center text-sm font-medium text-zinc-300 underline underline-offset-4 transition-colors hover:text-zinc-100"
                     >
                       იხილე ოფიციალური წყარო
                     </a>
